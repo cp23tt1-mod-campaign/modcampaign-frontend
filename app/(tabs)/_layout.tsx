@@ -46,6 +46,11 @@ export default function TabLayout() {
             // <MaterialIcons name="home" size={32} color={color} />
           ),
         }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+          },
+        }}
       />
       <Tabs.Screen
         name="diary"
@@ -65,6 +70,11 @@ export default function TabLayout() {
               color={color}
             />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+          },
         }}
       />
       <Tabs.Screen
@@ -100,6 +110,11 @@ export default function TabLayout() {
             />
           ),
         }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+          },
+        }}
       />
       <Tabs.Screen
         name="profile"
@@ -115,6 +130,11 @@ export default function TabLayout() {
               color={color}
             />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+          },
         }}
       />
     </Tabs>

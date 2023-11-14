@@ -11,6 +11,8 @@ export interface CampaignEntity {
 }
 
 export interface CampaignState {
-  campaignList: CampaignEntity[];
+  latestCampaignList: Partial<CampaignEntity[]>;
+  popularCampaignList: Partial<CampaignEntity[]>;
+  joinedCampaignList: Partial<CampaignEntity[]>;
   selectedCampaign: CampaignEntity | null;
 }

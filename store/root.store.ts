@@ -17,6 +17,7 @@ export const store = configureStore({
   reducer: {
     campaign: campaignSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 // enhancers: [],
 // });

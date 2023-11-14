@@ -2,126 +2,142 @@ import {
   View,
   Text,
   SafeAreaView,
-  FlatList,
+  RefreshControl,
   Pressable,
   Image,
 } from "react-native";
 import { Text as ThemeText } from "../../components/Themed";
-
-import React, { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 // import { API_URL } from "@env";
 import { useAppDispatch, useAppSelector } from "../../store/root.store";
 import {
   getCampaignList,
   getCampaignDetail,
+  setDefaultState,
 } from "../../store/campaign/campaign.slice";
 import { ScrollView } from "react-native-gesture-handler";
+import CampaignList from "../../components/Campaign/List";
 import { UtilIcon } from "../../Util/Icon";
 
 const home = () => {
-  const dispatch = useAppDispatch();
-  const campaignList = useAppSelector((state) => state.campaign.campaignList);
-  const selectedCampaign = useAppSelector(
-    (state) => state.campaign.selectedCampaign
-  );
-  const seeAllCampaign = () => {
-    console.log("you press it");
-  };
-  useEffect(() => {
-    dispatch(getCampaignList());
-    dispatch(getCampaignDetail(3));
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
   }, []);
 
+  const dispatch = useAppDispatch();
+  const latestCampaignList = useAppSelector(
+    (state) => state.campaign.latestCampaignList
+  );
+  const popularCampaignList = useAppSelector(
+    (state) => state.campaign.popularCampaignList
+  );
+  const joinedCampaignList = useAppSelector(
+    (state) => state.campaign.joinedCampaignList
+  );
+
+  const campaignData = {
+    popularCampaign: {
+      header: "Popular Campaign",
+      data: popularCampaignList,
+      handleChange: () => {
+        console.log(`you press see all ${campaignData.popularCampaign.header}`);
+      },
+      isLoading: true,
+    },
+    latestCampaign: {
+      header: "Latest Campaign",
+      data: latestCampaignList,
+      handleChange: () => {
+        console.log(`you press see all ${campaignData.latestCampaign.header}`);
+      },
+      isLoading: true,
+    },
+    joinedCampaign: {
+      header: "Joined Campaign",
+      data: joinedCampaignList,
+      handleChange: () => {
+        console.log(`you press see all ${campaignData.joinedCampaign.header}`);
+      },
+      isLoading: true,
+    },
+  };
+
+  useEffect(() => {
+    campaignData.latestCampaign.isLoading = true;
+    campaignData.popularCampaign.isLoading = true;
+    campaignData.joinedCampaign.isLoading = true;
+    if (refreshing) {
+      dispatch(setDefaultState());
+
+      setTimeout(() => {
+        setRefreshing(false);
+        dispatch(getCampaignList({ listType: "latest" }));
+        dispatch(getCampaignList({ listType: "popular" }));
+        dispatch(getCampaignList({ listType: "joined", userId: 1 }));
+        campaignData.latestCampaign.isLoading = false;
+        campaignData.popularCampaign.isLoading = false;
+        campaignData.joinedCampaign.isLoading = false;
+      }, 2000);
+    } else {
+      dispatch(getCampaignList({ listType: "latest" }));
+      dispatch(getCampaignList({ listType: "popular" }));
+      dispatch(getCampaignList({ listType: "joined", userId: 1 }));
+      campaignData.latestCampaign.isLoading = false;
+      campaignData.popularCampaign.isLoading = false;
+      campaignData.joinedCampaign.isLoading = false;
+    }
+
+    // dispatch(getCampaignDetail({ id: 3 }));
+  }, [dispatch, refreshing]);
+
   return (
-    <SafeAreaView className="flex flex-col w-full">
-      <ScrollView>
-        <View className="w-full flex justify-center items-center mb-4">
-          <Text className="text-header-1 font-bold">Navbar</Text>
+    <SafeAreaView className="flex flex-col w-full h-full relative">
+      <View className="w-full flex-row justify-between px-4 my-5">
+        <View className="flex flex-row space-x-4 items-center">
+          <Image
+            source={require("../../assets/images/headerIcon.png")}
+            style={{ width: 45, height: 45 }}
+          />
+          <Text className="text-header-3 font-semibold">Campaign</Text>
         </View>
-        <View className="flex flex-col space-y-7">
-          <View className="w-full flex flex-cols ">
-            <View className="w-full flex flex-col space-y-2">
-              <View className="w-full flex flex-row justify-between px-4">
-                <Text className="text-black text-header-4 font-bold">
-                  Popular Campaign
-                </Text>
-                <Pressable onPress={seeAllCampaign}>
-                  <Text className="text-orange text-sub-header-1 font-medium">
-                    See all
-                  </Text>
-                </Pressable>
-              </View>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                className="pl-4 flex space-x-4"
-              >
-                <View className="flex flex-row space-x-3">
-                  {/* <ThemeText>asdasd</ThemeText> */}
-                  {/* <Text>{API_URL}</Text> */}
-                  {/* {campaignList.data} */}
-                  {campaignList.map((campaign) => {
-                    return (
-                      <View className="flex flex-col w-[12.75rem] h-full">
-                        <Image
-                          source={{
-                            // uri: "https://reactjs.org/logo-og.png",
-                            uri: "https://api.slingacademy.com/public/sample-photos/1.jpeg",
-                          }}
-                          style={{ width: 204, height: 132 }}
-                          className="rounded-t-lg"
-                        />
-                        <View
-                          key={campaign.id}
-                          className="w-[204px] bg-white rounded-b-lg px-3 py-2 space-y-1"
-                        >
-                          <Text className="text-black text-sub-header-1 font-medium">
-                            {campaign.name}
-                          </Text>
-                          <View className="flex flex-row space-x-1">
-                            <UtilIcon
-                              category="MaterialCommunityIcons"
-                              name={"calendar-month"}
-                              size={16}
-                              color={"#929292"}
-                            />
-                            <Text className="text-gray text-small font-medium">
-                              07/11/2023 - 31/12/2023
-                            </Text>
-                          </View>
-                          {/* <Text>{campaign.description}</Text> */}
-                          {/* <Text>{campaign.start}</Text>
-              <Text>{campaign.end}</Text> */}
-                          {/* <Text>{campaign.type}</Text>
-                          <Text>{campaign.userLimit}</Text>
-                          <Text>{campaign.category}</Text>
-                          <Text>{campaign.categoryTarget}</Text> */}
-                        </View>
-                      </View>
-                    );
-                  })}
-                </View>
-              </ScrollView>
-            </View>
-          </View>
-
-          <View>
-            <Text className="text-header-1 font-bold">CampaignDetail</Text>
-            <Text>{selectedCampaign?.name}</Text>
-            <Text>{selectedCampaign?.description}</Text>
-            {/* <Text>{selectedCampaign.start}</Text>
-          <Text>{selectedCampaign.end}</Text> */}
-            <Text>{selectedCampaign?.type}</Text>
-            <Text>{selectedCampaign?.userLimit}</Text>
-            <Text>{selectedCampaign?.category}</Text>
-            <Text>{selectedCampaign?.categoryTarget}</Text>
-          </View>
+        <Pressable>
+          <UtilIcon
+            category="MaterialIcons"
+            name={"notifications-none"}
+            size={32}
+            color="#000000"
+          />
+        </Pressable>
+      </View>
+      <Pressable className="absolute flex items-center justify-center bottom-0 right-0 mb-3 mr-3 bg-orange w-16 h-16 rounded-full z-50 shadow-sm">
+        <UtilIcon
+          category="MaterialIcons"
+          name={"add"}
+          size={52}
+          color="#FFFFFF"
+        />
+      </Pressable>
+      <ScrollView
+        className="w-full h-full"
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View className="flex flex-col w-full h-full">
+          {Object.entries(campaignData).map(([key, value], i) => {
+            return (
+              <CampaignList
+                header={value.header}
+                data={value.data}
+                handlePress={value.handleChange}
+                isLoading={value.isLoading}
+                key={key}
+              />
+            );
+          })}
         </View>
-
-        {/* <View>
-        <Text>asd</Text>
-        <FlatList
-      </View> */}
       </ScrollView>
     </SafeAreaView>
   );
