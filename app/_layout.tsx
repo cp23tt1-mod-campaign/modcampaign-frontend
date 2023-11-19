@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { store } from "../store/root.store";
 import { Provider } from "react-redux";
+import { router } from "expo-router";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -56,8 +57,52 @@ function RootLayoutNav() {
     <Provider store={store}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
           <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+          <Stack.Screen
+            name="page/campaign/list"
+            options={{
+              // presentation: "modal",
+              title: "Campaign",
+              headerLeft(props) {
+                return (
+                  <FontAwesome.Button
+                    name="chevron-left"
+                    size={24}
+                    color={props.tintColor}
+                    backgroundColor="transparent"
+                    onPress={() => {
+                      router.back();
+                    }}
+                  />
+                );
+              },
+            }}
+          />
+          <Stack.Screen
+            name="page/campaign/detail/[id]"
+            options={{
+              title: "Campaign Detail",
+              headerLeft(props) {
+                return (
+                  <FontAwesome.Button
+                    name="chevron-left"
+                    size={24}
+                    color={props.tintColor}
+                    backgroundColor="transparent"
+                    onPress={() => {
+                      router.back();
+                    }}
+                  />
+                );
+              },
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </Provider>

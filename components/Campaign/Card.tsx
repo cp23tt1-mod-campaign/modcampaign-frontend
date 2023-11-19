@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 const CampaignCard = (props: { data: any; className?: any; type?: any }) => {
   if (props.type === "campaign") {
     return (
-      <View className="flex flex-col shadow-sm">
+      <View className="flex flex-col bg-white rounded-lg shadow-sm">
         <Image
           source={{
             uri: "https://api.slingacademy.com/public/sample-photos/1.jpeg",
@@ -14,7 +14,7 @@ const CampaignCard = (props: { data: any; className?: any; type?: any }) => {
           style={{ width: 204, height: 132 }}
           className="rounded-t-lg"
         />
-        <View className="bg-white rounded-b-lg px-3 py-2 space-y-1 w-[204px]">
+        <View className="px-3 py-2 space-y-1 w-[204px]">
           <Text className="w-full truncate text-black text-sub-header-1">
             {props.data.name}
           </Text>

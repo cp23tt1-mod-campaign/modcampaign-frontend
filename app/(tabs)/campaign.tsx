@@ -5,19 +5,20 @@ import {
   RefreshControl,
   Pressable,
   Image,
+  ScrollView,
 } from "react-native";
 import { Text as ThemeText } from "../../components/Themed";
 import { useEffect, useState, useCallback } from "react";
-// import { API_URL } from "@env";
 import { useAppDispatch, useAppSelector } from "../../store/root.store";
 import {
   getCampaignList,
   getCampaignDetail,
   setDefaultState,
 } from "../../store/campaign/campaign.slice";
-import { ScrollView } from "react-native-gesture-handler";
 import CampaignList from "../../components/Campaign/List";
 import { UtilIcon } from "../../Util/Icon";
+import { API_URL } from "@env";
+import { router } from "expo-router";
 
 const home = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -25,7 +26,6 @@ const home = () => {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
   }, []);
-
   const dispatch = useAppDispatch();
   const latestCampaignList = useAppSelector(
     (state) => state.campaign.latestCampaignList
@@ -36,13 +36,21 @@ const home = () => {
   const joinedCampaignList = useAppSelector(
     (state) => state.campaign.joinedCampaignList
   );
+  const selectedCampaign = useAppSelector(
+    (state) => state.campaign.selectedCampaign
+  );
 
   const campaignData = {
     popularCampaign: {
       header: "Popular Campaign",
       data: popularCampaignList,
       handleChange: () => {
-        console.log(`you press see all ${campaignData.popularCampaign.header}`);
+        // router.setParams({ listType: "popular" });
+        // router.push("/list/campaign");
+        router.push({
+          pathname: "/page/campaign/list",
+          params: { listType: "popular" },
+        });
       },
       isLoading: true,
     },
@@ -50,7 +58,10 @@ const home = () => {
       header: "Latest Campaign",
       data: latestCampaignList,
       handleChange: () => {
-        console.log(`you press see all ${campaignData.latestCampaign.header}`);
+        router.push({
+          pathname: "/page/campaign/list",
+          params: { listType: "latest" },
+        });
       },
       isLoading: true,
     },
@@ -58,7 +69,10 @@ const home = () => {
       header: "Joined Campaign",
       data: joinedCampaignList,
       handleChange: () => {
-        console.log(`you press see all ${campaignData.joinedCampaign.header}`);
+        router.push({
+          pathname: "/page/campaign/list",
+          params: { listType: "joined" },
+        });
       },
       isLoading: true,
     },
@@ -89,12 +103,12 @@ const home = () => {
       campaignData.joinedCampaign.isLoading = false;
     }
 
-    // dispatch(getCampaignDetail({ id: 3 }));
+    // dispatch(getCampaignDetail({ id: 6 }));
   }, [dispatch, refreshing]);
 
   return (
     <SafeAreaView className="flex flex-col w-full h-full relative">
-      <View className="w-full flex-row justify-between px-4 my-5">
+      <View className="w-full flex-row justify-between px-4 mb-5 mt-6 items-center">
         <View className="flex flex-row space-x-4 items-center">
           <Image
             source={require("../../assets/images/headerIcon.png")}
@@ -106,7 +120,7 @@ const home = () => {
           <UtilIcon
             category="MaterialIcons"
             name={"notifications-none"}
-            size={32}
+            size={28}
             color="#000000"
           />
         </Pressable>
@@ -137,6 +151,9 @@ const home = () => {
               />
             );
           })}
+          {/* <View>
+            <Text>{JSON.stringify(selectedCampaign)}</Text>
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>

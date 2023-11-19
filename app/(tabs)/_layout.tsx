@@ -19,8 +19,9 @@ export default function TabLayout() {
         // tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         tabBarStyle: {
-          height: 100,
-          paddingTop: 20,
+          height: 90,
+          paddingBottom: 25,
+          // marginBotto  m: 50,
         },
         tabBarLabelStyle: {
           fontFamily: "Inter",
@@ -42,15 +43,20 @@ export default function TabLayout() {
           //   </Pressable>
           // ),
           tabBarIcon: ({ color }) => (
-            <UtilIcon category="Octicons" name="home" size={28} color={color} />
+            <UtilIcon
+              category="MaterialIcons"
+              name="home-filled"
+              size={28}
+              color={color}
+            />
             // <MaterialIcons name="home" size={32} color={color} />
           ),
         }}
-        listeners={{
-          tabPress: (e) => {
-            e.preventDefault();
-          },
-        }}
+        // listeners={{
+        //   tabPress: (e) => {
+        //     e.preventDefault();
+        //   },
+        // }}
       />
       <Tabs.Screen
         name="diary"
@@ -87,8 +93,8 @@ export default function TabLayout() {
           // headerShown: false,
           tabBarIcon: ({ color }) => (
             <UtilIcon
-              category="AntDesign"
-              name="Trophy"
+              category="Ionicons"
+              name="trophy"
               size={28}
               color={color}
             />

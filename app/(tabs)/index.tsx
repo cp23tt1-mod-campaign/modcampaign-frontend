@@ -16,68 +16,68 @@ const permission: HealthKitPermissions = {
   },
 };
 export default function TabOneScreen() {
-  const [hasPermissions, setHasPermissions] = useState(false);
-  const [steps, setSteps] = useState(0);
-  const [distance, setDistance] = useState(0);
+  // const [hasPermissions, setHasPermissions] = useState(false);
+  // const [steps, setSteps] = useState(0);
+  // const [distance, setDistance] = useState(0);
 
-  AppleHealthKit.isAvailable((err: any, available: any) => {});
-  useEffect(() => {
-    AppleHealthKit.initHealthKit(permission, (err: any) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      setHasPermissions(true);
-    });
-  }, []);
+  // AppleHealthKit.isAvailable((err: any, available: any) => {});
+  // useEffect(() => {
+  //   AppleHealthKit.initHealthKit(permission, (err: any) => {
+  //     if (err) {
+  //       console.log(err);
+  //       return;
+  //     }
+  //     setHasPermissions(true);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    if (!hasPermissions) {
-      return;
-    }
-    const options = {
-      startDate: new Date(
-        new Date().setDate(new Date().getDate() - 1)
-      ).toISOString(),
-      endDate: new Date().toISOString(),
-      includeManuallyAdded: true,
-    };
-    AppleHealthKit.getStepCount(options, (err: any, results: any) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log(results);
-      setSteps(results.value);
-    });
-    AppleHealthKit.getDistanceWalkingRunning(
-      options,
-      (err: any, results: any) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log(results);
-        setDistance(results.value);
-      }
-    );
-    // AppleHealthKit.getWorkoutRouteSamples({id:'123'}, (err: any, results: any) => {
-    //   if (err) {
-    //     console.log(err);
-    //     return
-    //   }
-    //   console.log(results);
-    // }
-    // )
-  }, [hasPermissions]);
+  // useEffect(() => {
+  //   if (!hasPermissions) {
+  //     return;
+  //   }
+  //   const options = {
+  //     startDate: new Date(
+  //       new Date().setDate(new Date().getDate() - 1)
+  //     ).toISOString(),
+  //     endDate: new Date().toISOString(),
+  //     includeManuallyAdded: true,
+  //   };
+  //   AppleHealthKit.getStepCount(options, (err: any, results: any) => {
+  //     if (err) {
+  //       console.log(err);
+  //       return;
+  //     }
+  //     console.log(results);
+  //     setSteps(results.value);
+  //   });
+  //   AppleHealthKit.getDistanceWalkingRunning(
+  //     options,
+  //     (err: any, results: any) => {
+  //       if (err) {
+  //         console.log(err);
+  //         return;
+  //       }
+  //       console.log(results);
+  //       setDistance(results.value);
+  //     }
+  //   );
+  //   // AppleHealthKit.getWorkoutRouteSamples({id:'123'}, (err: any, results: any) => {
+  //   //   if (err) {
+  //   //     console.log(err);
+  //   //     return
+  //   //   }
+  //   //   console.log(results);
+  //   // }
+  //   // )
+  // }, [hasPermissions]);
   return (
     <SafeAreaView className="bg-bg">
       <View className="flex h-full w-full items-center">
         {/* <Text className='text-red-500 text-2xl'>Tab One</Text> */}
-        <Text className="text-red-500 text-2xl">Step: {steps} </Text>
-        <Text className="text-red-500 text-2xl">
+        {/* <Text className="text-red-500 text-2xl">Step: {steps} </Text> */}
+        {/* <Text className="text-red-500 text-2xl">
           Walking, Running Distance: {distance}{" "}
-        </Text>
+        </Text> */}
         <EditScreenInfo path="app/(tabs)/index.tsx" />
       </View>
     </SafeAreaView>
