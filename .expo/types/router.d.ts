@@ -7,11 +7,11 @@ declare module "expo-router" {
   export * from 'expo-router/build';
 
   // prettier-ignore
-  type StaticRoutes = `/` | `/(tabs)/_layout` | `/_layout` | `/(tabs)/campaign` | `/campaign` | `/(tabs)/diary` | `/diary` | `/(tabs)/discover` | `/discover` | `/(tabs)/` | `/(tabs)` | `/(tabs)/profile` | `/profile` | `/+html` | `/modal`;
+  type StaticRoutes = `/` | `/(tabs)/_layout` | `/_layout` | `/(tabs)/campaign` | `/campaign` | `/(tabs)/diary` | `/diary` | `/(tabs)/discover` | `/discover` | `/(tabs)/` | `/(tabs)` | `/(tabs)/profile` | `/profile` | `/+html` | `/jsStack` | `/modal` | `/page/campaign/create` | `/page/campaign/list/` | `/page/campaign/list/joined` | `/page/campaign/list/latest` | `/page/campaign/list/popular`;
   // prettier-ignore
-  type DynamicRoutes<T extends string> = `/${CatchAllRoutePart<T>}`;
+  type DynamicRoutes<T extends string> = `/${CatchAllRoutePart<T>}` | `/page/campaign/detail/${SingleRoutePart<T>}`;
   // prettier-ignore
-  type DynamicRouteTemplate = `/[...missing]`;
+  type DynamicRouteTemplate = `/[...missing]` | `/page/campaign/detail/[id]`;
 
   type RelativePathString = `./${string}` | `../${string}` | '..';
   type AbsoluteRoute = DynamicRouteTemplate | StaticRoutes;

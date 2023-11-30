@@ -16,7 +16,7 @@ import {
 } from "@expo/vector-icons";
 // import * as Icon from "@expo/vector-icons";
 
-export const UtilIcon = (props: {
+const UtilIcon = (props: {
   category?: string;
   // name: React.ComponentProps<typeof MaterialIcons>["name"];
   name: any;
@@ -55,3 +55,4 @@ export const UtilIcon = (props: {
   }
   // return <MaterialIcons {...props} className={props.className} />;
 };
+export default UtilIcon;

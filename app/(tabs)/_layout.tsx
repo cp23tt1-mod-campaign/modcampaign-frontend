@@ -1,8 +1,8 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 // import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { UtilIcon } from "../../Util/Icon";
+import UtilIcon from "../../Util/Icon";
 import { Link, Tabs } from "expo-router";
-import { Pressable, Text, View, useColorScheme } from "react-native";
+import { Image, Pressable, Text, View, useColorScheme } from "react-native";
 
 import Colors from "../../constants/Colors";
 
@@ -29,12 +29,17 @@ export default function TabLayout() {
           fontWeight: "normal",
         },
       }}
+      // tabBar={(props) => (
+      //   <View className="bg-red">
+      //     <Text>asd</Text>
+      //   </View>
+      // )}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          headerShown: false,
+          // headerShown: false,
           unmountOnBlur: true,
           // headerBackground: () => <View className="bg-bg"></View>,
           // headerLeft: () => (
@@ -87,8 +92,38 @@ export default function TabLayout() {
         name="campaign"
         options={{
           title: "Campaign",
-          headerShown: false,
+          // headerShown: false,
           unmountOnBlur: true,
+          headerTitleAlign: "left",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerStyle: {
+            height: 120,
+          },
+          headerLeft: () => (
+            <Image
+              source={require("../../assets/images/headerIcon.png")}
+              style={{ width: 45, height: 45 }}
+              className="ml-4"
+            />
+          ),
+          headerRight: () => (
+            <Pressable
+              style={({ pressed }) => [
+                pressed ? { opacity: 0.5 } : { opacity: 1 },
+              ]}
+              onPress={() => console.log("notification")}
+              className="mr-4"
+            >
+              <UtilIcon
+                category="MaterialIcons"
+                name={"notifications-none"}
+                size={28}
+                color="#000000"
+              />
+            </Pressable>
+          ),
           headerBackground: () => <View className="bg-bg"></View>,
           // headerShown: false,
           tabBarIcon: ({ color }) => (

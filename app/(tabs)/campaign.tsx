@@ -16,9 +16,10 @@ import {
   setDefaultState,
 } from "../../store/campaign/campaign.slice";
 import CampaignList from "../../components/Campaign/List";
-import { UtilIcon } from "../../Util/Icon";
-import { API_URL } from "@env";
+import UtilIcon from "../../Util/Icon";
+import { API_IOS_URL, API_ANDROID_URL } from "@env";
 import { router } from "expo-router";
+import axios from "axios";
 
 const home = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -36,17 +37,60 @@ const home = () => {
   const joinedCampaignList = useAppSelector(
     (state) => state.campaign.joinedCampaignList
   );
-  const selectedCampaign = useAppSelector(
-    (state) => state.campaign.selectedCampaign
+  const ownedCampaignList = useAppSelector(
+    (state) => state.campaign.ownedCampaignList
   );
 
+  useEffect(() => {
+    // campaignData.ownedCampaign.isLoading = true;
+    // campaignData.popularCampaign.isLoading = true;
+    // campaignData.latestCampaign.isLoading = true;
+    // campaignData.joinedCampaign.isLoading = true;
+    if (refreshing) {
+      dispatch(setDefaultState());
+
+      setTimeout(() => {
+        setRefreshing(false);
+        dispatch(getCampaignList({ listType: "owned", userId: 1 }));
+        campaignData.ownedCampaign.isLoading = false;
+        dispatch(getCampaignList({ listType: "popular", userId: 1 }));
+        campaignData.popularCampaign.isLoading = false;
+        dispatch(getCampaignList({ listType: "latest", userId: 1 }));
+        campaignData.latestCampaign.isLoading = false;
+        dispatch(getCampaignList({ listType: "joined", userId: 1 }));
+        campaignData.joinedCampaign.isLoading = false;
+      }, 2000);
+    } else {
+      dispatch(getCampaignList({ listType: "owned", userId: 1 }));
+      campaignData.ownedCampaign.isLoading = false;
+      dispatch(getCampaignList({ listType: "popular", userId: 1 }));
+      campaignData.popularCampaign.isLoading = false;
+      dispatch(getCampaignList({ listType: "latest", userId: 1 }));
+      campaignData.latestCampaign.isLoading = false;
+      dispatch(getCampaignList({ listType: "joined", userId: 1 }));
+      campaignData.joinedCampaign.isLoading = false;
+      // console.log(
+      //   "🚀 ~ file: campaign.tsx:74 ~ useEffect ~ campaignData:",
+      //   campaignData
+      // );
+    }
+  }, [dispatch, refreshing]);
   const campaignData = {
+    ownedCampaign: {
+      header: "My Campaign",
+      data: ownedCampaignList,
+      handleChange: () => {
+        router.push({
+          pathname: "/page/campaign/list",
+          params: { listType: "owned" },
+        });
+      },
+      isLoading: true,
+    },
     popularCampaign: {
       header: "Popular Campaign",
       data: popularCampaignList,
       handleChange: () => {
-        // router.setParams({ listType: "popular" });
-        // router.push("/list/campaign");
         router.push({
           pathname: "/page/campaign/list",
           params: { listType: "popular" },
@@ -77,38 +121,15 @@ const home = () => {
       isLoading: true,
     },
   };
-
-  useEffect(() => {
-    campaignData.latestCampaign.isLoading = true;
-    campaignData.popularCampaign.isLoading = true;
-    campaignData.joinedCampaign.isLoading = true;
-    if (refreshing) {
-      dispatch(setDefaultState());
-
-      setTimeout(() => {
-        setRefreshing(false);
-        dispatch(getCampaignList({ listType: "latest" }));
-        dispatch(getCampaignList({ listType: "popular" }));
-        dispatch(getCampaignList({ listType: "joined", userId: 1 }));
-        campaignData.latestCampaign.isLoading = false;
-        campaignData.popularCampaign.isLoading = false;
-        campaignData.joinedCampaign.isLoading = false;
-      }, 2000);
-    } else {
-      dispatch(getCampaignList({ listType: "latest" }));
-      dispatch(getCampaignList({ listType: "popular" }));
-      dispatch(getCampaignList({ listType: "joined", userId: 1 }));
-      campaignData.latestCampaign.isLoading = false;
-      campaignData.popularCampaign.isLoading = false;
-      campaignData.joinedCampaign.isLoading = false;
-    }
-
-    // dispatch(getCampaignDetail({ id: 6 }));
-  }, [dispatch, refreshing]);
+  const createCampaign = () => {
+    router.push({
+      pathname: "/page/campaign/create",
+    });
+  };
 
   return (
     <SafeAreaView className="flex flex-col w-full h-full relative">
-      <View className="w-full flex-row justify-between px-4 mb-5 mt-6 items-center">
+      {/* <View className="w-full flex-row justify-between px-4 my-5 items-center">
         <View className="flex flex-row space-x-4 items-center">
           <Image
             source={require("../../assets/images/headerIcon.png")}
@@ -116,7 +137,9 @@ const home = () => {
           />
           <Text className="text-header-3 font-semibold">Campaign</Text>
         </View>
-        <Pressable>
+        <Pressable
+          style={({ pressed }) => [pressed ? { opacity: 0.5 } : { opacity: 1 }]}
+        >
           <UtilIcon
             category="MaterialIcons"
             name={"notifications-none"}
@@ -124,8 +147,15 @@ const home = () => {
             color="#000000"
           />
         </Pressable>
-      </View>
-      <Pressable className="absolute flex items-center justify-center bottom-0 right-0 mb-3 mr-3 bg-orange w-16 h-16 rounded-full z-50 shadow-sm">
+      </View> */}
+      <Pressable
+        className="absolute 
+        flex items-center 
+        justify-center bottom-0 
+        right-0 mb-3 mr-3 bg-orange 
+        w-16 h-16 rounded-full z-50 shadow-sm"
+        onPress={createCampaign}
+      >
         <UtilIcon
           category="MaterialIcons"
           name={"add"}
@@ -140,6 +170,7 @@ const home = () => {
         }
       >
         <View className="flex flex-col w-full h-full">
+          {/* <Text> {JSON.stringify(campaignData)}</Text> */}
           {Object.entries(campaignData).map(([key, value], i) => {
             return (
               <CampaignList
@@ -151,9 +182,6 @@ const home = () => {
               />
             );
           })}
-          {/* <View>
-            <Text>{JSON.stringify(selectedCampaign)}</Text>
-          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>

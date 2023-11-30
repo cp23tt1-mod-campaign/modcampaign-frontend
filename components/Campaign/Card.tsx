@@ -1,17 +1,22 @@
-import { UtilIcon } from "../../Util/Icon";
+import UtilIcon from "../../Util/Icon";
 import { View, Text, Image } from "react-native";
 import React from "react";
 import dayjs from "dayjs";
 
 const CampaignCard = (props: { data: any; className?: any; type?: any }) => {
+  const timestamp = new Date().getTime();
   if (props.type === "campaign") {
     return (
       <View className="flex flex-col bg-white rounded-lg shadow-sm">
         <Image
           source={{
-            uri: "https://api.slingacademy.com/public/sample-photos/1.jpeg",
+            // uri: `https://drive.google.com/uc?export=view&id=${props.data.image}&t=${timestamp}`,
+            uri: `https://drive.google.com/uc?id=${props.data.image}&t=${timestamp}`,
+            // https://drive.google.com/uc?export=view&id=${props.data.image}
+            // uri: "https://api.slingacademy.com/public/sample-photos/1.jpeg",
+            width: 204,
+            height: 132,
           }}
-          style={{ width: 204, height: 132 }}
           className="rounded-t-lg"
         />
         <View className="px-3 py-2 space-y-1 w-[204px]">

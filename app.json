@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -27,7 +27,8 @@
       },
       "runtimeVersion": {
         "policy": "appVersion"
-      }
+      },
+      "package": "com.jirasinc.ModCampaign"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +36,12 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos."
+        }
+      ],
       "expo-router",
       "react-native-health"
     ],

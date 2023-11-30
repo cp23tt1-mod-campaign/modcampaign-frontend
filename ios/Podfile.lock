@@ -12,12 +12,17 @@ PODS:
     - ExpoModulesCore
   - EXFont (11.4.0):
     - ExpoModulesCore
+  - EXImageLoader (4.3.0):
+    - ExpoModulesCore
+    - React-Core
   - EXJSONUtils (0.7.1)
   - EXManifests (0.7.2):
     - ExpoModulesCore
   - Expo (49.0.13):
     - ExpoModulesCore
   - ExpoHead (0.0.15):
+    - ExpoModulesCore
+  - ExpoImagePicker (14.3.2):
     - ExpoModulesCore
   - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
@@ -362,6 +367,10 @@ PODS:
   - React-jsinspector (0.72.5)
   - React-logger (0.72.5):
     - glog
+  - react-native-date-picker (4.3.3):
+    - React-Core
+  - react-native-image-picker (7.0.3):
+    - React-Core
   - react-native-safe-area-context (4.6.3):
     - RCT-Folly
     - RCTRequired
@@ -496,10 +505,12 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
+  - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
   - EXManifests (from `../node_modules/expo-manifests/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoHead (from `../node_modules/expo-head/ios`)
+  - ExpoImagePicker (from `../node_modules/expo-image-picker/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
@@ -529,6 +540,8 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -575,6 +588,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
     :path: "../node_modules/expo-font/ios"
+  EXImageLoader:
+    :path: "../node_modules/expo-image-loader/ios"
   EXJSONUtils:
     :path: "../node_modules/expo-json-utils/ios"
   EXManifests:
@@ -583,6 +598,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo"
   ExpoHead:
     :path: "../node_modules/expo-head/ios"
+  ExpoImagePicker:
+    :path: "../node_modules/expo-image-picker/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
@@ -638,6 +655,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-NativeModulesApple:
@@ -692,10 +713,12 @@ SPEC CHECKSUMS:
   EXConstants: ce5bbea779da8031ac818c36bea41b10e14d04e1
   EXFileSystem: 2b826a3bf1071a4b80a8457e97124783d1ac860e
   EXFont: 738c44c390953ebcbab075a4848bfbef025fd9ee
+  EXImageLoader: 34b214f9387e98f3c73989f15d8d5b399c9ab3f7
   EXJSONUtils: 6802be4282d42b97c51682468ddc1026a06f8276
   EXManifests: cf66451b11b2c2f6464917528d792759f7fd6ce0
   Expo: e7d2116b947e2e6fdeb09ee4f2754f819426d1b6
   ExpoHead: 249669d2a6c1d55846bb15d7f22d0d294aaf060f
+  ExpoImagePicker: c58fdf28be551681a8edc550bcec76c397a8dfcd
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
   ExpoModulesCore: 51cb2e7ab4c8da14be3f40b66d54c1781002e99d
   ExpoSystemUI: fa4854e3226e87f86d3383570264c6e4e90bc782
@@ -726,6 +749,8 @@ SPEC CHECKSUMS:
   React-jsiexecutor: ff70a72027dea5cc7d71cfcc6fad7f599f63987a
   React-jsinspector: aef73cbd43b70675f572214d10fa438c89bf11ba
   React-logger: 2e4aee3e11b3ec4fa6cfd8004610bbb3b8d6cca4
+  react-native-date-picker: 1d61c76315098a6ad4c643a356f005916c7d4875
+  react-native-image-picker: 2381c008bbb09e72395a2d043c147b11bd1523d9
   react-native-safe-area-context: 36cc67648134e89465663b8172336a19eeda493d
   React-NativeModulesApple: 797bc6078d566eef3fb3f74127e6e1d2e945a15f
   React-perflogger: cd8886513f68e1c135a1e79d20575c6489641597

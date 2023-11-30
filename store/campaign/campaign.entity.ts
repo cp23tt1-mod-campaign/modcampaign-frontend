@@ -6,6 +6,7 @@ export interface CampaignEntity {
   end: Date;
   type: string;
   image: string;
+  reward: string;
   userLimit: number;
   category: string;
   categoryTarget: string;
@@ -13,8 +14,20 @@ export interface CampaignEntity {
 }
 
 export interface CampaignState {
-  latestCampaignList: Partial<CampaignEntity[]>;
+  ownedCampaignList: Partial<CampaignEntity[]>;
   popularCampaignList: Partial<CampaignEntity[]>;
+  latestCampaignList: Partial<CampaignEntity[]>;
   joinedCampaignList: Partial<CampaignEntity[]>;
-  selectedCampaign: CampaignEntity | {};
+  selectedCampaign: Partial<CampaignEntity>;
+  name: string;
+  description: string;
+  start: Date;
+  end: Date;
+  type: string;
+  image: string;
+  reward: string;
+  userLimit: number;
+  category: string;
+  categoryTarget: string;
+  userOwner: number;
 }

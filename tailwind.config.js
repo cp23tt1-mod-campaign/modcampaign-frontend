@@ -7,6 +7,7 @@ module.exports = {
     "./app/**/*.{js,jsx,ts,tsx}",
     "./components/**/*.{js,jsx,ts,tsx}",
     "./components/*.{js,jsx,ts,tsx}",
+    "./Util/*.{js,jsx,ts,tsx}",
     ,
   ],
   theme: {
@@ -43,6 +44,7 @@ module.exports = {
         white: "#FFFFFF",
         bg: "#F5F5F5",
         "gray-2": "#ECECEC",
+        "gray-3": "#D9D9D9",
         // 'hover-primary': '#E35F30',
         // 'disable-primary': '#F9CEC0',
         // secondary: 'white',

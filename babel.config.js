@@ -6,6 +6,7 @@ module.exports = function (api) {
       // Required for expo-router
       "expo-router/babel",
       "nativewind/babel",
+      "react-native-reanimated/plugin",
       [
         "module:react-native-dotenv",
         {
@@ -18,6 +19,15 @@ module.exports = function (api) {
           allowlist: null,
           verbose: false,
         },
+        // "module-resolver",
+        // {
+        //   alias: {
+        //     // This needs to be mirrored in tsconfig.json
+        //     Util: "./Util/*",
+        //     Component: "./Component/*",
+        //     Store: "./Store/*",
+        //   },
+        // },
       ],
     ],
   };

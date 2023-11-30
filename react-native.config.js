@@ -5,5 +5,11 @@ module.exports = {
         ios: null,
       },
     },
+    // dayjs: {
+    //   locales: ["th"],
+    //   defaultLocale: "th",
+    //   defaultTimeZone: "Asia/Bangkok",
+    //   plugins: ["relativeTime", "utc", "timezone"],
+    // },
   },
 };
