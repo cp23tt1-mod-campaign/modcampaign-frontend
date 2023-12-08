@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CampaignState } from "./campaign.entity";
 import { API_IOS_URL, API_ANDROID_URL } from "@env";
 import { Platform } from "react-native";
-const API_URL = Platform.OS === "ios" ? API_IOS_URL : API_ANDROID_URL;
+// const API_URL = Platform.OS === "ios" ? API_IOS_URL : API_ANDROID_URL;
+const API_URL =
+  Platform.OS === "ios" ? process.env.API_IOS_URL : process.env.API_ANDROID_URL;
 import axios from "axios";
 
 export const initialState: CampaignState = {
@@ -11,6 +13,8 @@ export const initialState: CampaignState = {
   latestCampaignList: [],
   joinedCampaignList: [],
   selectedCampaign: {},
+  onGoingCampaignList: [],
+  completedCampaignList: [],
   name: "",
   description: "",
   start: new Date(),
@@ -39,6 +43,30 @@ export const getCampaignList = createAsyncThunk(
           userId: filter.userId || null,
         },
       });
+      return {
+        statusCode: res.status,
+        success: true,
+        data: res.data.data,
+      };
+    } catch (error) {
+      rejectWithValue(error);
+      // return {
+      //   success: false,
+      //   data: error,
+      // };
+    }
+  }
+);
+export const getOnGoingCampaignList = createAsyncThunk(
+  "campaign/getOnGoingCampaignList",
+  async (filter: { userId?: number }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/campaign`, {
+        params: {
+          status: "ongoing",
+          userId: filter.userId || null,
+        },
+      });
 
       return {
         statusCode: res.status,
@@ -54,7 +82,31 @@ export const getCampaignList = createAsyncThunk(
     }
   }
 );
+export const getCompletedCampaignList = createAsyncThunk(
+  "campaign/getCompletedCampaignList",
+  async (filter: { userId?: number }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/campaign`, {
+        params: {
+          status: "ended",
+          userId: filter.userId || null,
+        },
+      });
 
+      return {
+        statusCode: res.status,
+        success: true,
+        data: res.data.data,
+      };
+    } catch (error) {
+      rejectWithValue(error);
+      // return {
+      //   success: false,
+      //   data: error,
+      // };
+    }
+  }
+);
 export const getCampaignDetail = createAsyncThunk(
   "campaign/getCampaignDetail",
   async (filter: { id: number }, { rejectWithValue }) => {
@@ -78,28 +130,60 @@ export const getCampaignDetail = createAsyncThunk(
 export const joinCampaign = createAsyncThunk(
   "campaign/joinCampaign",
   async (
-    query: { campaignId?: string; userId?: number },
-    { rejectWithValue }
+    query: { campaignId?: number; userId?: number },
+    { rejectWithValue, dispatch }
   ) => {
     try {
       const { campaignId, userId } = query;
       const body = { campaignId, userId };
       const res = await axios.post(`${API_URL}/campaign/join`, body);
-      res.status;
       return {
         statusCode: res.status,
         success: true,
-        data: res.data.data,
+        message: res.data.message,
       };
-    } catch (error) {
-      rejectWithValue(error);
-      // return {
-      //   success: false,
-      //   data: error,
-      // };
+    } catch (error: any) {
+      // console.log(error);
+
+      // rejectWithValue(error);
+      return {
+        statusCode: error.response.status,
+        success: false,
+        message: error.response.data.message,
+      };
     }
   }
 );
+export const cancelCampaign = createAsyncThunk(
+  "campaign/cancelCampaign",
+  async (
+    query: { campaignId?: number; userId?: number },
+    { rejectWithValue, dispatch }
+  ) => {
+    try {
+      const { campaignId, userId } = query;
+      // const body = { campaignId, userId };
+      const res = await axios.delete(`${API_URL}/campaign`, {
+        params: { campaignId: campaignId, userId: userId },
+      });
+      return {
+        statusCode: res.status,
+        success: true,
+        message: res.data.message,
+      };
+    } catch (error: any) {
+      // console.log(error);
+
+      // rejectWithValue(error);
+      return {
+        statusCode: error.response.status,
+        success: false,
+        message: error.response.data.message,
+      };
+    }
+  }
+);
+
 export const createCampaign = createAsyncThunk(
   "campaign/createCampaign",
   async (
@@ -256,10 +340,34 @@ export const campaignSlice = createSlice({
       state.selectedCampaign = action.payload?.data;
     });
     builder.addCase(getCampaignDetail.rejected, (state, action) => {
-      console.log(action.payload);
-
       state.selectedCampaign = {};
     });
+    builder.addCase(getOnGoingCampaignList.fulfilled, (state, action) => {
+      state.onGoingCampaignList = action.payload?.data;
+    });
+    builder.addCase(getOnGoingCampaignList.rejected, (state, action) => {
+      state.onGoingCampaignList = [];
+    });
+    builder.addCase(getCompletedCampaignList.fulfilled, (state, action) => {
+      state.completedCampaignList = action.payload?.data;
+    });
+    builder.addCase(getCompletedCampaignList.rejected, (state, action) => {
+      state.completedCampaignList = [];
+    });
+    // builder.addCase(joinCampaign.fulfilled, (state, action) => {
+    //   return {
+    //     ...state,
+    //     action: action,
+    //     success: true,
+    //   };
+    // });
+    // builder.addCase(joinCampaign.rejected, (state, action) => {
+    //   return {
+    //     ...state,
+    //     action: action,
+    //     success: false,
+    //   };
+    // });
   },
 });
 

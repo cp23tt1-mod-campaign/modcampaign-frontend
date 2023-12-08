@@ -1,20 +1,30 @@
-import { View, Text, Image, Pressable, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
-import { CampaignEntity } from "store/campaign/campaign.entity";
-import { FlatList } from "react-native-gesture-handler";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  Vibration,
+  TouchableOpacity,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { useAppSelector, useAppDispatch } from "../../../../store/root.store";
+import { getOnGoingCampaignList } from "../../../../store/campaign/campaign.slice";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import dayjs from "dayjs";
 import UtilIcon from "../../../../Util/Icon";
 import UtilModal from "../../../../Util/Modal";
+import { CampaignEntity } from "store/campaign/campaign.entity";
 import { router } from "expo-router";
 import { useRoute } from "@react-navigation/native";
 
-const ListLatest = (props: {
-  handleJoined: any;
-  handleSelectedCampaign: any;
-}) => {
-  const latestCampaignList = useAppSelector(
-    (state) => state.campaign.latestCampaignList
+const Ongoing = (props: { handleCancel: any; handleSelectedCampaign: any }) => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getOnGoingCampaignList({ userId: 1 }));
+  }, [dispatch]);
+  const onGoingCampaignList = useAppSelector(
+    (state) => state.campaign.onGoingCampaignList
   );
   const timestamp = new Date().getTime();
   const route = useRoute();
@@ -23,11 +33,11 @@ const ListLatest = (props: {
     <View className="h-full bg-white flex flex-col">
       <FlatList
         className="px-4 py-5 mb-2"
-        data={latestCampaignList}
+        data={onGoingCampaignList}
         keyExtractor={(item) => {
           return String(item?.id);
         }}
-        extraData={latestCampaignList}
+        extraData={onGoingCampaignList}
         renderItem={({ item }) => {
           return (
             <View className="w-full mb-5 border-b-[0.2px] pb-3 border-gray flex-row  justify-between items-center">
@@ -64,12 +74,12 @@ const ListLatest = (props: {
                 </View>
               </TouchableOpacity>
               <Pressable
-                className="flex items-center justify-center bg-orange w-6 h-6 rounded-full"
-                onPress={() => props.handleJoined(item)}
+                className="flex items-center justify-center bg-red w-6 h-6 rounded-full"
+                onPress={() => props.handleCancel(item)}
               >
                 <UtilIcon
-                  category="MaterialIcons"
-                  name={"add"}
+                  category="MaterialCommunityIcons"
+                  name={"close"}
                   size={18}
                   color={"#FFFFFF"}
                 />
@@ -83,4 +93,4 @@ const ListLatest = (props: {
   );
 };
 
-export default ListLatest;
+export default Ongoing;

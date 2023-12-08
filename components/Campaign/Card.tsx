@@ -17,7 +17,7 @@ const CampaignCard = (props: { data: any; className?: any; type?: any }) => {
             width: 204,
             height: 132,
           }}
-          className="rounded-t-lg"
+          className="rounded-t-lg bg-gray"
         />
         <View className="px-3 py-2 space-y-1 w-[204px]">
           <Text className="w-full truncate text-black text-sub-header-1">

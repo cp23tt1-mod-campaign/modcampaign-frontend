@@ -13,9 +13,27 @@
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      }
     },
-    "production": {}
+    "production": {
+      "env": {
+        "API_IOS_URL": "https://capstone23.sit.kmutt.ac.th/tt1/api",
+        "API_ANDROID_URL": "https://capstone23.sit.kmutt.ac.th/tt1/api"
+      },
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    }
   },
   "submit": {
     "production": {}

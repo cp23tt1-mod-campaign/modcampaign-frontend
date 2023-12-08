@@ -4,7 +4,7 @@ import EditScreenInfo from "../../components/EditScreenInfo";
 import { Text, View } from "../../components/Themed";
 import axios from "axios";
 
-export default function TabTwoScreen() {
+export default function Discover() {
   // axios.get('http://localhost:8080/api/campaign/3').then(res => {
   //   console.log(res.data);
   // })

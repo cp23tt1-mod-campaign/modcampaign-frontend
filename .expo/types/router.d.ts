@@ -7,7 +7,7 @@ declare module "expo-router" {
   export * from 'expo-router/build';
 
   // prettier-ignore
-  type StaticRoutes = `/` | `/(tabs)/_layout` | `/_layout` | `/(tabs)/campaign` | `/campaign` | `/(tabs)/diary` | `/diary` | `/(tabs)/discover` | `/discover` | `/(tabs)/` | `/(tabs)` | `/(tabs)/profile` | `/profile` | `/+html` | `/jsStack` | `/modal` | `/page/campaign/create` | `/page/campaign/list/` | `/page/campaign/list/joined` | `/page/campaign/list/latest` | `/page/campaign/list/popular`;
+  type StaticRoutes = `/` | `/(tabs)/Campaign` | `/Campaign` | `/(tabs)/Diary` | `/Diary` | `/(tabs)/Discover` | `/Discover` | `/(tabs)/Home` | `/Home` | `/(tabs)/Profile` | `/Profile` | `/(tabs)/_layout` | `/_layout` | `/+html` | `/jsStack` | `/modal` | `/page/campaign/Create` | `/page/campaign/list/Completed` | `/page/campaign/list/Joined` | `/page/campaign/list/Latest` | `/page/campaign/list/Ongoing` | `/page/campaign/list/Owned` | `/page/campaign/list/Popular` | `/page/campaign/list/`;
   // prettier-ignore
   type DynamicRoutes<T extends string> = `/${CatchAllRoutePart<T>}` | `/page/campaign/detail/${SingleRoutePart<T>}`;
   // prettier-ignore

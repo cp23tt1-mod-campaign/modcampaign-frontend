@@ -6,23 +6,25 @@ import {
   Pressable,
   Image,
   ScrollView,
+  Platform,
 } from "react-native";
 import { Text as ThemeText } from "../../components/Themed";
 import { useEffect, useState, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/root.store";
 import {
   getCampaignList,
-  getCampaignDetail,
   setDefaultState,
 } from "../../store/campaign/campaign.slice";
-import CampaignList from "../../components/Campaign/List";
 import UtilIcon from "../../Util/Icon";
 import { API_IOS_URL, API_ANDROID_URL } from "@env";
+const API_URL = Platform.OS === "ios" ? API_IOS_URL : API_ANDROID_URL;
 import { router } from "expo-router";
-import axios from "axios";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import CampaignList from "../../components/Campaign/List";
 
-const home = () => {
+const Campaign = () => {
   const [refreshing, setRefreshing] = useState(false);
+  const route = useRoute();
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -40,7 +42,6 @@ const home = () => {
   const ownedCampaignList = useAppSelector(
     (state) => state.campaign.ownedCampaignList
   );
-
   useEffect(() => {
     // campaignData.ownedCampaign.isLoading = true;
     // campaignData.popularCampaign.isLoading = true;
@@ -74,14 +75,15 @@ const home = () => {
       //   campaignData
       // );
     }
-  }, [dispatch, refreshing]);
+  }, [dispatch, refreshing, route]);
   const campaignData = {
     ownedCampaign: {
       header: "My Campaign",
       data: ownedCampaignList,
       handleChange: () => {
+        // navigate("CampaignList");
         router.push({
-          pathname: "/page/campaign/list",
+          pathname: "/page/campaign/list/Owned",
           params: { listType: "owned" },
         });
       },
@@ -91,6 +93,7 @@ const home = () => {
       header: "Popular Campaign",
       data: popularCampaignList,
       handleChange: () => {
+        // navigate("page/campaign/list/index", { listType: "popular" });
         router.push({
           pathname: "/page/campaign/list",
           params: { listType: "popular" },
@@ -123,7 +126,7 @@ const home = () => {
   };
   const createCampaign = () => {
     router.push({
-      pathname: "/page/campaign/create",
+      pathname: "/page/campaign/Create",
     });
   };
 
@@ -148,6 +151,7 @@ const home = () => {
           />
         </Pressable>
       </View> */}
+      {/* <Text>{API_URL}</Text> */}
       <Pressable
         className="absolute 
         flex items-center 
@@ -171,6 +175,7 @@ const home = () => {
       >
         <View className="flex flex-col w-full h-full">
           {/* <Text> {JSON.stringify(campaignData)}</Text> */}
+          {/* <Text> {API_URL}</Text> */}
           {Object.entries(campaignData).map(([key, value], i) => {
             return (
               <CampaignList
@@ -188,4 +193,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default Campaign;

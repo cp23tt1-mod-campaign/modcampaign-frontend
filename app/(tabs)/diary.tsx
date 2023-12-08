@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const diary = () => {
+const Diary = () => {
   return (
     <View>
       <Text>diary</Text>
@@ -9,4 +9,4 @@ const diary = () => {
   );
 };
 
-export default diary;
+export default Diary;

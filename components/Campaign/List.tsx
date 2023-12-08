@@ -17,8 +17,11 @@ const CampaignList = (props: {
     });
   };
   // useEffect(() => {
-  //   console.log(props.isLoading);
-  // }, [props.isLoading]);
+  //   console.log(
+  //     "🚀 ~ file: List.tsx ~ line 15 ~ CampaignList ~ props",
+  //     props.isLoading
+  //   );
+  // }, [props.data, props.isLoading]);
   return (
     <View className="w-full flex flex-cols mb-7">
       <View className="w-full flex flex-col space-y-2">

@@ -10,7 +10,8 @@
     "ios:prod": "NODE_ENV=production expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "android": "expo run:android"
   },
   "jest": {
     "preset": "jest-expo"
@@ -47,7 +48,6 @@
     "react-native-radio-buttons-group": "^3.0.5",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
-    "react-native-screens-swiper": "^1.2.6",
     "react-native-tab-view": "^3.5.2",
     "react-native-web": "~0.19.6",
     "react-redux": "^8.1.3",

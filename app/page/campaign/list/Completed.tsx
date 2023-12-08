@@ -1,20 +1,28 @@
-import { View, Text, Image, Pressable, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
-import { CampaignEntity } from "store/campaign/campaign.entity";
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { useAppSelector, useAppDispatch } from "../../../../store/root.store";
+import { getCompletedCampaignList } from "../../../../store/campaign/campaign.slice";
 import { FlatList } from "react-native-gesture-handler";
 import dayjs from "dayjs";
 import UtilIcon from "../../../../Util/Icon";
-import UtilModal from "../../../../Util/Modal";
+import { CampaignEntity } from "store/campaign/campaign.entity";
 import { router } from "expo-router";
 import { useRoute } from "@react-navigation/native";
 
-const ListLatest = (props: {
-  handleJoined: any;
-  handleSelectedCampaign: any;
-}) => {
-  const latestCampaignList = useAppSelector(
-    (state) => state.campaign.latestCampaignList
+const Completed = (props: { handleSelectedCampaign: any }) => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getCompletedCampaignList({ userId: 1 }));
+  }, [dispatch]);
+  const completedCampaignList = useAppSelector(
+    (state) => state.campaign.completedCampaignList
   );
   const timestamp = new Date().getTime();
   const route = useRoute();
@@ -23,11 +31,10 @@ const ListLatest = (props: {
     <View className="h-full bg-white flex flex-col">
       <FlatList
         className="px-4 py-5 mb-2"
-        data={latestCampaignList}
+        data={completedCampaignList}
         keyExtractor={(item) => {
           return String(item?.id);
         }}
-        extraData={latestCampaignList}
         renderItem={({ item }) => {
           return (
             <View className="w-full mb-5 border-b-[0.2px] pb-3 border-gray flex-row  justify-between items-center">
@@ -63,18 +70,6 @@ const ListLatest = (props: {
                   </View>
                 </View>
               </TouchableOpacity>
-              <Pressable
-                className="flex items-center justify-center bg-orange w-6 h-6 rounded-full"
-                onPress={() => props.handleJoined(item)}
-              >
-                <UtilIcon
-                  category="MaterialIcons"
-                  name={"add"}
-                  size={18}
-                  color={"#FFFFFF"}
-                />
-              </Pressable>
-              {/* <Text className="bg-gray">{JSON.stringify(item?.id)}</Text> */}
             </View>
           );
         }}
@@ -82,5 +77,46 @@ const ListLatest = (props: {
     </View>
   );
 };
-
-export default ListLatest;
+// const styles = StyleSheet.create({
+//   triangle: {
+//     width: 0,
+//     height: 0,
+//     backgroundColor: "transparent",
+//     borderStyle: "solid",
+//     borderLeftWidth: 60,
+//     borderRightWidth: 60,
+//     borderBottomWidth: 100,
+//     // borderRadius: 30,
+//     borderLeftColor: "transparent",
+//     borderRightColor: "transparent",
+//     borderBottomColor: "#F9A407",
+//   },
+//   getStartedContainer: {
+//     alignItems: "center",
+//     marginHorizontal: 50,
+//   },
+//   homeScreenFilename: {
+//     marginVertical: 7,
+//   },
+//   codeHighlightContainer: {
+//     borderRadius: 3,
+//     paddingHorizontal: 4,
+//   },
+//   getStartedText: {
+//     fontSize: 17,
+//     lineHeight: 24,
+//     textAlign: "center",
+//   },
+//   helpContainer: {
+//     marginTop: 15,
+//     marginHorizontal: 20,
+//     alignItems: "center",
+//   },
+//   helpLink: {
+//     paddingVertical: 15,
+//   },
+//   helpLinkText: {
+//     textAlign: "center",
+//   },
+// });
+export default Completed;

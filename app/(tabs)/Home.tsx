@@ -1,8 +1,12 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Platform, SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 import EditScreenInfo from "../../components/EditScreenInfo";
 // import { Text, View } from '../../components/Themed';
-import AppleHealthKit, { HealthKitPermissions } from "react-native-health";
+import AppleHealthKit, {
+  HealthInputOptions,
+  HealthKitPermissions,
+  HealthUnit,
+} from "react-native-health";
 import { useEffect, useState } from "react";
 
 const permission: HealthKitPermissions = {
@@ -15,7 +19,10 @@ const permission: HealthKitPermissions = {
     write: [],
   },
 };
-export default function TabOneScreen() {
+const API_URL =
+  Platform.OS === "ios" ? process.env.API_IOS_URL : process.env.API_ANDROID_URL;
+const env = process.env;
+export default function Home() {
   // const [hasPermissions, setHasPermissions] = useState(false);
   // const [steps, setSteps] = useState(0);
   // const [distance, setDistance] = useState(0);
@@ -35,12 +42,13 @@ export default function TabOneScreen() {
   //   if (!hasPermissions) {
   //     return;
   //   }
-  //   const options = {
+  //   const options:HealthInputOptions = {
   //     startDate: new Date(
   //       new Date().setDate(new Date().getDate() - 1)
   //     ).toISOString(),
   //     endDate: new Date().toISOString(),
   //     includeManuallyAdded: true,
+  //     // unit: HealthUnit.meter
   //   };
   //   AppleHealthKit.getStepCount(options, (err: any, results: any) => {
   //     if (err) {
@@ -78,7 +86,17 @@ export default function TabOneScreen() {
         {/* <Text className="text-red-500 text-2xl">
           Walking, Running Distance: {distance}{" "}
         </Text> */}
-        <EditScreenInfo path="app/(tabs)/index.tsx" />
+        <View className="flex flex-col items-center">
+          <Text>
+            Mod Campaign - {env.NODE_ENV === "development" ? "Dev." : "Prod."}
+          </Text>
+          <Text>API: {API_URL}</Text>
+          <Text>
+            OS: {Platform.OS} {Platform.Version}
+          </Text>
+        </View>
+
+        {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
       </View>
     </SafeAreaView>
     // <View style={styles.container}>

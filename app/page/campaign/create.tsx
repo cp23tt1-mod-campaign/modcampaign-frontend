@@ -20,7 +20,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 import RadioGroup, { RadioButtonProps } from "react-native-radio-buttons-group";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-const campaignCreate = () => {
+const CampaignCreate = () => {
   const [focused, setFocused] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -66,7 +66,7 @@ const campaignCreate = () => {
     ],
     []
   );
-  const [selectedId, setSelectedId] = useState("");
+  const [selectedId, setSelectedId] = useState("1");
 
   const imagePicker = async () => {
     console.log(status);
@@ -418,4 +418,4 @@ const campaignCreate = () => {
   );
 };
 
-export default campaignCreate;
+export default CampaignCreate;

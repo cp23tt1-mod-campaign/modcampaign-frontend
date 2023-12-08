@@ -4,7 +4,7 @@ import UtilIcon from "./Icon";
 import Modal from "react-native-modal";
 
 const UtilModal = (props: {
-  isShowModal: boolean;
+  isShowModal?: boolean;
   iconName?: string;
   iconCategory?: string;
   iconText?: string;
@@ -22,9 +22,10 @@ const UtilModal = (props: {
   return (
     <Modal
       isVisible={props.isShowModal}
+      // isVisible={true}
       animationIn={props.animationIn ? props.animationIn : "zoomIn"}
       animationOut={props.animationOut ? props.animationOut : "zoomOut"}
-      coverScreen={true}
+      // coverScreen={true}
       hasBackdrop={true}
       backdropColor="#000000b3"
       onBackdropPress={props.handleDecline}
@@ -53,7 +54,9 @@ const UtilModal = (props: {
               />
             )}
           </View>
+          {/* <Text className="text-header-4 font-semibold text-center"> */}
           {props.children}
+          {/* </Text> */}
           {props.isMustInteract ? (
             <View className="flex flex-row w-full justify-center space-x-4">
               <Pressable

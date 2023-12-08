@@ -19,6 +19,8 @@ export interface CampaignState {
   latestCampaignList: Partial<CampaignEntity[]>;
   joinedCampaignList: Partial<CampaignEntity[]>;
   selectedCampaign: Partial<CampaignEntity>;
+  onGoingCampaignList: Partial<CampaignEntity[]>;
+  completedCampaignList: Partial<CampaignEntity[]>;
   name: string;
   description: string;
   start: Date;

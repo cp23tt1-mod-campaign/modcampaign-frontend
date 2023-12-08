@@ -21,8 +21,9 @@
       "runtimeVersion": "1.0.0"
     },
     "android": {
+      "icon": "./assets/images/adaptive-icon-android.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon-android.png",
         "backgroundColor": "#ffffff"
       },
       "runtimeVersion": {

@@ -1,10 +1,19 @@
-import { View, Text, BackHandler, Image, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  BackHandler,
+  Image,
+  Pressable,
+  Vibration,
+} from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
 import {
   getCampaignDetail,
   setDefaultState,
+  joinCampaign,
+  cancelCampaign,
 } from "../../../../store/campaign/campaign.slice";
 import { ScrollView } from "react-native-gesture-handler";
 import UtilIcon from "../../../../Util/Icon";
@@ -12,70 +21,139 @@ import dayjs from "dayjs";
 // import UtilModal from "../../../../Util/Modal";
 import Modal from "react-native-modal";
 import UtilModal from "../../../../Util/Modal";
+import { useRoute } from "@react-navigation/native";
 
-const pageCampaignDetail = () => {
-  const { id, type } = useLocalSearchParams();
+const CampaignDetail = () => {
+  const route = useRoute();
+  // console.log(route.params);
+
+  const { id, type } = route.params as any;
   // console.log(type);
 
   const dispatch = useAppDispatch();
   const selectedCampaign = useAppSelector(
     (state) => state.campaign.selectedCampaign
   );
+  const [showModal, setShowModal] = useState(false);
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCancelSuccessModal, setShowCancelSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showErrorLimitModal, setShowErrorLimitModal] = useState(false);
+
   useEffect(() => {
     dispatch(getCampaignDetail({ id: Number(id) }));
   }, [dispatch, id]);
 
   const modalData = {
-    isShowModal: showAcceptModal,
+    isShowModal: showModal,
     primaryColor: "bg-blue",
     iconText: "i",
+    iconCategory: "",
+    iconName: "",
     isMustInteract: true,
     acceptText: "Yes",
     declineText: "Not now",
     animationIn: "zoomIn",
     animationOut: "zoomOut",
-    handleAccept: () => joinCampaign(selectedCampaign.id, 1),
-    handleDecline: () => setShowAcceptModal(false),
-    children: () => {
-      return (
-        <Text className="text-header-4 font-semibold text-center">
-          Do you want to join{"\n"}"{selectedCampaign.name}"
-        </Text>
-      );
-    },
+    handleAccept: () => joinCampaignState(selectedCampaign.id, 1),
+    handleDecline: () => setShowModal(false),
+    children: (
+      <Text className="text-header-4 font-semibold text-center">
+        Do you want to join{"\n"}"{selectedCampaign.name}"
+      </Text>
+    ),
   };
-  const joinCampaign = (campaignId: any, userId: any) => {
-    console.log("joinnn, ", campaignId, userId);
+  const joinCampaignState = async (campaignId: any, userId: any) => {
+    // console.log(typeof campaignId, typeof userId);
+    // dispatch(joinCampaign({ listType: "owned", userId: 1 }));
+    // dispatch(getCampaignList({ listType: "owned", userId: 1 }));
+
+    // console.log(res.payload);
+
+    // modalData.primaryColor = "bg-green";
+    // modalData.iconCategory = "MaterialCommunityIcons";
+    // modalData.iconName = "check";
+    // modalData.animationIn = "pulse";
+    // modalData.animationOut = "zoomOut";
+    // modalData.isMustInteract = false;
+    // modalData.children = (
+    //   <Text className="text-header-4 font-semibold text-center mb-4">
+    //     You've Successfully{"\n"}Joined the Campaign !
+    //   </Text>
+    // );
+    // setShowModal(false);
+
+    // setTimeout(() => {
+    //   setShowModal(true);
+    // }, 1000);
     setShowAcceptModal(false);
 
-    setTimeout(() => {
-      setShowSuccessModal(true);
-    }, 1000);
+    const res: any = await dispatch(joinCampaign({ campaignId, userId }));
 
-    setTimeout(() => {
-      setShowSuccessModal(false);
-    }, 3000);
+    if (res.payload?.statusCode === 200) {
+      setTimeout(() => {
+        setShowSuccessModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowSuccessModal(false);
+        router.push({
+          pathname: "/(tabs)/Campaign",
+        });
+      }, 3000);
+    } else if (res.payload?.statusCode === 400) {
+      setTimeout(() => {
+        setShowErrorModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowErrorModal(false);
+      }, 3000);
+    } else {
+      setTimeout(() => {
+        setShowErrorLimitModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowErrorLimitModal(false);
+      }, 3000);
+    }
   };
-  const deleteCampaign = (campaignId: any, userId: any) => {
-    console.log("delete, ", campaignId, userId);
+  const deleteCampaign = async (campaignId: any, userId: any) => {
     setShowCancelModal(false);
 
-    setTimeout(() => {
-      setShowCancelSuccessModal(true);
-    }, 1000);
+    const res: any = await dispatch(cancelCampaign({ campaignId, userId }));
 
-    setTimeout(() => {
-      setShowCancelSuccessModal(false);
-    }, 3000);
+    if (res.payload?.statusCode === 200) {
+      setTimeout(() => {
+        setShowCancelSuccessModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowCancelSuccessModal(false);
+        router.push({
+          pathname: "/(tabs)/Campaign",
+        });
+      }, 3000);
+    }
+    // else if (res.payload?.statusCode === 400) {
+    //   setTimeout(() => {
+    //     setShowErrorModal(true);
+    //   }, 1000);
+    //   setTimeout(() => {
+    //     setShowErrorModal(false);
+    //   }, 3000);
+    // } else {
+    //   setTimeout(() => {
+    //     setShowErrorLimitModal(true);
+    //   }, 1000);
+    //   setTimeout(() => {
+    //     setShowErrorLimitModal(false);
+    //   }, 3000);
+    // }
   };
   const timestamp = new Date().getTime();
 
   return (
-    <View className="h-full bg-white p-4 flex flex-col space-y-3">
+    <View className="h-full bg-bg p-4 flex flex-col space-y-3">
       <ScrollView className="flex flex-col space-y-5 h-full">
         <Image
           source={{
@@ -115,6 +193,20 @@ const pageCampaignDetail = () => {
                 : "Unlimited"}
             </Text>
           </View>
+          {type === "Joined Campaign" ? (
+            <View className="flex flex-col space-y-2 bg-white w-full shadow-lg rounded-2xl py-3 px-4">
+              <Text className="text-sub-header-2 font-medium">
+                My accumulated distance
+              </Text>
+              <Text className="text-header-1 font-semibold text-orange">
+                {/* {selectedCampaign.distance} km */}
+                3.44{" "}
+                <Text className="text-sub-header-3 font-regular text-gray">
+                  km.
+                </Text>
+              </Text>
+            </View>
+          ) : null}
           <View className="flex flex-col space-y-2">
             <Text className="text-sub-header-2 font-medium">Description</Text>
             <Text className="text-gray text-body-3 font-regular">
@@ -139,14 +231,19 @@ const pageCampaignDetail = () => {
           </View>
         </View>
       </ScrollView>
-      {type === "Joined Campaign" ? null : type === "My Campaign" ? (
+      {type === "Joined Campaign" ||
+      type === "Completed Campaign" ? null : type === "My Campaign" ||
+        type === "Ongoing Campaign" ? (
         <Pressable
-          onPress={() => setShowCancelModal(true)}
+          onPress={() => {
+            Vibration.vibrate(1000);
+            setShowCancelModal(true);
+          }}
           className="flex flex-row justify-center"
         >
           <View className="bg-red mb-10 py-3 px-20 rounded-3xl">
             <Text className="w-full text-white text-sub-header-1 font-medium text-center">
-              Delete this Campaign
+              Cancel this Campaign
             </Text>
           </View>
         </Pressable>
@@ -155,6 +252,10 @@ const pageCampaignDetail = () => {
           onPress={() => setShowAcceptModal(true)}
           className="flex flex-row justify-center"
         >
+          {/* <Pressable
+          onPress={() => setShowModal(true)}
+          className="flex flex-row justify-center"
+        > */}
           <View className="bg-orange mb-10 py-3 px-20 rounded-3xl">
             <Text className="w-full text-white text-sub-header-1 font-medium text-center">
               Join this Campaign
@@ -162,6 +263,9 @@ const pageCampaignDetail = () => {
           </View>
         </Pressable>
       )}
+      {/* {showModal ? (
+        <UtilModal {...modalData}>{modalData.children}</UtilModal>
+      ) : null} */}
 
       <UtilModal
         primaryColor="bg-blue"
@@ -172,7 +276,7 @@ const pageCampaignDetail = () => {
         declineText="Not now"
         animationIn="zoomIn"
         animationOut="zoomOut"
-        handleAccept={() => joinCampaign(selectedCampaign.id, 1)}
+        handleAccept={() => joinCampaignState(selectedCampaign.id, 1)}
         handleDecline={() => setShowAcceptModal(false)}
       >
         <Text className="text-header-4 font-semibold text-center">
@@ -223,8 +327,32 @@ const pageCampaignDetail = () => {
           Campaign cancelled{"\n"}successfully !
         </Text>
       </UtilModal>
+      <UtilModal
+        primaryColor="bg-red"
+        iconText="i"
+        animationIn="pulse"
+        animationOut="zoomOut"
+        isShowModal={showErrorModal}
+        isMustInteract={false}
+      >
+        <Text className="text-header-4 font-semibold text-center mb-4">
+          Error please contact admin.
+        </Text>
+      </UtilModal>
+      <UtilModal
+        primaryColor="bg-red"
+        iconText="i"
+        animationIn="pulse"
+        animationOut="zoomOut"
+        isShowModal={showErrorLimitModal}
+        isMustInteract={false}
+      >
+        <Text className="text-header-4 font-semibold text-center mb-4">
+          This campaign is full.
+        </Text>
+      </UtilModal>
     </View>
   );
 };
 
-export default pageCampaignDetail;
+export default CampaignDetail;
