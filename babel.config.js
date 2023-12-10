@@ -19,16 +19,30 @@ module.exports = function (api) {
           allowlist: null,
           verbose: false,
         },
-        // "module-resolver",
-        // {
-        //   alias: {
-        //     // This needs to be mirrored in tsconfig.json
-        //     Util: "./Util/*",
-        //     Component: "./Component/*",
-        //     Store: "./Store/*",
-        //   },
-        // },
       ],
+      // [
+      //   "module-resolver",
+      //   {
+      //     extensions: [
+      //       ".ios.js",
+      //       ".android.js",
+      //       ".ios.jsx",
+      //       ".android.jsx",
+      //       ".js",
+      //       ".jsx",
+      //       ".json",
+      //       ".ts",
+      //       ".tsx",
+      //     ],
+      //     root: ["."],
+      //     alias: {
+      //       // "@app": "/",
+      //       util: "./Util",
+      //       components: "./components",
+      //       store: "./store",
+      //     },
+      //   },
+      // ],
     ],
   };
 };

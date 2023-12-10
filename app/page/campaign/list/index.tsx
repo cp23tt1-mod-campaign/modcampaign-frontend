@@ -149,7 +149,7 @@ const CampaignList = () => {
         handleAccept={() => joinCampaignState(selectedCampaign?.id, 1)}
         handleDecline={() => setShowJoinModal(false)}
       >
-        <Text className="text-header-4 font-semibold text-center mb-4">
+        <Text className="text-header-4 font-semibold text-center">
           Do you want to join{"\n"}"{selectedCampaign?.name}" ?
         </Text>
       </UtilModal>

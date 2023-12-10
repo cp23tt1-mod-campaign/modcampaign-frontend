@@ -1,7 +1,8 @@
-import { View, Text, Pressable } from "react-native";
-import React from "react";
+import { View, Text, Pressable, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
 import UtilIcon from "./Icon";
 import Modal from "react-native-modal";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 
 const UtilModal = (props: {
   isShowModal?: boolean;
@@ -17,8 +18,15 @@ const UtilModal = (props: {
   handleDecline?: any;
   animationIn?: any | "zoomIn";
   animationOut?: any | "zoomOut";
+  isAcceptPolicy?: boolean;
   children?: React.ReactNode;
 }) => {
+  const [acceptPolicy, setAcceptPolicy] = useState(false);
+  // const handleAcceptPolicy = () => {
+
+  //   console.log("accept policy");
+  // };
+
   return (
     <Modal
       isVisible={props.isShowModal}
@@ -56,25 +64,57 @@ const UtilModal = (props: {
           </View>
           {/* <Text className="text-header-4 font-semibold text-center"> */}
           {props.children}
+          {props.isAcceptPolicy ? (
+            <TouchableOpacity
+              onPress={() => setAcceptPolicy(!acceptPolicy)}
+              className="mb-3 flex flex-row space-x-2 w-auto items-center"
+            >
+              <View className="bg-gray-2 border-gray rounded-sm border w-[10px] h-[10px] flex items-center justify-center">
+                {/* <View> */}
+                {acceptPolicy ? (
+                  <View className="bg-gray rounded-[1px] w-[6px] h-[6px]"></View>
+                ) : null}
+                {/* </View> */}
+              </View>
+              <Text className="text-small font-medium text-gray">
+                I acknowledge and would like to proceed{"\n"}with creating the
+                campaign.
+              </Text>
+            </TouchableOpacity>
+          ) : null}
           {/* </Text> */}
           {props.isMustInteract ? (
-            <View className="flex flex-row w-full justify-center space-x-4">
+            <View className="flex  flex-row w-full justify-center space-x-3">
               <Pressable
                 onPress={props.handleDecline}
-                className="w-[111px] flex flex-row bg-gray-3 py-2 rounded-xl"
+                className="w-auto flex flex-row bg-gray-3 py-2 px-4 rounded-xl"
               >
-                <Text className="w-full text-black text-sub-header-1 font-medium text-center">
+                <Text className="w-auto text-black text-sub-header-1 font-medium text-center">
                   {props.declineText}
                 </Text>
               </Pressable>
-              <Pressable
-                onPress={props.handleAccept}
-                className={`w-[111px] flex flex-row py-2 rounded-xl ${props.primaryColor}`}
-              >
-                <Text className="w-full text-white text-sub-header-1 font-medium text-center">
-                  {props.acceptText}
-                </Text>
-              </Pressable>
+              {props.isAcceptPolicy ? (
+                <Pressable
+                  onPress={props.handleAccept}
+                  className={`w-auto flex flex-row py-2 px-4 rounded-xl  ${
+                    acceptPolicy ? props.primaryColor : "bg-gray-3"
+                  }`}
+                  disabled={!acceptPolicy}
+                >
+                  <Text className="w-auto text-white text-sub-header-1 font-medium text-center">
+                    {props.acceptText}
+                  </Text>
+                </Pressable>
+              ) : (
+                <Pressable
+                  onPress={props.handleAccept}
+                  className={`w-auto flex flex-row py-2 px-4 rounded-xl ${props.primaryColor}`}
+                >
+                  <Text className="w-auto text-white text-sub-header-1 font-medium text-center">
+                    {props.acceptText}
+                  </Text>
+                </Pressable>
+              )}
             </View>
           ) : null}
         </View>

@@ -8,7 +8,7 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { router } from "expo-router";
 import UtilIcon from "../../../Util/Icon";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -19,11 +19,50 @@ import dayjs from "dayjs";
 import { SelectList } from "react-native-dropdown-select-list";
 import RadioGroup, { RadioButtonProps } from "react-native-radio-buttons-group";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useAppDispatch, useAppSelector } from "../../../store/root.store";
 
+// import { useAppDispatch, useAppSelector } from "@store/root.store";
+
+import {
+  createCampaign,
+  getCampaignCategories,
+  setStateCampaignCategory,
+  setStateCampaignDescription,
+  setStateCampaignEnd,
+  setStateCampaignImageObject,
+  setStateCampaignName,
+  setStateCampaignReward,
+  setStateCampaignStart,
+  setStateCampaignType,
+  setStateCampaignUserLimit,
+  setStateCampaignUserLimitType,
+  uploadCampaignImage,
+} from "../../../store/campaign/campaign.slice";
 const CampaignCreate = () => {
+  const dispatch = useAppDispatch();
+  const campaignCategories = useAppSelector(
+    (state) => state.campaign.campaignCategories
+  );
+  useEffect(() => {
+    dispatch(getCampaignCategories());
+  }, [dispatch]);
+  const campaignCategoriesData = campaignCategories.map((item) => {
+    return {
+      key: item?.campaignCategoryId,
+      value: item?.categoryName,
+    };
+  });
+  const [selectedCategories, setSelectedCategories] = useState(0);
+
+  const campaignType = [
+    { key: 1, value: "Individual" },
+    { key: 2, value: "Group" },
+  ];
+  const [selectedCampaignType, setSelectedCampaignType] = useState(0);
+
   const [focused, setFocused] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [campaignName, setCampaignName] = useState("");
+  const [campaignDescription, setCampaignDescription] = useState("");
   const [reward, setReward] = useState("");
 
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -37,14 +76,6 @@ const CampaignCreate = () => {
   const [showEndDate, setShowEndDate] = useState("DD/MM/YYYY");
   const [openEndDate, setOpenEndDate] = useState(false);
 
-  const [selected, setSelected] = useState("");
-
-  const data = [
-    { key: "1", value: "Jammu & Kashmir" },
-    { key: "2", value: "Gujrat" },
-    { key: "3", value: "Maharashtra" },
-    { key: "4", value: "Goa" },
-  ];
   const radioButtons: RadioButtonProps[] = useMemo(
     () => [
       {
@@ -67,6 +98,7 @@ const CampaignCreate = () => {
     []
   );
   const [selectedId, setSelectedId] = useState("1");
+  const [userLimit, setUserLimit] = useState(0);
 
   const imagePicker = async () => {
     console.log(status);
@@ -78,10 +110,14 @@ const CampaignCreate = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    if (!result.canceled) {
-      console.log(result.assets[0].uri);
 
-      setImage(result.assets[0].uri);
+    // const file = new File([result?.assets?[0]?.uri], result.assets?[0]?.uri);
+    if (!result.canceled) {
+      const image = result.assets[0];
+
+      setImage(image.uri);
+      dispatch(setStateCampaignImageObject({ image }));
+      // dispatch(uploadCampaignImage({ image }));
     }
 
     // const result = await launchImageLibrary({ mediaType: "photo" });
@@ -97,26 +133,13 @@ const CampaignCreate = () => {
     //   console.log("response", response);
     // });
   };
+
   return (
     <SafeAreaView className="bg-bg w-full h-full">
-      {/* <View className="flex flex-row justify-between items-center py-5 ">
-        <Pressable onPress={() => router.back()} className="w-1/3 pl-1">
-          <UtilIcon category="Feather" name="chevron-left" size={32} />
-        </Pressable>
-        <Text className="text-black text-header-3 font-bold  text-center">
-          New Campaign
-        </Text>
-        <Pressable
-          onPress={() => console.log("create campaign")}
-          className="w-1/3 flex flex-row justify-end pr-4"
-        >
-          <UtilIcon category="MaterialCommunityIcons" name="check" size={28} />
-        </Pressable>
-      </View> */}
-
       <ScrollView className="bg-bg w-full h-full p-4">
         <KeyboardAwareScrollView extraHeight={150}>
           <View className="flex flex-col space-y-4 pb-10">
+            {/* campaignName */}
             <View className="flex flex-col space-y-2">
               <Text className="text-sub-header-2 font-medium" nativeID="name">
                 Campaign Name <Text className="text-red">*</Text>
@@ -126,11 +149,12 @@ const CampaignCreate = () => {
                 className={`bg-white rounded-lg p-4 shadow-sm`}
                 placeholder="Campaign Name"
                 placeholderTextColor={"#929292"}
-                onChangeText={(text) => setName(text)}
-                value={name}
+                onChangeText={(text) => setCampaignName(text)}
+                onBlur={() => dispatch(setStateCampaignName(campaignName))}
+                value={campaignName}
                 editable={true}
                 area-label="Campaign Name"
-                onSubmitEditing={() => console.log(name)}
+                // onSubmitEditing={() => console.log(campaignName)}
                 maxLength={50}
                 // onFocus={() => setFocused(true)}
                 // onBlur={() => setFocused(false)}
@@ -138,9 +162,10 @@ const CampaignCreate = () => {
                 // secureTextEntry={true}
               />
               <Text className="text-gray text-body-3 font-regular text-right w-full">
-                {name.length}/50
+                {campaignName.length}/50
               </Text>
             </View>
+            {/* campagnImage */}
             <View className="flex flex-col space-y-2">
               <Text className="text-sub-header-2 font-medium">
                 Campaign Banner <Text className="text-red">*</Text>
@@ -172,6 +197,7 @@ const CampaignCreate = () => {
                 </View>
               </TouchableOpacity>
             </View>
+            {/* campaignDescription */}
             <View className="flex flex-col space-y-2">
               <Text className="text-sub-header-2 font-medium">
                 Description <Text className="text-red">*</Text>
@@ -183,17 +209,22 @@ const CampaignCreate = () => {
                 multiline={true}
                 numberOfLines={4}
                 style={{ height: 120, textAlignVertical: "top" }}
-                onChangeText={(text) => setDescription(text)}
+                onChangeText={(text) => setCampaignDescription(text)}
+                onBlur={() =>
+                  dispatch(setStateCampaignDescription(campaignDescription))
+                }
+                value={campaignDescription}
                 editable={true}
                 area-label="Campaign Description"
-                onSubmitEditing={() => console.log(description)}
+                onSubmitEditing={() => console.log(campaignDescription)}
                 maxLength={500}
               />
               <Text className="text-gray text-body-3 font-regular text-right w-full">
-                {description.length}/500
+                {campaignDescription.length}/500
               </Text>
             </View>
             <View className="flex flex-row">
+              {/* startDate */}
               <View className="flex flex-col space-y-2 w-1/2 pr-2">
                 <Text className="text-sub-header-2 font-medium">
                   Start Date <Text className="text-red">*</Text>
@@ -220,9 +251,14 @@ const CampaignCreate = () => {
                         setOpenStartDate(false);
                         setStartDate(date);
                         setShowStartDate(dayjs(date).format("DD/MM/YYYY"));
-                        console.log(
-                          dayjs(date).format("YYYY-MM-DD HH:mm:ss.SSS")
+                        dispatch(
+                          setStateCampaignStart(
+                            dayjs(date).format("YYYY-MM-DD HH:mm:ss.SSS")
+                          )
                         );
+                        // console.log(
+                        //   dayjs(date).format("YYYY-MM-DD HH:mm:ss.SSS")
+                        // );
                       }}
                       onCancel={() => {
                         setOpenStartDate(false);
@@ -231,6 +267,7 @@ const CampaignCreate = () => {
                   </View>
                 </TouchableOpacity>
               </View>
+              {/* endDate */}
               <View className="flex flex-col space-y-2 w-1/2 pl-2">
                 <Text className="text-sub-header-2 font-medium">
                   End Date <Text className="text-red">*</Text>
@@ -257,8 +294,10 @@ const CampaignCreate = () => {
                         setOpenEndDate(false);
                         setEndDate(date);
                         setShowEndDate(dayjs(date).format("DD/MM/YYYY"));
-                        console.log(
-                          dayjs(date).format("YYYY-MM-DD HH:mm:ss.SSS")
+                        dispatch(
+                          setStateCampaignEnd(
+                            dayjs(date).format("YYYY-MM-DD HH:mm:ss.SSS")
+                          )
                         );
                       }}
                       onCancel={() => {
@@ -269,6 +308,7 @@ const CampaignCreate = () => {
                 </TouchableOpacity>
               </View>
             </View>
+            {/* campaignReward */}
             <View className="flex flex-col space-y-2">
               <Text className="text-sub-header-2 font-medium">
                 Reward Details <Text className="text-red">*</Text>
@@ -278,24 +318,27 @@ const CampaignCreate = () => {
                 placeholder="Reward Details"
                 placeholderTextColor={"#929292"}
                 onChangeText={(text) => setReward(text)}
+                onBlur={() => dispatch(setStateCampaignReward(reward))}
                 editable={true}
                 area-label="Campaign Description"
                 onSubmitEditing={() => console.log(reward)}
                 maxLength={50}
               />
               <Text className="text-gray text-body-3 font-regular text-right w-full">
-                {description.length}/50
+                {reward.length}/50
               </Text>
             </View>
+            {/* campaignCategory */}
             <View className="flex flex-col mb-2">
               <Text className="text-sub-header-2 font-medium mb-2">
                 Campaign Category <Text className="text-red">*</Text>
               </Text>
               <SelectList
-                // onSelect={() => alert(selected)}
-                maxHeight={125}
-                setSelected={setSelected}
-                data={data}
+                onSelect={() =>
+                  dispatch(setStateCampaignCategory(selectedCategories))
+                }
+                setSelected={setSelectedCategories}
+                data={campaignCategoriesData}
                 search={false}
                 disabledTextStyles={{ color: "#929292" }}
                 boxStyles={{
@@ -327,20 +370,23 @@ const CampaignCreate = () => {
                 }} //override default styles
                 placeholder="Campaign Category"
                 inputStyles={{
-                  color: selected === "" ? "#929292" : "#000000",
+                  color: selectedCategories === 0 ? "#929292" : "#000000",
                 }}
                 // defaultOption={{ key: "1", value: "Jammu & Kashmir" }} //default selected option
               />
             </View>
+            {/* campaignType */}
             <View className="flex flex-col mb-2">
               <Text className="text-sub-header-2 font-medium mb-2">
                 Campaign Type <Text className="text-red">*</Text>
               </Text>
               <SelectList
-                // onSelect={() => alert(selected)}
+                onSelect={() => {
+                  dispatch(setStateCampaignType(selectedCampaignType));
+                }}
                 maxHeight={125}
-                setSelected={setSelected}
-                data={data}
+                setSelected={setSelectedCampaignType}
+                data={campaignType}
                 search={false}
                 disabledTextStyles={{ color: "#929292" }}
                 boxStyles={{
@@ -372,11 +418,12 @@ const CampaignCreate = () => {
                 }} //override default styles
                 placeholder="Campaign Type"
                 inputStyles={{
-                  color: selected === "" ? "#929292" : "#000000",
+                  color: selectedCampaignType === 0 ? "#929292" : "#000000",
                 }}
                 // defaultOption={{ key: "1", value: "Jammu & Kashmir" }} //default selected option
               />
             </View>
+            {/* campaignParticipant */}
             <View className="flex flex-row relative">
               <View className="flex flex-col space-y-2">
                 <Text className="text-sub-header-2 font-medium">
@@ -384,7 +431,10 @@ const CampaignCreate = () => {
                 </Text>
                 <RadioGroup
                   radioButtons={radioButtons}
-                  onPress={setSelectedId}
+                  onPress={(type) => {
+                    setSelectedId(type);
+                    dispatch(setStateCampaignUserLimitType(type));
+                  }}
                   selectedId={selectedId}
                   containerStyle={{
                     display: "flex",
@@ -401,11 +451,14 @@ const CampaignCreate = () => {
                     placeholder=""
                     placeholderTextColor={"#929292"}
                     onChangeText={(text) =>
-                      setReward(String(Math.floor(parseInt(text))))
+                      setUserLimit(Math.floor(parseInt(text)))
+                    }
+                    onBlur={() =>
+                      dispatch(setStateCampaignUserLimit(userLimit))
                     }
                     editable={true}
                     area-label="Campaign Description"
-                    onSubmitEditing={() => console.log(reward)}
+                    // onSubmitEditing={() => console.log()}
                     keyboardType="number-pad"
                   />
                 </View>

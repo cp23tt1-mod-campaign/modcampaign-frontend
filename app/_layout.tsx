@@ -12,8 +12,8 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { Pressable, View, useColorScheme } from "react-native";
-import { store } from "../store/root.store";
-import { Provider } from "react-redux";
+import { store, useAppDispatch } from "../store/root.store";
+import { Provider, useDispatch } from "react-redux";
 import { router } from "expo-router";
 import UtilIcon from "../Util/Icon";
 import TabLayout from "./(tabs)/_layout";
@@ -22,6 +22,8 @@ import CampaignList from "./page/campaign/list";
 import CampaignOwnedList from "./page/campaign/list/Owned";
 import CampaignDetail from "./page/campaign/detail/[id]";
 import CampaignCreate from "./page/campaign/Create";
+import { createCampaign } from "../store/campaign/campaign.slice";
+import HeaderRight from "../components/Campaign/HeaderRight";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -63,7 +65,13 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  // const createCampaignState = () => {
+  //   // dispatch(createCampaign());
+  //   console.log("create campaign");
 
+  //   // dispatch(createCampaign())
+  // };
+  // const dispatch = useAppDispatch();
   return (
     <Provider store={store}>
       {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
@@ -153,24 +161,7 @@ function RootLayoutNav() {
               fontSize: 20,
             },
             headerShadowVisible: false,
-            headerRight: () => (
-              <Pressable
-                onPress={() => console.log("create campaign")}
-                className="flex flex-row justify-end"
-              >
-                <UtilIcon
-                  category="MaterialCommunityIcons"
-                  name="check"
-                  size={28}
-                />
-              </Pressable>
-              // <FontAwesome.Button
-              //   name="check"
-              //   backgroundColor="#F5F5F5"
-              //   color="#000000"
-              //   onPress={() => router.back()}
-              // />
-            ),
+            headerRight: () => <HeaderRight />,
           }}
         />
       </Stacks.Navigator>

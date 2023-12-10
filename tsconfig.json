@@ -5,11 +5,11 @@
     "typeRoots": ["./types"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      // "Util/*": ["Util/*"],
-      // "Component/*": ["Component/*"],
-      // "Store/*": ["Store/*"]
+      // "@util/*": ["Util/*"],
+      // "@components/*": ["components/*"],
+      // "@store/*": ["store/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
