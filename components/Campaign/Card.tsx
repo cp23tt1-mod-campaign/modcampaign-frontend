@@ -10,10 +10,7 @@ const CampaignCard = (props: { data: any; className?: any; type?: any }) => {
       <View className="flex flex-col bg-white rounded-lg shadow-sm">
         <Image
           source={{
-            // uri: `https://drive.google.com/uc?export=view&id=${props.data.image}&t=${timestamp}`,
-            uri: `https://drive.google.com/uc?id=${props.data.image}&t=${timestamp}`,
-            // https://drive.google.com/uc?export=view&id=${props.data.image}
-            // uri: "https://api.slingacademy.com/public/sample-photos/1.jpeg",
+            uri: `https://storage.googleapis.com/modcampaign-images/${props.data.image}`,
             width: 204,
             height: 132,
           }}

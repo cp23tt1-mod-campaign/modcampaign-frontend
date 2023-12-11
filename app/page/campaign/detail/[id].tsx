@@ -157,10 +157,7 @@ const CampaignDetail = () => {
       <ScrollView className="flex flex-col space-y-5 h-full">
         <Image
           source={{
-            uri: `https://drive.google.com/uc?id=${selectedCampaign.image}&t=${timestamp}`,
-            // uri: `https://drive.google.com/uc?export=view&id=${selectedCampaign.image}`,
-            // https://drive.google.com/uc?export=view&id=${props.data.image}
-            // uri: "https://api.slingacademy.com/public/sample-photos/1.jpeg",
+            uri: `https://storage.googleapis.com/modcampaign-images/${selectedCampaign.image}`,
           }}
           style={{ width: "100%", height: 200 }}
           className="rounded-2xl"

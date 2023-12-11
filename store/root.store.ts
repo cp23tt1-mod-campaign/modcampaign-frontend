@@ -29,5 +29,5 @@ export const useAppSelector: TypedUseSelectorHook<
   ReturnType<typeof store.getState>
 > = useSelector;
 // export type useAppDispatch = typeof store.dispatch;
-// export type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
 // export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

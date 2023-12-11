@@ -37,7 +37,7 @@ const ListLatest = (props: {
                 <View className="flex flex-row items-center space-x-3">
                   <Image
                     source={{
-                      uri: `https://drive.google.com/uc?id=${item?.image}&t=${timestamp}`,
+                      uri: `https://storage.googleapis.com/modcampaign-images/${item?.image}`,
                       width: 142,
                       height: 92,
                     }}

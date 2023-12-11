@@ -26,6 +26,8 @@ import { useAppDispatch, useAppSelector } from "../../../store/root.store";
 import {
   createCampaign,
   getCampaignCategories,
+  setCreateCampaignDefaultState,
+  setDefaultState,
   setStateCampaignCategory,
   setStateCampaignDescription,
   setStateCampaignEnd,
@@ -45,6 +47,9 @@ const CampaignCreate = () => {
   );
   useEffect(() => {
     dispatch(getCampaignCategories());
+    return () => {
+      dispatch(setCreateCampaignDefaultState());
+    };
   }, [dispatch]);
   const campaignCategoriesData = campaignCategories.map((item) => {
     return {

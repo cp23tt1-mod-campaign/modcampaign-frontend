@@ -6,6 +6,7 @@ import { Platform } from "react-native";
 const API_URL =
   Platform.OS === "ios" ? process.env.API_IOS_URL : process.env.API_ANDROID_URL;
 import axios from "axios";
+import { RootState } from "../root.store";
 
 export const initialState: CampaignState = {
   ownedCampaignList: [],
@@ -184,10 +185,9 @@ export const cancelCampaign = createAsyncThunk(
 export const uploadCampaignImage = createAsyncThunk(
   "campaign/uploadCampaignImage",
   async (query: { image?: any }, { rejectWithValue }) => {
-    const { image } = query;
+    const { image } = query.image;
 
     try {
-      // console.log("🚀 ~ file: campaign.slice.ts:186 ~ image:", image);
       const fileUri = image.uri;
       // const fileUri =
       //   Platform.OS === "ios" ? image.uri.replace("file://", "") : image.uri;
@@ -199,87 +199,59 @@ export const uploadCampaignImage = createAsyncThunk(
         name: fileName,
         type: `image/${fileType}`,
       };
-      // console.log(imageData);
 
       const data = new FormData();
       data.append("image", imageData as any);
-      // data.append("image", query.image);
-      // let boundary = "--------------------------";
-      // // for (let i = 0; i < 24; i += 1) {
-      // //   boundary += Math.floor(Math.random() * 10).toString(16)
-      // // }
-      const response = await axios.post(
-        `${API_URL}/campaign/upload-img`,
-        data,
-        {
-          headers: {
-            "Content-Type": `multipart/form-data;`,
-          },
-        }
-      );
-      console.log(
-        "🚀 ~ file: campaign.slice.ts:218 ~  response:",
-        response.data
-      );
 
-      // const { image } = query;
-      // const body = { image };
-      // const res = await axios.post(`${API_URL}/campaign/upload-img`, body);
-      // res.status;
-      // return {
-      //   statusCode: res.status,
-      //   success: true,
-      //   data: res.data.data,
-      // };
-    } catch (error) {
-      rejectWithValue(error);
-      // return {
-      //   success: false,
-      //   data: error,
-      // };
+      const res = await axios.post(`${API_URL}/campaign/upload-img`, data, {
+        headers: {
+          "Content-Type": `multipart/form-data;`,
+        },
+      });
+      return {
+        statusCode: res.status,
+        message: res.data.message,
+        data: res.data.fileName,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: error.response.status,
+        message: error.response.data.message,
+      };
     }
   }
 );
 export const createCampaign = createAsyncThunk(
   "campaign/createCampaign",
   async (params: { userId?: any }, { getState, dispatch }) => {
-    const state = getState() as any;
     const { userId } = params;
 
-    // const resUpload = await dispatch(uploadCampaignImage({image: state.campaign.campaignImageObject}))
-    // console.log(resUpload);
-    // dispatch(setStateCampaignImageUrl(resUpload))
-
     try {
-      console.log(state.campaign.campaignType);
+      const state = getState() as RootState;
+      const { campaign } = state;
 
       const body = {
-        campaignName: state.campaign.campaignName,
-        campaignDetail: state.campaign.campaignDetail,
-        campaignStart: state.campaign.campaignStart,
-        campaignEnd: state.campaign.campaignEnd,
-        campaignType:
-          state.campaign.campaignType === 1 ? "Individual" : "Group",
-        // campaignImageUrl: state.campaign.campaignImageUrl,
-        campaignImageUrl: "1lfralmU5KOISUraCbcznPfF1EtvdtZTT",
+        campaignName: campaign.campaignName,
+        campaignDetail: campaign.campaignDetail,
+        campaignStart: campaign.campaignStart,
+        campaignEnd: campaign.campaignEnd,
+        campaignType: campaign.campaignType === 1 ? "Individual" : "Group",
+        campaignImageUrl: campaign.campaignImageUrl,
         campaignUserLimit:
-          state.campaign.userLimitType === "1"
-            ? null
-            : state.campaign.campaignUserLimit,
-        campaignCategoryId: state.campaign.campaignCategoryId,
-        campaignReward: state.campaign.campaignReward,
+          campaign.userLimitType === "1" ? null : campaign.campaignUserLimit,
+        campaignCategoryId: campaign.campaignCategoryId,
+        campaignReward: campaign.campaignReward,
         userId: userId,
         // userId: state.campaign.userId,
       };
       console.log(body);
 
-      const res = await axios.post(`${API_URL}/campaign`, body);
-      return {
-        statusCode: res.status,
-        success: true,
-        data: res.data.data,
-        message: res.data.message,
-      };
+      // const res = await axios.post(`${API_URL}/campaign`, body);
+      // return {
+      //   statusCode: res.status,
+      //   success: true,
+      //   message: res.data.message,
+      // };
     } catch (error: any) {
       return {
         statusCode: error.response.status,
@@ -317,18 +289,22 @@ export const campaignSlice = createSlice({
     setDefaultState: (state) => {
       Object.assign(state, defaultState);
     },
+    setCreateCampaignDefaultState: (state) => {
+      state.campaignName = "";
+      state.campaignDetail = "";
+      state.campaignStart = "";
+      state.campaignEnd = "";
+      state.campaignType = null;
+      state.campaignImageUrl = "";
+      state.campaignUserLimit = null;
+      state.campaignCategoryId = null;
+      state.campaignReward = "";
+      state.userId = null;
+      state.campaignImageObject = null;
+      state.userLimitType = "1";
+    },
     setStateCampaignName: (state, action: PayloadAction<string>) => {
-      console.log("🚀 ~ file: campaign.slice.ts:186 ~ action:", action);
-      console.log(
-        "🚀 ~ file: campaign.slice.ts:186 ~ state:",
-        state.campaignName
-      );
-
       state.campaignName = action.payload;
-      console.log(
-        "🚀 ~ file: campaign.slice.ts:186 ~ state:",
-        state.campaignName
-      );
     },
     setStateCampaignDescription: (state, action: PayloadAction<string>) => {
       state.campaignDetail = action.payload;
@@ -437,6 +413,7 @@ export const campaignSlice = createSlice({
     builder.addCase(getCampaignCategories.rejected, (state, action) => {
       state.campaignCategories = [];
     });
+
     // builder.addCase(joinCampaign.fulfilled, (state, action) => {
     //   return {
     //     ...state,
@@ -457,6 +434,7 @@ export const campaignSlice = createSlice({
 export default campaignSlice.reducer;
 export const {
   setDefaultState,
+  setCreateCampaignDefaultState,
   setStateCampaignCategory,
   setStateCampaignDescription,
   setStateCampaignEnd,
