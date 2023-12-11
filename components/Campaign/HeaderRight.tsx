@@ -33,43 +33,43 @@ const HeaderRight = () => {
   );
 
   const [isDisabled, setIsDisabled] = useState(false);
-  // useEffect(() => {
-  //   if (
-  //     campaignName &&
-  //     campaignDetail &&
-  //     campaignStart &&
-  //     campaignEnd &&
-  //     campaignType &&
-  //     campaignCategoryId &&
-  //     campaignReward &&
-  //     campaignImageObject
-  //   ) {
-  //     setIsDisabled(false);
-  //   } else {
-  //     setIsDisabled(true);
-  //   }
-  // }, [
-  //   campaignName,
-  //   campaignCategoryId,
-  //   campaignDetail,
-  //   campaignEnd,
-  //   campaignImageObject,
-  //   campaignReward,
-  //   campaignStart,
-  //   campaignType,
-  // ]);
+  useEffect(() => {
+    if (
+      campaignName &&
+      campaignDetail &&
+      campaignStart &&
+      campaignEnd &&
+      campaignType &&
+      campaignCategoryId &&
+      campaignReward &&
+      campaignImageObject
+    ) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [
+    campaignName,
+    campaignCategoryId,
+    campaignDetail,
+    campaignEnd,
+    campaignImageObject,
+    campaignReward,
+    campaignStart,
+    campaignType,
+  ]);
   const createCampaignState = async () => {
     console.log("create");
 
     setShowCreateModal(false);
 
-    // const resUpload: any = await dispatch(
-    //   uploadCampaignImage({ image: campaignImageObject })
-    // );
+    const resUpload: any = await dispatch(
+      uploadCampaignImage({ image: campaignImageObject })
+    );
 
-    // if (resUpload?.payload?.statusCode === 200) {
-    //   dispatch(setStateCampaignImageUrl(resUpload?.payload?.data));
-    // }
+    if (resUpload?.payload?.statusCode === 200) {
+      dispatch(setStateCampaignImageUrl(resUpload?.payload?.data));
+    }
 
     const res: any = await dispatch(createCampaign({ userId: 1 }));
     if (res.payload?.statusCode === 200) {

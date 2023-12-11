@@ -244,14 +244,13 @@ export const createCampaign = createAsyncThunk(
         userId: userId,
         // userId: state.campaign.userId,
       };
-      console.log(body);
 
-      // const res = await axios.post(`${API_URL}/campaign`, body);
-      // return {
-      //   statusCode: res.status,
-      //   success: true,
-      //   message: res.data.message,
-      // };
+      const res = await axios.post(`${API_URL}/campaign`, body);
+      return {
+        statusCode: res.status,
+        success: true,
+        message: res.data.message,
+      };
     } catch (error: any) {
       return {
         statusCode: error.response.status,
