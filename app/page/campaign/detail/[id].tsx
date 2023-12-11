@@ -306,7 +306,7 @@ const CampaignDetail = () => {
         handleAccept={() => deleteCampaign(selectedCampaign.id, 1)}
         handleDecline={() => setShowCancelModal(false)}
       >
-        <Text className="text-header-4 font-semibold text-center mb-4">
+        <Text className="text-header-4 font-semibold text-center">
           Do you want to cancel{"\n"}"
           <Text className="text-red">{selectedCampaign.name}</Text>" ?
         </Text>
