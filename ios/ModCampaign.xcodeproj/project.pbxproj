@@ -3,55 +3,35 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		078F38E47FF149059B8FDFE2 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CFF4A5D59243D6A9221C24 /* noop-file.swift */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		62E5FA27FDA341A58978156D /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE182992DB2D432AAC9D614F /* Inter-ExtraLight.ttf */; };
-		63B858D9A5D244F794830EAB /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 51C92EB2E5B24A01B5E2BA0D /* Inter-Bold.ttf */; };
-		7D26774A7632497B82C8C659 /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA7ABB2C5DDE4343BF62B377 /* Inter-Thin.ttf */; };
-		7E78BA47C07E4B85ADB6DA3A /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4E95A543213436EA971C650 /* Inter-Medium.ttf */; };
-		813113FEB3034F03B5C73010 /* SpaceMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1AE6C103E3DB482E8F9E651F /* SpaceMono-Regular.ttf */; };
-		8256C26F89A44A5099B3826E /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 619C9B44E391419F8F4A9980 /* Inter-ExtraBold.ttf */; };
 		96905EF65AED1B983A6B3ABC /* libPods-ModCampaign.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-ModCampaign.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
-		D9107F59929C4C8398FC3D74 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1D567C4B36524BE797BB9A02 /* Inter-Regular.ttf */; };
-		E2D5CE1B94374A509F4E3AE2 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7209FE0A0A44B24B39671A8 /* Inter-Light.ttf */; };
-		E4219DE65B7245A698B481FA /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4A2D10CC4224EB1B2DAE7AB /* Inter-SemiBold.ttf */; };
-		F225893D5F0747F8A83D3D3B /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BDAEDEEA695142718B092F30 /* Inter-Black.ttf */; };
+		C05A38498B8B4563B43CEF28 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA763F0D24EB47B0A6C761C5 /* noop-file.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		08CFF4A5D59243D6A9221C24 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "ModCampaign/noop-file.swift"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ModCampaign.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ModCampaign.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ModCampaign/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = ModCampaign/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ModCampaign/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ModCampaign/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ModCampaign/main.m; sourceTree = "<group>"; };
-		1AE6C103E3DB482E8F9E651F /* SpaceMono-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "SpaceMono-Regular.ttf"; path = "../assets/fonts/SpaceMono-Regular.ttf"; sourceTree = "<group>"; };
-		1D567C4B36524BE797BB9A02 /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
-		51C92EB2E5B24A01B5E2BA0D /* Inter-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Bold.ttf"; path = "../assets/fonts/Inter-Bold.ttf"; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-ModCampaign.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ModCampaign.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		619C9B44E391419F8F4A9980 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraBold.ttf"; path = "../assets/fonts/Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-ModCampaign.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ModCampaign.debug.xcconfig"; path = "Target Support Files/Pods-ModCampaign/Pods-ModCampaign.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-ModCampaign.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ModCampaign.release.xcconfig"; path = "Target Support Files/Pods-ModCampaign/Pods-ModCampaign.release.xcconfig"; sourceTree = "<group>"; };
-		9FFEE2B7744243AA80406260 /* ModCampaign-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "ModCampaign-Bridging-Header.h"; path = "ModCampaign/ModCampaign-Bridging-Header.h"; sourceTree = "<group>"; };
+		8B34B49AE2A94E818BE9C775 /* ModCampaign-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "ModCampaign-Bridging-Header.h"; path = "ModCampaign/ModCampaign-Bridging-Header.h"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = ModCampaign/SplashScreen.storyboard; sourceTree = "<group>"; };
-		B7209FE0A0A44B24B39671A8 /* Inter-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Light.ttf"; path = "../assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		BDAEDEEA695142718B092F30 /* Inter-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Black.ttf"; path = "../assets/fonts/Inter-Black.ttf"; sourceTree = "<group>"; };
-		C4E95A543213436EA971C650 /* Inter-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.ttf"; path = "../assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
-		CE182992DB2D432AAC9D614F /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-ExtraLight.ttf"; path = "../assets/fonts/Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
-		EA7ABB2C5DDE4343BF62B377 /* Inter-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Thin.ttf"; path = "../assets/fonts/Inter-Thin.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F4A2D10CC4224EB1B2DAE7AB /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		FA763F0D24EB47B0A6C761C5 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "ModCampaign/noop-file.swift"; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-ModCampaign/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,8 +57,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				08CFF4A5D59243D6A9221C24 /* noop-file.swift */,
-				9FFEE2B7744243AA80406260 /* ModCampaign-Bridging-Header.h */,
+				FA763F0D24EB47B0A6C761C5 /* noop-file.swift */,
+				8B34B49AE2A94E818BE9C775 /* ModCampaign-Bridging-Header.h */,
 			);
 			name = ModCampaign;
 			sourceTree = "<group>";
@@ -108,7 +88,6 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
-				A15FF03FAF0A418992F42EFB /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -129,24 +108,6 @@
 				FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */,
 			);
 			name = ModCampaign;
-			sourceTree = "<group>";
-		};
-		A15FF03FAF0A418992F42EFB /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				BDAEDEEA695142718B092F30 /* Inter-Black.ttf */,
-				51C92EB2E5B24A01B5E2BA0D /* Inter-Bold.ttf */,
-				619C9B44E391419F8F4A9980 /* Inter-ExtraBold.ttf */,
-				CE182992DB2D432AAC9D614F /* Inter-ExtraLight.ttf */,
-				B7209FE0A0A44B24B39671A8 /* Inter-Light.ttf */,
-				C4E95A543213436EA971C650 /* Inter-Medium.ttf */,
-				1D567C4B36524BE797BB9A02 /* Inter-Regular.ttf */,
-				F4A2D10CC4224EB1B2DAE7AB /* Inter-SemiBold.ttf */,
-				EA7ABB2C5DDE4343BF62B377 /* Inter-Thin.ttf */,
-				1AE6C103E3DB482E8F9E651F /* SpaceMono-Regular.ttf */,
-			);
-			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
@@ -184,13 +145,13 @@
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
-				CFE1128BCB66A4799322E316 /* [Expo] Configure project */,
+				91199F0EEE8A7E8616263863 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				0BB2D4214FD0813A5F3CFE14 /* [CP] Embed Pods Frameworks */,
+				16EC6B9EFFE7E722A6AB843D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -240,16 +201,6 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				F225893D5F0747F8A83D3D3B /* Inter-Black.ttf in Resources */,
-				63B858D9A5D244F794830EAB /* Inter-Bold.ttf in Resources */,
-				8256C26F89A44A5099B3826E /* Inter-ExtraBold.ttf in Resources */,
-				62E5FA27FDA341A58978156D /* Inter-ExtraLight.ttf in Resources */,
-				E2D5CE1B94374A509F4E3AE2 /* Inter-Light.ttf in Resources */,
-				7E78BA47C07E4B85ADB6DA3A /* Inter-Medium.ttf in Resources */,
-				D9107F59929C4C8398FC3D74 /* Inter-Regular.ttf in Resources */,
-				E4219DE65B7245A698B481FA /* Inter-SemiBold.ttf in Resources */,
-				7D26774A7632497B82C8C659 /* Inter-Thin.ttf in Resources */,
-				813113FEB3034F03B5C73010 /* SpaceMono-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,7 +243,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0BB2D4214FD0813A5F3CFE14 /* [CP] Embed Pods Frameworks */ = {
+		16EC6B9EFFE7E722A6AB843D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -332,7 +283,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ModCampaign/Pods-ModCampaign-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CFE1128BCB66A4799322E316 /* [Expo] Configure project */ = {
+		91199F0EEE8A7E8616263863 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -380,7 +331,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				078F38E47FF149059B8FDFE2 /* noop-file.swift in Sources */,
+				C05A38498B8B4563B43CEF28 /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,10 +345,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ModCampaign/ModCampaign.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -405,10 +353,7 @@
 				);
 				INFOPLIST_FILE = ModCampaign/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -418,7 +363,6 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jirasinc.ModCampaign;
 				PRODUCT_NAME = ModCampaign;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ModCampaign/ModCampaign-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -434,16 +378,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ModCampaign/ModCampaign.entitlements;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ModCampaign/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -453,7 +391,6 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jirasinc.ModCampaign;
 				PRODUCT_NAME = ModCampaign;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ModCampaign/ModCampaign-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -511,10 +448,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					/usr/lib/swift,
-					"$(inherited)",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -524,8 +458,7 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					"-Wl",
-					"-ld_classic",
+					" ",
 					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
@@ -579,10 +512,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					/usr/lib/swift,
-					"$(inherited)",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
@@ -591,8 +521,7 @@
 					"$(inherited)",
 					"-Wl",
 					"-ld_classic",
-					"-Wl",
-					"-ld_classic",
+					" ",
 					"-Wl -ld_classic ",
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";

@@ -5,6 +5,7 @@ import {
   Image,
   Pressable,
   Vibration,
+  TouchableOpacity,
 } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
@@ -150,8 +151,11 @@ const CampaignDetail = () => {
     //   }, 3000);
     // }
   };
-  const timestamp = new Date().getTime();
-
+  const connectDevice = () => {
+    router.push({
+      pathname: "/page/campaign/ConnectDevice/",
+    });
+  };
   return (
     <View className="h-full bg-bg p-4 flex flex-col space-y-3">
       <ScrollView className="flex flex-col space-y-5 h-full">
@@ -195,13 +199,22 @@ const CampaignDetail = () => {
               <Text className="text-sub-header-2 font-medium">
                 My accumulated distance
               </Text>
-              <Text className="text-header-1 font-semibold text-orange">
-                {/* {selectedCampaign.distance} km */}
-                3.44{" "}
+              <Text className="text-sub-header-3 font-regular text-gray">
+                You haven't connected your device yet.
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  connectDevice();
+                }}
+              >
+                <Text className="text-orange">Connect now</Text>
+              </TouchableOpacity>
+              {/* <Text className="text-header-1 font-semibold text-orange">
+                3.44
                 <Text className="text-sub-header-3 font-regular text-gray">
                   km.
                 </Text>
-              </Text>
+              </Text> */}
             </View>
           ) : null}
           <View className="flex flex-col space-y-2">

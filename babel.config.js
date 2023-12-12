@@ -34,7 +34,7 @@ module.exports = function (api) {
       //       ".ts",
       //       ".tsx",
       //     ],
-      //     root: ["."],
+      //     // root: ["."],
       //     alias: {
       //       // "@app": "/",
       //       util: "./Util",

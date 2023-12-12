@@ -29,7 +29,12 @@
       "runtimeVersion": {
         "policy": "appVersion"
       },
-      "package": "com.jirasinc.ModCampaign"
+      "package": "com.jirasinc.ModCampaign",
+      "permissions": [
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.READ_FLOORS_CLIMBED",
+        "android.permission.health.READ_DISTANCE"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -44,7 +49,19 @@
         }
       ],
       "expo-router",
-      "react-native-health"
+      "react-native-health",
+      "react-native-health-connect",
+      "./androidManifestPlugin.js",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 26
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

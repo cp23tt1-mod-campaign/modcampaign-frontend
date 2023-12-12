@@ -24,6 +24,7 @@ import CampaignDetail from "./page/campaign/detail/[id]";
 import CampaignCreate from "./page/campaign/Create";
 import { createCampaign } from "../store/campaign/campaign.slice";
 import HeaderRight from "../components/Campaign/HeaderRight";
+import CampaignConnect from "./page/campaign/ConnectDevice/index";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -162,6 +163,24 @@ function RootLayoutNav() {
             },
             headerShadowVisible: false,
             headerRight: () => <HeaderRight />,
+          }}
+        />
+        <Stacks.Screen
+          name="page/campaign/ConnectDevice/index"
+          component={CampaignConnect}
+          options={{
+            // headerShown: false,
+            title: "Connect Device",
+            headerStyle: {
+              backgroundColor: "#F5F5F5",
+            },
+            headerTintColor: "#000000",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerShadowVisible: false,
+            // headerRight: () => <HeaderRight />,
           }}
         />
       </Stacks.Navigator>

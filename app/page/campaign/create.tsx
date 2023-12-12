@@ -106,24 +106,31 @@ const CampaignCreate = () => {
   const [userLimit, setUserLimit] = useState(0);
 
   const imagePicker = async () => {
-    console.log(status);
+    // console.log(status);
     // status?.granted ? console.log("access") : requestPermission();
-    // requestPermission();
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permission.granted) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    // const file = new File([result?.assets?[0]?.uri], result.assets?[0]?.uri);
-    if (!result.canceled) {
-      const image = result.assets[0];
+      if (!result.canceled) {
+        const image = result.assets[0];
 
-      setImage(image.uri);
-      dispatch(setStateCampaignImageObject({ image }));
-      // dispatch(uploadCampaignImage({ image }));
+        setImage(image.uri);
+        dispatch(setStateCampaignImageObject({ image }));
+        // dispatch(uploadCampaignImage({ image }));
+      }
+    } else {
+      Alert.alert(
+        "Permission Required",
+        "Please allow permission to access your gallery"
+      );
     }
+    // requestPermission();
 
     // const result = await launchImageLibrary({ mediaType: "photo" });
     // console.log(result);

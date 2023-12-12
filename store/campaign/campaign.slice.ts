@@ -53,10 +53,6 @@ export const getCampaignList = createAsyncThunk(
       };
     } catch (error) {
       rejectWithValue(error);
-      // return {
-      //   success: false,
-      //   data: error,
-      // };
     }
   }
 );

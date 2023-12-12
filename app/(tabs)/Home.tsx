@@ -21,7 +21,7 @@ const permission: HealthKitPermissions = {
 };
 const API_URL =
   Platform.OS === "ios" ? process.env.API_IOS_URL : process.env.API_ANDROID_URL;
-const env = process.env;
+// const env = process.env;
 export default function Home() {
   // const [hasPermissions, setHasPermissions] = useState(false);
   // const [steps, setSteps] = useState(0);
@@ -88,7 +88,10 @@ export default function Home() {
         </Text> */}
         <View className="flex flex-col items-center">
           <Text>
-            Mod Campaign - {env.NODE_ENV === "development" ? "Dev." : "Prod."}
+            {/* {process.env.NODE_ENV} */}
+            {/* {API_URL} */}
+            Mod Campaign -
+            {process.env.NODE_ENV === "development" ? "Dev." : "Prod."}
           </Text>
           <Text>API: {API_URL}</Text>
           <Text>

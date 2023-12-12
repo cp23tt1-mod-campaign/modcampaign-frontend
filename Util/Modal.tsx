@@ -108,7 +108,7 @@ const UtilModal = (props: {
               ) : (
                 <Pressable
                   onPress={props.handleAccept}
-                  className={`w-[90px] flex-row justify-center py-2 px-4 rounded-xl ${props.primaryColor}`}
+                  className={`w-[100px] flex-row justify-center py-2 px-4 rounded-xl ${props.primaryColor}`}
                 >
                   <Text className="w-auto text-white text-sub-header-1 font-medium text-center">
                     {props.acceptText}

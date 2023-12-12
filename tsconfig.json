@@ -5,12 +5,12 @@
     "typeRoots": ["./types"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      // "@util/*": ["Util/*"],
-      // "@components/*": ["components/*"],
-      // "@store/*": ["store/*"]
-    }
+    "baseUrl": "./"
+    // "paths": {
+    //   "@util/*": ["Util/*"],
+    //   "@components/*": ["components/*"],
+    //   "@store/*": ["store/*"]
+    // }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }
