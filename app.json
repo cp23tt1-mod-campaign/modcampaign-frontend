@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "ModCampaign",
-    "slug": "ModCampaign",
+    "name": "modcampaign",
+    "slug": "modcampaign",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "modcampaign",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -17,7 +17,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jirasinc.ModCampaign",
+      "bundleIdentifier": "com.jirasinc.modcampaign",
       "runtimeVersion": "1.0.0"
     },
     "android": {
@@ -29,11 +29,12 @@
       "runtimeVersion": {
         "policy": "appVersion"
       },
-      "package": "com.jirasinc.ModCampaign",
+      "package": "com.jirasinc.modcampaign",
       "permissions": [
         "android.permission.health.READ_STEPS",
         "android.permission.health.READ_FLOORS_CLIMBED",
-        "android.permission.health.READ_DISTANCE"
+        "android.permission.health.READ_DISTANCE",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {
@@ -51,7 +52,6 @@
       "expo-router",
       "react-native-health",
       "react-native-health-connect",
-      "./androidManifestPlugin.js",
       [
         "expo-build-properties",
         {
@@ -71,7 +71,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "cd08a081-dcd1-449e-b6fc-f262c13ffa93"
+        "projectId": "45931d90-f782-42e2-a276-352e93ec771e"
       }
     },
     "updates": {

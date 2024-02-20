@@ -11,6 +11,7 @@ export interface CampaignEntity {
   category: string;
   categoryTarget: string;
   userOwner: number;
+  isConnectThirdParty: boolean;
 }
 // export interface CreateCampaignEntity {
 //   campaignName: string;
@@ -51,4 +52,6 @@ export interface CampaignState {
   userId: any;
   campaignImageObject: any;
   userLimitType: string;
+  isConnectThirdParty: boolean;
+  isLoading: boolean;
 }

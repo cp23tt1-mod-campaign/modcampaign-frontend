@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../store/root.store";
 import {
   getCampaignList,
   setDefaultState,
+  setLoading,
 } from "../../store/campaign/campaign.slice";
 import UtilIcon from "../../Util/Icon";
 import { API_IOS_URL, API_ANDROID_URL } from "@env";
@@ -27,6 +28,7 @@ const Campaign = () => {
   const route = useRoute();
 
   const onRefresh = useCallback(() => {
+    dispatch(setLoading(true));
     setRefreshing(true);
   }, []);
   const dispatch = useAppDispatch();
@@ -42,40 +44,50 @@ const Campaign = () => {
   const ownedCampaignList = useAppSelector(
     (state) => state.campaign.ownedCampaignList
   );
-  useEffect(() => {
-    // campaignData.ownedCampaign.isLoading = true;
-    // campaignData.popularCampaign.isLoading = true;
-    // campaignData.latestCampaign.isLoading = true;
-    // campaignData.joinedCampaign.isLoading = true;
-    if (refreshing) {
-      dispatch(setDefaultState());
-
-      setTimeout(() => {
-        setRefreshing(false);
-        dispatch(getCampaignList({ listType: "owned", userId: 1 }));
-        campaignData.ownedCampaign.isLoading = false;
-        dispatch(getCampaignList({ listType: "popular", userId: 1 }));
-        campaignData.popularCampaign.isLoading = false;
-        dispatch(getCampaignList({ listType: "latest", userId: 1 }));
-        campaignData.latestCampaign.isLoading = false;
-        dispatch(getCampaignList({ listType: "joined", userId: 1 }));
-        campaignData.joinedCampaign.isLoading = false;
-      }, 2000);
-    } else {
-      dispatch(getCampaignList({ listType: "owned", userId: 1 }));
-      campaignData.ownedCampaign.isLoading = false;
-      dispatch(getCampaignList({ listType: "popular", userId: 1 }));
-      campaignData.popularCampaign.isLoading = false;
-      dispatch(getCampaignList({ listType: "latest", userId: 1 }));
-      campaignData.latestCampaign.isLoading = false;
-      dispatch(getCampaignList({ listType: "joined", userId: 1 }));
-      campaignData.joinedCampaign.isLoading = false;
-      // console.log(
-      //   "🚀 ~ file: campaign.tsx:74 ~ useEffect ~ campaignData:",
-      //   campaignData
-      // );
-    }
-  }, [dispatch, refreshing, route]);
+  const userProfile = useAppSelector((state) => state.user.userProfile);
+  // const [campaignData, setCampaignData] = useState({
+  //   ownedCampaign: {
+  //     header: "My Campaign",
+  //     data: ownedCampaignList,
+  //     handleChange: () => {
+  //       // navigate("CampaignList");
+  //       router.push({
+  //         pathname: "/page/campaign/list/Owned",
+  //         params: { listType: "owned" },
+  //       });
+  //     },
+  //   },
+  //   popularCampaign: {
+  //     header: "Popular Campaign",
+  //     data: popularCampaignList,
+  //     handleChange: () => {
+  //       router.push({
+  //         pathname: "/page/campaign/list",
+  //         params: { listType: "popular" },
+  //       });
+  //     },
+  //   },
+  //   latestCampaign: {
+  //     header: "Latest Campaign",
+  //     data: latestCampaignList,
+  //     handleChange: () => {
+  //       router.push({
+  //         pathname: "/page/campaign/list",
+  //         params: { listType: "latest" },
+  //       });
+  //     },
+  //   },
+  //   joinedCampaign: {
+  //     header: "Joined Campaign",
+  //     data: joinedCampaignList,
+  //     handleChange: () => {
+  //       router.push({
+  //         pathname: "/page/campaign/list",
+  //         params: { listType: "joined" },
+  //       });
+  //     },
+  //   },
+  // });
   const campaignData = {
     ownedCampaign: {
       header: "My Campaign",
@@ -87,19 +99,16 @@ const Campaign = () => {
           params: { listType: "owned" },
         });
       },
-      isLoading: true,
     },
     popularCampaign: {
       header: "Popular Campaign",
       data: popularCampaignList,
       handleChange: () => {
-        // navigate("page/campaign/list/index", { listType: "popular" });
         router.push({
           pathname: "/page/campaign/list",
           params: { listType: "popular" },
         });
       },
-      isLoading: true,
     },
     latestCampaign: {
       header: "Latest Campaign",
@@ -110,7 +119,6 @@ const Campaign = () => {
           params: { listType: "latest" },
         });
       },
-      isLoading: true,
     },
     joinedCampaign: {
       header: "Joined Campaign",
@@ -121,9 +129,115 @@ const Campaign = () => {
           params: { listType: "joined" },
         });
       },
-      isLoading: true,
     },
   };
+  useEffect(() => {
+    // campaignData.ownedCampaign.isLoading = true;
+    // campaignData.popularCampaign.isLoading = true;
+    // campaignData.latestCampaign.isLoading = true;
+    // campaignData.joinedCampaign.isLoading = true;
+    // console.log(userProfile.role);
+
+    if (refreshing) {
+      // dispatch(setDefaultState());
+
+      setTimeout(() => {
+        setRefreshing(false);
+        dispatch(setLoading(false));
+        if (userProfile.role === "Creator") {
+          dispatch(
+            getCampaignList({ listType: "owned", userId: userProfile.userId })
+          );
+          // setCampaignData((prev) => ({
+          //   ...prev,
+          //   ownedCampaign: {
+          //     ...prev.ownedCampaign,
+          //     data: ownedCampaignList,
+          //   },
+          // }));
+        }
+        dispatch(
+          getCampaignList({ listType: "popular", userId: userProfile.userId })
+        );
+        // setCampaignData((prev) => ({
+        //   ...prev,
+        //   popularCampaign: {
+        //     ...prev.popularCampaign,
+        //     data: popularCampaignList,
+        //   },
+        // }));
+        dispatch(
+          getCampaignList({ listType: "latest", userId: userProfile.userId })
+        );
+        // setCampaignData((prev) => ({
+        //   ...prev,
+        //   latestCampaign: {
+        //     ...prev.latestCampaign,
+        //     data: latestCampaignList,
+        //   },
+        // }));
+        dispatch(
+          getCampaignList({ listType: "joined", userId: userProfile.userId })
+        );
+        // setCampaignData((prev) => ({
+        //   ...prev,
+        //   joinedCampaign: {
+        //     ...prev.latestCampaign,
+        //     data: joinedCampaignList,
+        //   },
+        // }));
+      }, 2000);
+    } else {
+      dispatch(setLoading(true));
+
+      if (userProfile.role === "Creator") {
+        dispatch(
+          getCampaignList({ listType: "owned", userId: userProfile.userId })
+        );
+        // setCampaignData((prev) => ({
+        //   ...prev,
+        //   ownedCampaign: {
+        //     ...prev.ownedCampaign,
+        //     data: ownedCampaignList,
+        //   },
+        // }));
+      }
+      dispatch(
+        getCampaignList({ listType: "popular", userId: userProfile.userId })
+      );
+      // setCampaignData((prev) => ({
+      //   ...prev,
+      //   popularCampaign: {
+      //     ...prev.popularCampaign,
+      //     data: popularCampaignList,
+      //   },
+      // }));
+      dispatch(
+        getCampaignList({ listType: "latest", userId: userProfile.userId })
+      );
+      // setCampaignData((prev) => ({
+      //   ...prev,
+      //   latestCampaign: {
+      //     ...prev.latestCampaign,
+      //     data: latestCampaignList,
+      //   },
+      // }));
+      dispatch(
+        getCampaignList({ listType: "joined", userId: userProfile.userId })
+      );
+      // setCampaignData((prev) => ({
+      //   ...prev,
+      //   joinedCampaign: {
+      //     ...prev.latestCampaign,
+      //     data: joinedCampaignList,
+      //   },
+      // }));
+      setTimeout(() => {
+        dispatch(setLoading(false));
+      }, 2000);
+    }
+  }, [dispatch, refreshing, route]);
+
   const createCampaign = () => {
     router.push({
       pathname: "/page/campaign/Create",
@@ -152,21 +266,23 @@ const Campaign = () => {
         </Pressable>
       </View> */}
       {/* <Text>{API_URL}</Text> */}
-      <Pressable
-        className="absolute 
+      {userProfile.role === "Creator" ? (
+        <Pressable
+          className="absolute 
         flex items-center 
         justify-center bottom-0 
         right-0 mb-3 mr-3 bg-orange 
         w-16 h-16 rounded-full z-50 shadow-sm"
-        onPress={createCampaign}
-      >
-        <UtilIcon
-          category="MaterialIcons"
-          name={"add"}
-          size={52}
-          color="#FFFFFF"
-        />
-      </Pressable>
+          onPress={createCampaign}
+        >
+          <UtilIcon
+            category="MaterialIcons"
+            name={"add"}
+            size={52}
+            color="#FFFFFF"
+          />
+        </Pressable>
+      ) : null}
       <ScrollView
         className="w-full h-full"
         refreshControl={
@@ -182,7 +298,6 @@ const Campaign = () => {
                 header={value.header}
                 data={value.data}
                 handlePress={value.handleChange}
-                isLoading={value.isLoading}
                 key={key}
               />
             );

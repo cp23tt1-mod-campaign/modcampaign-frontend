@@ -29,7 +29,7 @@ const OwnedCampaignList = () => {
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignEntity>();
 
   const handleCancel = (item: any) => {
-    Vibration.vibrate(1000);
+    Vibration.vibrate(50);
     setSelectedCampaign(item);
     setShowCancelModal(true);
   };

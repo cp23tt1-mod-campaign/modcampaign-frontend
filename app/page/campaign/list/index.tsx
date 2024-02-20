@@ -28,6 +28,8 @@ const CampaignList = () => {
   const { listType } = route.params as any;
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [showJoinSuccessModal, setShowJoinSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showErrorLimitModal, setShowErrorLimitModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<CampaignEntity>();
   // const glob = useGlobalSearchParams();
   // const { listType } = glob;
@@ -52,22 +54,21 @@ const CampaignList = () => {
           pathname: "/(tabs)/Campaign",
         });
       }, 3000);
+    } else if (res.payload?.statusCode === 400) {
+      setTimeout(() => {
+        setShowErrorModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowErrorModal(false);
+      }, 3000);
+    } else {
+      setTimeout(() => {
+        setShowErrorLimitModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowErrorLimitModal(false);
+      }, 3000);
     }
-    // else if (res.payload?.statusCode === 400) {
-    //   setTimeout(() => {
-    //     setShowErrorModal(true);
-    //   }, 1000);
-    //   setTimeout(() => {
-    //     setShowErrorModal(false);
-    //   }, 3000);
-    // } else {
-    //   setTimeout(() => {
-    //     setShowErrorLimitModal(true);
-    //   }, 1000);
-    //   setTimeout(() => {
-    //     setShowErrorLimitModal(false);
-    //   }, 3000);
-    // }
   };
   const handleSelectCampaign = (item: any, routeName: any) => {
     setSelectedCampaign(item);
@@ -99,6 +100,7 @@ const CampaignList = () => {
                   focused ? styles.activeLabel : styles.pillLabel,
                   { fontSize: 14, fontWeight: "normal" },
                 ]}
+                className="text-center"
               >
                 {route.name}
               </Text>
@@ -164,6 +166,30 @@ const CampaignList = () => {
       >
         <Text className="text-header-4 font-semibold text-center mb-4">
           You've Successfully{"\n"}Joined the Campaign !
+        </Text>
+      </UtilModal>
+      <UtilModal
+        primaryColor="bg-red"
+        iconText="i"
+        animationIn="pulse"
+        animationOut="zoomOut"
+        isShowModal={showErrorModal}
+        isMustInteract={false}
+      >
+        <Text className="text-header-4 font-semibold text-center mb-4">
+          Error please contact admin.
+        </Text>
+      </UtilModal>
+      <UtilModal
+        primaryColor="bg-red"
+        iconText="i"
+        animationIn="pulse"
+        animationOut="zoomOut"
+        isShowModal={showErrorLimitModal}
+        isMustInteract={false}
+      >
+        <Text className="text-header-4 font-semibold text-center mb-4">
+          This campaign is full.
         </Text>
       </UtilModal>
     </View>

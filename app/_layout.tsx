@@ -22,9 +22,16 @@ import CampaignList from "./page/campaign/list";
 import CampaignOwnedList from "./page/campaign/list/Owned";
 import CampaignDetail from "./page/campaign/detail/[id]";
 import CampaignCreate from "./page/campaign/Create";
+import LoginPage from "./page/login";
+import PolicyPage from "./page/login/Policy";
+import LoginConnectDevicePage from "./page/login/ConnectDevice";
+import InformProfilePage from "./page/login/InformProfile";
+import EditDietary from "./page/dietary/edit";
+import EditProfile from "./page/profile/edit";
 import { createCampaign } from "../store/campaign/campaign.slice";
 import HeaderRight from "../components/Campaign/HeaderRight";
 import CampaignConnect from "./page/campaign/ConnectDevice/index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -33,13 +40,19 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  // initialRouteName: "(tabs)",
+  initialRouteName: "page/login",
+  // initialRouteName: "page/login/Policy",
+  // initialRouteName: "page/login/InformProfile",
+  // initialRouteName: "page/dietary/edit",
+  // initialRouteName: "page/profile/edit",
 };
 const Stacks = createNativeStackNavigator();
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  // export default async function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     // Inter: require('../assets/fonts/Inter-Regular.ttf'),
@@ -61,11 +74,42 @@ export default function RootLayout() {
     return null;
   }
 
+  // const isLogin = async () => {
+  // const user = AsyncStorage.getItem("@user");
+
+  // router.push({
+  //   pathname: "/page/login",
+  // });
+  // return (
+  // <Provider store={store}>
+  //   <Stacks.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+  //     <Stacks.Screen
+  //       name="page/login/index"
+  //       component={LoginPage}
+  //       options={{
+  //         headerShown: false,
+  //       }}
+  //     />
+  //   </Stacks.Navigator>
+  // </Provider>
+  // );
+  //   if (user) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // };
+  // if (await isLogin()) {
+
+  // }
   return <RootLayoutNav />;
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  // const linking = {
+  //   prefixes: ["modcampaign://"],
+  // };
   // const createCampaignState = () => {
   //   // dispatch(createCampaign());
   //   console.log("create campaign");
@@ -76,13 +120,86 @@ function RootLayoutNav() {
   return (
     <Provider store={store}>
       {/* <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}> */}
-      {/* <NavigationContainer> */}
-
-      {/* </NavigationContainer> */}
+      {/* <NavigationContainer linking={linking}> */}
       {/* <Campaign.Navigator>
         <Campaign.Screen name="(tabs)" component={}/>
         </Campaign.Navigator> */}
-      <Stacks.Navigator>
+      <Stacks.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+        <Stacks.Screen
+          name="page/login/index"
+          component={LoginPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stacks.Screen
+          name="page/login/Policy"
+          component={PolicyPage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stacks.Screen
+          name="page/login/ConnectDevice"
+          component={LoginConnectDevicePage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stacks.Screen
+          name="page/login/InformProfile"
+          component={InformProfilePage}
+          options={{
+            headerShown: false,
+            // title: "New Campaign",
+            // headerStyle: {
+            //   backgroundColor: "#F5F5F5",
+            // },
+            // headerTintColor: "#000000",
+            // headerTitleStyle: {
+            //   fontWeight: "bold",
+            //   fontSize: 20,
+            // },
+            // headerShadowVisible: false,
+            // headerRight: () => <HeaderRight />,
+          }}
+        />
+        <Stacks.Screen
+          name="page/dietary/edit/index"
+          component={EditDietary}
+          options={{
+            // headerShown: false,
+            title: "Edit Food Details",
+            headerStyle: {
+              backgroundColor: "#F5F5F5",
+            },
+            headerTintColor: "#000000",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerShadowVisible: false,
+            // headerRight: () => <HeaderRight />,
+          }}
+        />
+        <Stacks.Screen
+          name="page/profile/edit/index"
+          component={EditProfile}
+          options={{
+            // headerShown: false,
+            title: "Edit Profile",
+            headerStyle: {
+              backgroundColor: "#F5F5F5",
+            },
+            headerTintColor: "#000000",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerShadowVisible: false,
+            // headerRight: () => <HeaderRight />,
+          }}
+        />
         <Stacks.Screen
           name="(tabs)"
           component={TabLayout}
@@ -184,6 +301,7 @@ function RootLayoutNav() {
           }}
         />
       </Stacks.Navigator>
+      {/* </NavigationContainer> */}
       {/* <Stack>
         <Stack.Screen
           name="(tabs)"

@@ -7,43 +7,70 @@ import {
   readRecords,
 } from "react-native-health-connect";
 import { Permission } from "react-native-health-connect/lib/typescript/types";
+import { platformColor } from "nativewind";
+import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
+import { setConnectThirdParty } from "../../../../store/campaign/campaign.slice";
 
 const ConnectDevice = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
-
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  // const [isEnabled, setIsEnabled] = useState(false);
+  const isConnectedThirdParty = useAppSelector((state) => {
+    return state.campaign.isConnectThirdParty;
+  });
+  const dispatch = useAppDispatch();
   const [androidPermissions, setAndroidPermissions] = useState<Permission[]>(
     []
   );
+
+  const toggleSwitch = async () => {
+    if (Platform.OS === "ios") {
+      return;
+    }
+    // setIsEnabled((previousState) => !previousState);
+
+    const isInitialized = await initialize();
+    // console.log("isInitialized", isInitialized);
+
+    if (!isInitialized) {
+      dispatch(setConnectThirdParty(false));
+      return;
+    }
+
+    // request permissions
+    const grantedPermissions = await requestPermission([
+      { accessType: "read", recordType: "Steps" },
+      { accessType: "read", recordType: "Distance" },
+      // { accessType: "read", recordType: "FloorsClimbed" },
+    ]);
+    setAndroidPermissions(grantedPermissions);
+
+    if (androidPermissions.length > 0) {
+      dispatch(setConnectThirdParty(!isConnectedThirdParty));
+      // dispatch(setConnectThirdParty(true));
+    }
+
+    // console.log(totalDistance);
+  };
+
   // const [androidOptions, setAndroidOptions] = useState<PermissionOptions[]>([]);
   const readSampleData = async () => {
-    const init = async () => {
-      // initialize the client
-      const isInitialized = await initialize();
-      if (!isInitialized) {
-        console.log("Failed to initialize Health Connect");
-        return;
-      }
-
-      // request permissions
-      const grantedPermissions = await requestPermission([
-        { accessType: "read", recordType: "Steps" },
-        { accessType: "read", recordType: "Distance" },
-        { accessType: "read", recordType: "FloorsClimbed" },
-      ]);
-
-      setAndroidPermissions(grantedPermissions);
-    };
-    init();
-    const result = await readRecords("Steps", {
-      timeRangeFilter: {
-        operator: "between",
-        startTime: "2023-12-10T12:00:00.405Z",
-        endTime: "2023-12-12T23:53:15.405Z",
-      },
-    });
-    console.log(result);
-
+    // const init = async () => {
+    // initialize the client
+    // const isInitialized = await initialize();
+    // console.log("isInitialized", isInitialized);
+    // if (!isInitialized) {
+    //   console.log("Failed to initialize Health Connect");
+    //   return;
+    // }
+    // // request permissions
+    // const grantedPermissions = await requestPermission([
+    //   { accessType: "read", recordType: "Steps" },
+    //   { accessType: "read", recordType: "Distance" },
+    //   // { accessType: "read", recordType: "FloorsClimbed" },
+    // ]);
+    // setAndroidPermissions(grantedPermissions);
+    // console.log("grantedPermissions", grantedPermissions);
+    // };
+    // init();
     // {
     //   result: [
     //     {
@@ -67,13 +94,13 @@ const ConnectDevice = () => {
     //   ],
     // }
   };
-  useEffect(() => {
-    if (Platform.OS === "android") {
-      readSampleData();
-    } else {
-      return;
-    }
-  });
+  // useEffect(() => {
+  //   if (Platform.OS === "android") {
+  //     readSampleData();
+  //   } else {
+  //     return;
+  //   }
+  // }, []);
   return (
     <SafeAreaView className="w-full h-full mt-5">
       <View className="w-full h-full px-4 flex flex-col space-y-4">
@@ -107,7 +134,7 @@ const ConnectDevice = () => {
               thumbColor={"#f4f3f4"}
               ios_backgroundColor="#D9D9D9"
               onValueChange={toggleSwitch}
-              value={isEnabled}
+              value={isConnectedThirdParty}
             />
           </View>
         </View>

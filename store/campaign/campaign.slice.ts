@@ -7,6 +7,7 @@ const API_URL =
   Platform.OS === "ios" ? process.env.API_IOS_URL : process.env.API_ANDROID_URL;
 import axios from "axios";
 import { RootState } from "../root.store";
+import useAxios from "../../middleware/axios";
 
 export const initialState: CampaignState = {
   ownedCampaignList: [],
@@ -29,6 +30,8 @@ export const initialState: CampaignState = {
   userId: null,
   campaignImageObject: null,
   userLimitType: "1",
+  isConnectThirdParty: false,
+  isLoading: false,
 };
 const defaultState = initialState;
 
@@ -39,7 +42,7 @@ export const getCampaignList = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await axios.get(`${API_URL}/campaign`, {
+      const res = await useAxios.get(`${API_URL}/campaign`, {
         params: {
           sortBy: filter.sortBy || null,
           listType: filter.listType,
@@ -60,7 +63,7 @@ export const getOnGoingCampaignList = createAsyncThunk(
   "campaign/getOnGoingCampaignList",
   async (filter: { userId?: number }, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${API_URL}/campaign`, {
+      const res = await useAxios.get(`${API_URL}/campaign`, {
         params: {
           status: "ongoing",
           userId: filter.userId || null,
@@ -85,7 +88,7 @@ export const getCompletedCampaignList = createAsyncThunk(
   "campaign/getCompletedCampaignList",
   async (filter: { userId?: number }, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${API_URL}/campaign`, {
+      const res = await useAxios.get(`${API_URL}/campaign`, {
         params: {
           status: "ended",
           userId: filter.userId || null,
@@ -110,7 +113,7 @@ export const getCampaignDetail = createAsyncThunk(
   "campaign/getCampaignDetail",
   async (filter: { id: number }, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`${API_URL}/campaign/${filter.id}`);
+      const res = await useAxios.get(`${API_URL}/campaign/${filter.id}`);
       // return res.data;
 
       return {
@@ -135,7 +138,7 @@ export const joinCampaign = createAsyncThunk(
     try {
       const { campaignId, userId } = query;
       const body = { campaignId, userId };
-      const res = await axios.post(`${API_URL}/campaign/join`, body);
+      const res = await useAxios.post(`${API_URL}/campaign/join`, body);
       return {
         statusCode: res.status,
         success: true,
@@ -161,7 +164,7 @@ export const cancelCampaign = createAsyncThunk(
   ) => {
     try {
       const { campaignId, userId } = query;
-      const res = await axios.delete(`${API_URL}/campaign`, {
+      const res = await useAxios.delete(`${API_URL}/campaign`, {
         params: { campaignId: campaignId, userId: userId },
       });
       return {
@@ -199,7 +202,7 @@ export const uploadCampaignImage = createAsyncThunk(
       const data = new FormData();
       data.append("image", imageData as any);
 
-      const res = await axios.post(`${API_URL}/campaign/upload-img`, data, {
+      const res = await useAxios.post(`${API_URL}/campaign/upload-img`, data, {
         headers: {
           "Content-Type": `multipart/form-data;`,
         },
@@ -241,7 +244,7 @@ export const createCampaign = createAsyncThunk(
         // userId: state.campaign.userId,
       };
 
-      const res = await axios.post(`${API_URL}/campaign`, body);
+      const res = await useAxios.post(`${API_URL}/campaign`, body);
       return {
         statusCode: res.status,
         success: true,
@@ -261,7 +264,7 @@ export const getCampaignCategories = createAsyncThunk(
   "campaign/getCampaignCategories",
   async () => {
     try {
-      const res = await axios.get(`${API_URL}/campaign-categories`);
+      const res = await useAxios.get(`${API_URL}/campaign-categories`);
       return {
         statusCode: res.status,
         success: true,
@@ -333,6 +336,12 @@ export const campaignSlice = createSlice({
     },
     setStateCampaignUserLimitType: (state, action: PayloadAction<string>) => {
       state.userLimitType = action.payload;
+    },
+    setConnectThirdParty: (state, action: PayloadAction<boolean>) => {
+      state.isConnectThirdParty = action.payload;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -442,6 +451,8 @@ export const {
   setStateCampaignUserOwner,
   setStateCampaignImageObject,
   setStateCampaignUserLimitType,
+  setConnectThirdParty,
+  setLoading,
 } = campaignSlice.actions;
 
 // export const { actions, reducer } = campaignSlice;

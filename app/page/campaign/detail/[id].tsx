@@ -22,10 +22,21 @@ import dayjs from "dayjs";
 // import UtilModal from "../../../../Util/Modal";
 import Modal from "react-native-modal";
 import UtilModal from "../../../../Util/Modal";
-import { useRoute } from "@react-navigation/native";
+import {
+  useNavigationState,
+  useRoute,
+  useIsFocused,
+} from "@react-navigation/native";
+import { readRecords } from "react-native-health-connect";
+import {
+  DistanceRecord,
+  RecordResult,
+  RecordType,
+} from "react-native-health-connect/lib/typescript/types";
 
 const CampaignDetail = () => {
   const route = useRoute();
+  const focus = useIsFocused();
   // console.log(route.params);
 
   const { id, type } = route.params as any;
@@ -35,6 +46,9 @@ const CampaignDetail = () => {
   const selectedCampaign = useAppSelector(
     (state) => state.campaign.selectedCampaign
   );
+  const isConnectedThirdParty = useAppSelector((state) => {
+    return state.campaign.isConnectThirdParty;
+  });
   const [showModal, setShowModal] = useState(false);
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -42,10 +56,48 @@ const CampaignDetail = () => {
   const [showCancelSuccessModal, setShowCancelSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showErrorLimitModal, setShowErrorLimitModal] = useState(false);
+  const [campaignTargetValue, setCampaignTargetValue] = useState("");
 
   useEffect(() => {
     dispatch(getCampaignDetail({ id: Number(id) }));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (type === "Joined Campaign") {
+      getCampaignTargetValue();
+    }
+  }, [focus]);
+  const getCampaignTargetValue = async () => {
+    if (isConnectedThirdParty) {
+      const target: RecordType = selectedCampaign.categoryTarget as RecordType;
+      // console.log(selectedCampaign.categoryTarget);
+
+      // const target = "Distance";
+      const startTime = selectedCampaign.start;
+      const endTime = selectedCampaign.end;
+
+      const result = await readRecords(target, {
+        timeRangeFilter: {
+          operator: "between",
+          startTime: String(startTime),
+          endTime: String(endTime),
+          // startTime: "2023-12-10T12:00:00.405Z",
+          // endTime: "2023-12-12T23:53:15.405Z",
+        },
+      });
+      if (target === "Distance") {
+        const totalDistance = result.reduce(
+          (sum, cur: any) => sum + cur.distance.inKilometers,
+          0
+        );
+        setCampaignTargetValue(totalDistance.toFixed(2));
+      } else {
+        const totalSteps = result.reduce((sum, cur: any) => sum + cur.count, 0);
+        setCampaignTargetValue(`${totalSteps.toLocaleString("en-US")}`);
+      }
+    }
+  };
+  // getCampaignTargetValue();
 
   const modalData = {
     isShowModal: showModal,
@@ -135,21 +187,6 @@ const CampaignDetail = () => {
         });
       }, 3000);
     }
-    // else if (res.payload?.statusCode === 400) {
-    //   setTimeout(() => {
-    //     setShowErrorModal(true);
-    //   }, 1000);
-    //   setTimeout(() => {
-    //     setShowErrorModal(false);
-    //   }, 3000);
-    // } else {
-    //   setTimeout(() => {
-    //     setShowErrorLimitModal(true);
-    //   }, 1000);
-    //   setTimeout(() => {
-    //     setShowErrorLimitModal(false);
-    //   }, 3000);
-    // }
   };
   const connectDevice = () => {
     router.push({
@@ -199,22 +236,30 @@ const CampaignDetail = () => {
               <Text className="text-sub-header-2 font-medium">
                 My accumulated distance
               </Text>
-              <Text className="text-sub-header-3 font-regular text-gray">
-                You haven't connected your device yet.
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  connectDevice();
-                }}
-              >
-                <Text className="text-orange">Connect now</Text>
-              </TouchableOpacity>
-              {/* <Text className="text-header-1 font-semibold text-orange">
-                3.44
-                <Text className="text-sub-header-3 font-regular text-gray">
-                  km.
+              {/* {isConnectedThirdParty ? ( */}
+              {isConnectedThirdParty ? (
+                <Text className="text-header-1 font-semibold text-orange">
+                  {campaignTargetValue}{" "}
+                  <Text className="text-sub-header-3 font-regular text-gray">
+                    {selectedCampaign.categoryTarget === "Steps"
+                      ? "steps"
+                      : "km."}
+                  </Text>
                 </Text>
-              </Text> */}
+              ) : (
+                <View>
+                  <Text className="text-sub-header-3 font-regular text-gray">
+                    You haven't connected your device yet.
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      connectDevice();
+                    }}
+                  >
+                    <Text className="text-orange">Connect now</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           ) : null}
           <View className="flex flex-col space-y-2">
@@ -246,7 +291,7 @@ const CampaignDetail = () => {
         type === "Ongoing Campaign" ? (
         <Pressable
           onPress={() => {
-            Vibration.vibrate(1000);
+            Vibration.vibrate(500);
             setShowCancelModal(true);
           }}
           className="flex flex-row justify-center"

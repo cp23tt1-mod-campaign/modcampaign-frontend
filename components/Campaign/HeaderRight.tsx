@@ -31,6 +31,7 @@ const HeaderRight = () => {
   const campaignImageObject = useAppSelector(
     (state) => state.campaign.campaignImageObject
   );
+  const userProfile = useAppSelector((state) => state.user.userProfile);
 
   const [isDisabled, setIsDisabled] = useState(false);
   useEffect(() => {
@@ -71,7 +72,9 @@ const HeaderRight = () => {
       dispatch(setStateCampaignImageUrl(resUpload?.payload?.data));
     }
 
-    const res: any = await dispatch(createCampaign({ userId: 1 }));
+    const res: any = await dispatch(
+      createCampaign({ userId: userProfile.userId })
+    );
     if (res.payload?.statusCode === 200) {
       setTimeout(() => {
         setShowCreateSuccessModal(true);

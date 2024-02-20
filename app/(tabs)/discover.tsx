@@ -5,10 +5,10 @@ import { Text, View } from "../../components/Themed";
 import axios from "axios";
 
 export default function Discover() {
-  // axios.get('http://localhost:8080/api/campaign/3').then(res => {
+  // useAxios.get('http://localhost:8080/api/campaign/3').then(res => {
   //   console.log(res.data);
   // })
-  // const res = await axios.get('http://localhost:8080/api/campaign/3')
+  // const res = await useAxios.get('http://localhost:8080/api/campaign/3')
   // console.log(res.data);
 
   return (
