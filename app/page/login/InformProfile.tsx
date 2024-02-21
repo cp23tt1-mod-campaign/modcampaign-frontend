@@ -4,6 +4,7 @@ import {
   useWindowDimensions,
   Pressable,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -138,6 +139,8 @@ const InformProfile = () => {
   };
 
   const confirmInformation = async () => {
+    setShowAcceptModal(false);
+
     const { gender, weight, height, age, activityLevel } = userProfile;
     console.log(userProfile.gender);
     console.log(userProfile.weight);
@@ -197,13 +200,10 @@ const InformProfile = () => {
       setTimeout(() => {
         setShowSuccessModal(false);
         router.push({
-          pathname: "/(tabs)/Profile",
+          pathname: "/(tabs)/Home",
         });
       }, 3000);
     }
-    setShowAcceptModal(false);
-
-    // const res: any = await dispatch(joinCampaign({ campaignId, userId }));
 
     // if (res.payload?.statusCode === 200) {
 
@@ -223,142 +223,6 @@ const InformProfile = () => {
       style={{ width: SCREEN_WIDTH }}
       className="flex flex-col items-center bg-bg h-full"
     >
-      <View className="mt-5 mb-6">
-        <Text className="text-header-3 font-semibold">Profile information</Text>
-      </View>
-      {/* <Text>{JSON.stringify(userProfile)}</Text> */}
-
-      <View
-        style={{ width: SCREEN_WIDTH * 0.9 }}
-        className="flex flex-col space-y-4 pb-10"
-      >
-        {/* <KeyboardAwareScrollView extraHeight={150}> */}
-        {/* Gender */}
-        <View className="flex flex-col space-y-2">
-          <Text
-            className="text-sub-header-2 font-medium flex flex-row"
-            nativeID="name"
-          >
-            Gender <Text className="text-red"> *</Text>
-          </Text>
-          <View className="flex flex-row space-x-20">
-            {genderList.map((item, index) => {
-              return (
-                <View key={`gender-${index}`}>
-                  <Radio data={item} handleSelected={handleSelectedGender} />
-                </View>
-              );
-            })}
-          </View>
-        </View>
-        {/* Age */}
-        <View className="flex flex-col space-y-2">
-          <Text className="text-sub-header-2 font-medium" nativeID="name">
-            Age (Years) <Text className="text-red"> *</Text>
-          </Text>
-          <TextInput
-            aria-aria-labelledby="name"
-            className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-            placeholder="Age (Years)"
-            placeholderTextColor={"#929292"}
-            onChangeText={(text) => setAge(text)}
-            onBlur={() => dispatch(setUserAge(parseInt(age)))}
-            value={age}
-            editable={true}
-            area-label="Age (Years)"
-            // onSubmitEditing={() => console.log(campaignName)}
-            // maxLength={50}
-            // onFocus={() => setFocused(true)}
-            // onBlur={() => setFocused(false)}
-            inputMode="numeric"
-            // secureTextEntry={true}
-          />
-        </View>
-        {/* Height*/}
-        <View className="flex flex-col space-y-2">
-          <Text className="text-sub-header-2 font-medium" nativeID="name">
-            Height (Cm.) <Text className="text-red"> *</Text>
-          </Text>
-          <TextInput
-            aria-aria-labelledby="name"
-            className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-            placeholder="Height (Cm.)"
-            placeholderTextColor={"#929292"}
-            onChangeText={(text) => setHeight(text)}
-            onBlur={() => dispatch(setUserHeight(parseInt(height)))}
-            value={height}
-            editable={true}
-            area-label="Height (Cm.)"
-            // onSubmitEditing={() => console.log(campaignName)}
-            // maxLength={50}
-            // onFocus={() => setFocused(true)}
-            // onBlur={() => setFocused(false)}
-            inputMode="numeric"
-            // secureTextEntry={true}
-          />
-        </View>
-        {/* Weight */}
-        <View className="flex flex-col space-y-2">
-          <Text className="text-sub-header-2 font-medium" nativeID="name">
-            Weight (Kg.) <Text className="text-red"> *</Text>
-          </Text>
-          <TextInput
-            aria-aria-labelledby="name"
-            className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-            placeholder="Weight (Kg.)"
-            placeholderTextColor={"#929292"}
-            onChangeText={(text) => setWeight(text)}
-            onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
-            value={weight}
-            editable={true}
-            area-label="Weight (Kg.)"
-            // onSubmitEditing={() => console.log(campaignName)}
-            // maxLength={50}
-            // onFocus={() => setFocused(true)}
-            // onBlur={() => setFocused(false)}
-            inputMode="numeric"
-            // secureTextEntry={true}
-          />
-        </View>
-        {/* Activity Multiplier */}
-        <View className="flex flex-col space-y-2">
-          <Text className="text-sub-header-2 font-medium">
-            Activity Multiplier <Text className="text-red"> *</Text>
-          </Text>
-          <View className="flex flex-col space-y-3">
-            {actMultiply.map((item, index) => {
-              return (
-                <View key={`actMultiply-${index}`}>
-                  <Radio
-                    data={item}
-                    handleSelected={handleSelectedActMultiply}
-                  />
-                </View>
-              );
-            })}
-          </View>
-        </View>
-
-        {/* </KeyboardAwareScrollView> */}
-      </View>
-      <View style={{ width: SCREEN_WIDTH * 0.8 }} className="mt-6">
-        <Pressable
-          onPress={
-            () => setShowAcceptModal(true)
-            // router.push({
-            //   pathname: "/page/campaign/ConnectDevice",
-            // })
-          }
-          disabled={isDisabled}
-          className={`py-2 px-12 rounded-3xl ${
-            isDisabled ? "bg-gray" : "bg-orange"
-          }`}
-        >
-          <Text className="w-full text-white text-sub-header-1 font-medium text-center">
-            Confirm
-          </Text>
-        </Pressable>
-      </View>
       <UtilModal
         primaryColor="bg-blue"
         iconText="i"
@@ -388,6 +252,151 @@ const InformProfile = () => {
           Account Created{"\n"}Successfully!
         </Text>
       </UtilModal>
+      <View className="flex flex-col h-full">
+        <View className="mt-5 mb-6 ">
+          <Text className="text-header-3 font-semibold">
+            Profile information
+          </Text>
+        </View>
+        <ScrollView className="h-full">
+          <View className="flex flex-col">
+            <View
+              style={{ width: SCREEN_WIDTH * 0.9 }}
+              className="flex flex-col space-y-4 pb-10"
+            >
+              {/* <KeyboardAwareScrollView extraHeight={150}> */}
+              {/* Gender */}
+              <View className="flex flex-col space-y-2">
+                <Text
+                  className="text-sub-header-2 font-medium flex flex-row"
+                  nativeID="name"
+                >
+                  Gender <Text className="text-red"> *</Text>
+                </Text>
+                <View className="flex flex-row space-x-20">
+                  {genderList.map((item, index) => {
+                    return (
+                      <View key={`gender-${index}`}>
+                        <Radio
+                          data={item}
+                          handleSelected={handleSelectedGender}
+                        />
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
+              {/* Age */}
+              <View className="flex flex-col space-y-2">
+                <Text className="text-sub-header-2 font-medium" nativeID="name">
+                  Age (Years) <Text className="text-red"> *</Text>
+                </Text>
+                <TextInput
+                  aria-aria-labelledby="name"
+                  className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+                  placeholder="Age (Years)"
+                  placeholderTextColor={"#929292"}
+                  onChangeText={(text) => setAge(text)}
+                  onBlur={() => dispatch(setUserAge(parseInt(age)))}
+                  value={age}
+                  editable={true}
+                  area-label="Age (Years)"
+                  // onSubmitEditing={() => console.log(campaignName)}
+                  // maxLength={50}
+                  // onFocus={() => setFocused(true)}
+                  // onBlur={() => setFocused(false)}
+                  inputMode="numeric"
+                  // secureTextEntry={true}
+                />
+              </View>
+              {/* Height*/}
+              <View className="flex flex-col space-y-2">
+                <Text className="text-sub-header-2 font-medium" nativeID="name">
+                  Height (Cm.) <Text className="text-red"> *</Text>
+                </Text>
+                <TextInput
+                  aria-aria-labelledby="name"
+                  className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+                  placeholder="Height (Cm.)"
+                  placeholderTextColor={"#929292"}
+                  onChangeText={(text) => setHeight(text)}
+                  onBlur={() => dispatch(setUserHeight(parseInt(height)))}
+                  value={height}
+                  editable={true}
+                  area-label="Height (Cm.)"
+                  // onSubmitEditing={() => console.log(campaignName)}
+                  // maxLength={50}
+                  // onFocus={() => setFocused(true)}
+                  // onBlur={() => setFocused(false)}
+                  inputMode="numeric"
+                  // secureTextEntry={true}
+                />
+              </View>
+              {/* Weight */}
+              <View className="flex flex-col space-y-2">
+                <Text className="text-sub-header-2 font-medium" nativeID="name">
+                  Weight (Kg.) <Text className="text-red"> *</Text>
+                </Text>
+                <TextInput
+                  aria-aria-labelledby="name"
+                  className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+                  placeholder="Weight (Kg.)"
+                  placeholderTextColor={"#929292"}
+                  onChangeText={(text) => setWeight(text)}
+                  onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
+                  value={weight}
+                  editable={true}
+                  area-label="Weight (Kg.)"
+                  // onSubmitEditing={() => console.log(campaignName)}
+                  // maxLength={50}
+                  // onFocus={() => setFocused(true)}
+                  // onBlur={() => setFocused(false)}
+                  inputMode="numeric"
+                  // secureTextEntry={true}
+                />
+              </View>
+              {/* Activity Multiplier */}
+              <View className="flex flex-col space-y-2">
+                <Text className="text-sub-header-2 font-medium">
+                  Activity Multiplier <Text className="text-red"> *</Text>
+                </Text>
+                <View className="flex flex-col space-y-3">
+                  {actMultiply.map((item, index) => {
+                    return (
+                      <View key={`actMultiply-${index}`}>
+                        <Radio
+                          data={item}
+                          handleSelected={handleSelectedActMultiply}
+                        />
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
+
+              {/* </KeyboardAwareScrollView> */}
+            </View>
+          </View>
+        </ScrollView>
+        <View className="mx-3 mb-10">
+          <Pressable
+            onPress={
+              () => setShowAcceptModal(true)
+              // router.push({
+              //   pathname: "/page/campaign/ConnectDevice",
+              // })
+            }
+            disabled={isDisabled}
+            className={`py-2 px-12 rounded-3xl ${
+              isDisabled ? "bg-gray" : "bg-orange"
+            }`}
+          >
+            <Text className="w-full text-white text-sub-header-1 font-medium text-center">
+              Confirm
+            </Text>
+          </Pressable>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

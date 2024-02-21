@@ -21,9 +21,13 @@ import {
   setUserGender,
   setUserHeight,
   setUserLastName,
+  setUserProfile,
   setUserWeight,
   updateUserProfile,
 } from "../../../../store/user/user.slice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserEntity } from "store/user/user.entity";
+import { set } from "lodash";
 // import {
 //   SCREEN_HEIGHT,
 //   SCREEN_WIDTH,
@@ -89,6 +93,7 @@ const EditProfile = () => {
       isSelected: false,
     },
   ]);
+
   const handleSelectedGender = (selected: any) => {
     setGenderList((prevList) =>
       prevList.map((item) => ({
@@ -97,7 +102,7 @@ const EditProfile = () => {
       }))
     );
 
-    dispatch(setUserGender(selected.value));
+    // dispatch(setUserGender(selected.value));
 
     //checkbox
     // setGenderList((prevList) => {
@@ -120,16 +125,61 @@ const EditProfile = () => {
         isSelected: item.label === selected.label,
       }))
     );
-    dispatch(setUserActivityLevel(selected.value));
+    // dispatch(setUserActivityLevel(selected.value));
   };
   const confirmInformation = async () => {
     setShowAcceptModal(false);
-
-    const res: any = await dispatch(updateUserProfile());
-    console.log(res.payload);
+    const gender = genderList.find((item) => item.isSelected);
+    const actMult = actMultiply.find((item) => item.isSelected);
+    const res: any = await dispatch(
+      updateUserProfile({
+        firstName,
+        lastName,
+        age: parseInt(age),
+        height: parseInt(height),
+        weight: parseInt(weight),
+        activityLevel: actMult?.value,
+        gender: gender?.value,
+      })
+    );
 
     if (res.payload?.statusCode === 200) {
-      dispatch(getUserProfile());
+      console.log(res.payload?.data);
+
+      const {
+        userId,
+        firstName,
+        lastName,
+        email,
+        gender,
+        height,
+        weight,
+        age,
+        profileImage,
+        bmr,
+        activityLevel,
+        role,
+        accessToken,
+      } = res.payload?.data;
+
+      await AsyncStorage.setItem("@user", JSON.stringify(res.payload?.data));
+      await AsyncStorage.setItem("@accessToken", JSON.stringify(accessToken));
+
+      const dataFormAPI: UserEntity = {
+        userId,
+        firstName,
+        lastName,
+        email,
+        gender,
+        height,
+        weight,
+        age,
+        profileImage,
+        bmr,
+        activityLevel,
+        role,
+      };
+      dispatch(setUserProfile(dataFormAPI));
       setTimeout(() => {
         setShowSuccessModal(true);
       }, 1000);
@@ -160,11 +210,14 @@ const EditProfile = () => {
   }, [userProfile.activityLevel, userProfile.gender]);
 
   useEffect(() => {
+    const ageString = userProfile.age.toString();
+    const heightString = userProfile.height.toString();
+    const weightString = userProfile.weight.toString();
     setFirstName(userProfile.firstName);
     setLastName(userProfile.lastName);
-    setAge(userProfile.age.toString());
-    setHeight(userProfile.height.toString());
-    setWeight(userProfile.weight.toString());
+    setAge(String(userProfile.age));
+    setHeight(String(userProfile.height));
+    setWeight(String(userProfile.weight));
 
     setGenderList((prevList) =>
       prevList.map((item) => ({
@@ -184,15 +237,14 @@ const EditProfile = () => {
       // console.log(cloneUserProfile.firstName);
       // console.log(cloneUserProfile.lastName);
       // console.log(typeof cloneUserProfile.age);
-
-      dispatch(setUserFirstName(cloneUserProfile.firstName));
-      dispatch(setUserLastName(cloneUserProfile.lastName));
-      dispatch(setUserGender(cloneUserProfile.gender));
-      dispatch(setUserAge(cloneUserProfile.age));
-      dispatch(setUserHeight(cloneUserProfile.height));
-      dispatch(setUserWeight(cloneUserProfile.weight));
-      dispatch(setUserActivityLevel(cloneUserProfile.actMultiply));
-      setIsDisabled(true);
+      // dispatch(setUserFirstName(cloneUserProfile.firstName));
+      // dispatch(setUserLastName(cloneUserProfile.lastName));
+      // dispatch(setUserGender(cloneUserProfile.gender));
+      // dispatch(setUserAge(cloneUserProfile.age));
+      // dispatch(setUserHeight(cloneUserProfile.height));
+      // dispatch(setUserWeight(cloneUserProfile.weight));
+      // dispatch(setUserActivityLevel(cloneUserProfile.actMultiply));
+      // setIsDisabled(true);
     };
     // console.log(
     //   "🚀 ~ useEffect ~ userProfile.firstName:",
@@ -205,7 +257,6 @@ const EditProfile = () => {
 
     const gender = genderList.find((item) => item.isSelected);
     const actMult = actMultiply.find((item) => item.isSelected);
-
     // console.log("🚀 ~ gender ~ gender:", gender?.value);
     // console.log(
     //   "🚀 ~ useEffect ~ cloneData.firstName:",
@@ -219,13 +270,20 @@ const EditProfile = () => {
     // );
 
     if (
-      cloneUserProfile.firstName !== firstName ||
-      cloneUserProfile.lastName !== lastName ||
-      cloneUserProfile.age !== parseInt(age) ||
-      cloneUserProfile.height !== parseInt(height) ||
-      cloneUserProfile.weight !== parseInt(weight) ||
-      cloneUserProfile.gender !== gender?.value ||
-      cloneUserProfile.actMultiply !== actMult?.value
+      (userProfile.firstName !== firstName.trim() ||
+        userProfile.lastName !== lastName.trim() ||
+        userProfile.age !== parseInt(age) ||
+        userProfile.height !== parseInt(height) ||
+        userProfile.weight !== parseInt(weight) ||
+        userProfile.gender !== gender?.value ||
+        userProfile.activityLevel !== actMult?.value) &&
+      !(
+        firstName.trim() === "" ||
+        lastName.trim() === "" ||
+        age.trim() === "" ||
+        height.trim() === "" ||
+        weight.trim() === ""
+      )
     ) {
       setIsDisabled(false);
     } else {
@@ -235,10 +293,10 @@ const EditProfile = () => {
 
   return (
     <SafeAreaView
-      style={{ width: SCREEN_WIDTH, height: SCREEN_HEIGHT }}
-      className="flex flex-col items-center bg-bg"
+      style={{ width: SCREEN_WIDTH }}
+      className="flex flex-col items-center bg-bg h-full"
     >
-      <ScrollView style={{ width: SCREEN_WIDTH * 0.9 }}>
+      <ScrollView style={{ width: SCREEN_WIDTH * 0.9 }} className="h-[400px]">
         <View className="flex flex-col space-y-4 pb-10">
           {/* <KeyboardAwareScrollView extraHeight={150}> */}
           {/* Gender */}
@@ -252,7 +310,8 @@ const EditProfile = () => {
               placeholder="Your name"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setFirstName(text)}
-              onBlur={() => dispatch(setUserFirstName(firstName))}
+              // onBlur={() => dispatch(setUserFirstName(firstName))}
+              onBlur={() => setFirstName(firstName)}
               value={firstName}
               editable={true}
               area-label="Weight (Kg.)"
@@ -273,7 +332,8 @@ const EditProfile = () => {
               placeholder="Your name"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setLastName(text)}
-              onBlur={() => dispatch(setUserLastName(lastName))}
+              // onBlur={() => dispatch(setUserLastName(lastName))}
+              onBlur={() => setLastName(lastName)}
               value={lastName}
               editable={true}
               area-label="Weight (Kg.)"
@@ -312,8 +372,9 @@ const EditProfile = () => {
               placeholder="Age (Years)"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setAge(text)}
-              onBlur={() => dispatch(setUserAge(parseInt(age)))}
-              value={userProfile.age.toString()}
+              // onBlur={() => dispatch(setUserAge(parseInt(age)))}
+              onBlur={() => setAge(age)}
+              value={age}
               editable={true}
               area-label="Age (Years)"
               // onSubmitEditing={() => console.log(campaignName)}
@@ -335,8 +396,9 @@ const EditProfile = () => {
               placeholder="Height (Cm.)"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setHeight(text)}
-              onBlur={() => dispatch(setUserHeight(parseInt(height)))}
-              value={userProfile.height.toString()}
+              // onBlur={() => dispatch(setUserHeight(parseInt(height)))}
+              onBlur={() => setHeight(height)}
+              value={height}
               editable={true}
               area-label="Height (Cm.)"
               // onSubmitEditing={() => console.log(campaignName)}
@@ -358,8 +420,9 @@ const EditProfile = () => {
               placeholder="Weight (Kg.)"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setWeight(text)}
-              onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
-              value={userProfile.weight.toString()}
+              // onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
+              onBlur={() => setWeight(weight)}
+              value={weight}
               editable={true}
               area-label="Weight (Kg.)"
               // onSubmitEditing={() => console.log(campaignName)}
@@ -392,7 +455,7 @@ const EditProfile = () => {
           {/* </KeyboardAwareScrollView> */}
         </View>
       </ScrollView>
-      <View style={{ width: SCREEN_WIDTH * 0.8 }} className="mt-8">
+      <View className="mt-8 h-[80px]">
         <Pressable
           onPress={
             () => setShowAcceptModal(true)
@@ -436,7 +499,7 @@ const EditProfile = () => {
         isMustInteract={false}
       >
         <Text className="text-header-4 font-semibold text-center mb-4">
-          Account Created{"\n"}Successfully!
+          Account Updated{"\n"}Successfully!
         </Text>
       </UtilModal>
     </SafeAreaView>

@@ -11,6 +11,7 @@ import DiaryPage from "./Diary";
 import CampaignPage from "./Campaign";
 import DiscoverPage from "./Discover";
 import ProfilePage from "./Profile";
+import { useAppSelector } from "../../store/root.store";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -19,6 +20,7 @@ const Tab = createBottomTabNavigator();
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const userProfile = useAppSelector((state) => state.user.userProfile);
 
   return (
     <Tab.Navigator
@@ -75,30 +77,66 @@ export default function TabLayout() {
           headerStyle: {
             height: 90,
           },
-          headerLeft: () => (
-            <Image
-              source={require("../../assets/images/headerIcon.png")}
-              style={{ width: 45, height: 45 }}
-              className="ml-4"
-            />
-          ),
-          headerRight: () => (
-            <Pressable
-              style={({ pressed }) => [
-                pressed ? { opacity: 0.5 } : { opacity: 1 },
-              ]}
-              onPress={() => console.log("notification")}
-              className="mr-4"
-            >
-              <UtilIcon
-                category="MaterialIcons"
-                name={"notifications-none"}
-                size={28}
-                color="#000000"
-              />
-            </Pressable>
-          ),
-          headerBackground: () => <View className="bg-bg"></View>,
+          // headerLeft: () => (
+          //   <Image
+          //     source={require("../../assets/images/headerIcon.png")}
+          //     style={{ width: 45, height: 45 }}
+          //     className="ml-4"
+          //   />
+          // ),
+          // headerRight: () => (
+          //   <Pressable
+          //     style={({ pressed }) => [
+          //       pressed ? { opacity: 0.5 } : { opacity: 1 },
+          //     ]}
+          //     onPress={() => console.log("notification")}
+          //     className="mr-4"
+          //   >
+          //     <UtilIcon
+          //       category="MaterialIcons"
+          //       name={"notifications-none"}
+          //       size={28}
+          //       color="#000000"
+          //     />
+          //   </Pressable>
+          // ),
+          header(props) {
+            return (
+              <View className="h-[90px] bg-bg flex flex-row items-end justify-between pb-3 px-1">
+                <View className=" flex flex-row items-center space-x-3">
+                  <Image
+                    source={require("../../assets/images/headerIcon.png")}
+                    style={{ width: 45, height: 45 }}
+                    className="ml-4"
+                  />
+                  <View className="flex flex-col">
+                    <Text className="text-body-3 font-regular text-gray">
+                      Hello, Good Morning
+                    </Text>
+                    <Text className="text-header-4 font-semibold text-black">
+                      {userProfile.firstName} {userProfile.lastName}
+                    </Text>
+                  </View>
+                </View>
+
+                <Pressable
+                  style={({ pressed }) => [
+                    pressed ? { opacity: 0.5 } : { opacity: 1 },
+                  ]}
+                  onPress={() => console.log("notification")}
+                  className="mr-4"
+                >
+                  <UtilIcon
+                    category="MaterialIcons"
+                    name={"notifications-none"}
+                    size={28}
+                    color="#000000"
+                  />
+                </Pressable>
+              </View>
+            );
+          },
+          // headerBackground: () => <View className="bg-bg"></View>,
         }}
       />
       <Tab.Screen

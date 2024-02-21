@@ -206,6 +206,30 @@ const EditDietary = () => {
         );
     }
   };
+  const updateDietaryLocal = async () => {
+    await AsyncStorage.setItem(
+      "@dietaryData",
+      JSON.stringify({
+        food: {
+          calories: dietaryData.food.calories,
+          carb: dietaryData.food.carb,
+          protien: dietaryData.food.protien,
+          fat: dietaryData.food.fat,
+        },
+        exercise: {
+          cal: dietaryData.exercise.cal,
+        },
+        water: {
+          lit: dietaryData.water.lit,
+        },
+        caloriesRemain: {
+          value: userState.remainCalories,
+        },
+      })
+    );
+    const data = await AsyncStorage.getItem("@dietaryData");
+    console.log("🚀 ~ updateDietaryLocal ~ data: edit", data);
+  };
   useEffect(() => {
     const calCalories =
       dietaryData.food.carb * 4 +
@@ -219,29 +243,9 @@ const EditDietary = () => {
         userProfile.bmr + dietaryData.exercise.cal - dietaryData.food.calories
       )
     );
-    const updateDietaryLocal = async () => {
-      await AsyncStorage.setItem(
-        "@dietaryData",
-        JSON.stringify({
-          food: {
-            calories: dietaryData.food.calories,
-            carb: dietaryData.food.carb,
-            protien: dietaryData.food.protien,
-            fat: dietaryData.food.fat,
-          },
-          exercise: {
-            cal: dietaryData.exercise.cal,
-          },
-          water: {
-            lit: dietaryData.water.lit,
-          },
-          caloriesRemain: {
-            value: userState.remainCalories,
-          },
-        })
-      );
-    };
+
     updateDietaryLocal();
+
     // console.log(dietaryData.food.calories);
   }, [dietaryData.food, dietaryData.exercise]);
   // const handleSelectedGender = (selected: any) => {

@@ -32,11 +32,11 @@ const ListPopular = (props: {
   const popularCampaignList = useAppSelector(
     (state) => state.campaign.popularCampaignList
   );
+  const userProfile = useAppSelector((state) => state.user.userProfile);
   const route = useRoute();
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = useState(false);
   const isLoadingState = useAppSelector((state) => state.campaign.isLoading);
-  const userProfile = useAppSelector((state) => state.user.userProfile);
   const onRefresh = useCallback(() => {
     dispatch(setLoading(true));
     setRefreshing(true);

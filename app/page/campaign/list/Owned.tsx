@@ -12,7 +12,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { useRoute } from "@react-navigation/native";
 import { CampaignEntity } from "../../../../store/campaign/campaign.entity";
 import UtilModal from "../../../../Util/Modal";
-import { useAppDispatch } from "../../../../store/root.store";
+import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
 import { cancelCampaign } from "../../../../store/campaign/campaign.slice";
 
 const TopTabs = createMaterialTopTabNavigator();
@@ -23,6 +23,7 @@ const OwnedCampaignList = () => {
   const route = useRoute();
   // const { listType } = route.params as any;
   const dispatch = useAppDispatch();
+  const userProfile = useAppSelector((state) => state.user.userProfile);
 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showCancelSuccessModal, setShowCancelSuccessModal] = useState(false);
@@ -125,7 +126,9 @@ const OwnedCampaignList = () => {
         declineText="Cancel"
         animationIn="shake"
         animationOut="zoomOut"
-        handleAccept={() => deleteCampaignState(selectedCampaign?.id, 1)}
+        handleAccept={() =>
+          deleteCampaignState(selectedCampaign?.id, userProfile.userId)
+        }
         handleDecline={() => setShowCancelModal(false)}
       >
         <Text className="text-header-4 font-semibold text-center">

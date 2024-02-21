@@ -21,6 +21,7 @@ import {
   setRemainCalories,
   setWaterLit,
 } from "../../store/user/user.slice";
+import { ScrollView } from "react-native";
 
 const Diary = () => {
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
@@ -64,326 +65,338 @@ const Diary = () => {
   return (
     <SafeAreaView
       style={{ width: SCREEN_WIDTH }}
-      className="bg-bg flex flex-col items-center mt-4 space-y-5 h-full"
+      className="bg-bg flex flex-col items-center mt-4 space-y-5 h-full pb-10"
     >
-      <View
-        style={{ width: SCREEN_WIDTH * 0.9 }}
-        className="bg-white rounded-[20px] py-4 px-5 flex flex-col space-y-4"
-      >
-        <View className="flex flex-row justify-between">
-          <Text className="text-sub-header-2 font-medium text-black">
-            Calories Remaining
-          </Text>
-          <TouchableOpacity
-            className="bg-red rounded-full px-3 py-1"
-            onPress={resetDietary}
-          >
-            <Text className="text-sub-header-2 font-medium text-white">
-              Reset
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View className="flex flex-row justify-around items-center">
-          <View className="flex flex-col items-center">
+      <ScrollView className="pb-5 flex flex-col space-y-4">
+        <View
+          style={{ width: SCREEN_WIDTH * 0.9 }}
+          className="bg-white rounded-[20px] py-4 px-5 flex flex-col space-y-4"
+        >
+          <View className="flex flex-row justify-between">
             <Text className="text-sub-header-2 font-medium text-black">
-              {userProfile.bmr.toLocaleString("en-US", {
-                maximumFractionDigits: 0,
-              })}
+              Calories Remaining
             </Text>
-            <Text className="text-body-3 font-regular text-gray">Goal</Text>
-          </View>
-          <View>
-            <Text className="text-sub-header-2 font-medium text-black">+</Text>
-          </View>
-          <View className="flex flex-col items-center">
-            <Text className="text-sub-header-2 font-medium text-black">
-              {dietaryData.exercise.cal.toLocaleString("en-US", {
-                maximumFractionDigits: 0,
-              })}
-            </Text>
-            <Text className="text-body-3 font-regular text-gray">Exercise</Text>
-          </View>
-          <View>
-            <Text className="text-sub-header-2 font-medium text-black">-</Text>
-          </View>
-          <View className="flex flex-col items-center">
-            <Text className="text-sub-header-2 font-medium text-black">
-              {dietaryData.food.calories.toLocaleString("en-US", {
-                maximumFractionDigits: 0,
-              })}
-            </Text>
-            <Text className="text-body-3 font-regular text-gray">Food</Text>
-          </View>
-          <View>
-            <Text className="text-sub-header-2 font-medium text-black">=</Text>
-          </View>
-          <View className="flex flex-col items-center">
-            <Text className="text-header-4 font-bold text-orange">
-              {/* {userProfile.bmr} */}
-              {userState.remainCalories.toLocaleString("en-US", {
-                maximumFractionDigits: 0,
-              })}
-            </Text>
-            <Text className="text-body-3 font-regular text-gray">
-              Remaining
-            </Text>
-          </View>
-        </View>
-      </View>
-      <View
-        style={{ width: SCREEN_WIDTH * 0.9 }}
-        className="flex flex-col space-y-6"
-      >
-        <View className="flex flex-col space-y-3">
-          <View className="flex flex-row justify-between items-center">
-            <Text className="text-header-3 font-bold text-black">Food</Text>
             <TouchableOpacity
-              onPress={() => {
-                router.push({
-                  pathname: "/page/dietary/edit",
-                  params: { type: "food" },
-                });
-              }}
-              className="bg-orange rounded-[20px] flex flex-row items-center py-1 px-6"
+              className="bg-red rounded-full px-3 py-1"
+              onPress={resetDietary}
             >
-              <Text className="text-sub-header-1 font-medium text-white">
-                Edit
+              <Text className="text-sub-header-2 font-medium text-white">
+                Reset
               </Text>
             </TouchableOpacity>
           </View>
-          <View className="bg-white rounded-[20px]">
-            <View className="border-b-0.5 border-gray p-4 flex flex-row justify-between">
-              <Text
-                style={{ width: SCREEN_WIDTH * 0.6 }}
-                className="text-sub-header-2 font-medium text-black"
-              >
-                Carb
+          <View className="flex flex-row justify-around items-center">
+            <View className="flex flex-col items-center">
+              <Text className="text-sub-header-2 font-medium text-black">
+                {userProfile.bmr.toLocaleString("en-US", {
+                  maximumFractionDigits: 0,
+                })}
               </Text>
-              <View
-                style={{ width: SCREEN_WIDTH * 0.2 }}
-                className="flex flex-row"
-              >
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    {dietaryData.food.carb.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}
-                  </Text>
-                </View>
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-2 font-medium text-black">
-                    g.
-                  </Text>
-                </View>
-              </View>
+              <Text className="text-body-3 font-regular text-gray">Goal</Text>
             </View>
-            <View className="border-b-0.5 border-gray p-4 flex flex-row justify-between">
-              <Text
-                style={{ width: SCREEN_WIDTH * 0.6 }}
-                className="text-sub-header-2 font-medium text-black"
-              >
-                Protein
+            <View>
+              <Text className="text-sub-header-2 font-medium text-black">
+                +
               </Text>
-              <View
-                style={{ width: SCREEN_WIDTH * 0.2 }}
-                className="flex flex-row"
-              >
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    {dietaryData.food.protien.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}
-                  </Text>
-                </View>
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-2 font-medium text-black">
-                    g.
-                  </Text>
-                </View>
-              </View>
             </View>
-            <View className="border-gray p-4 flex flex-row justify-between">
-              <Text
-                style={{ width: SCREEN_WIDTH * 0.6 }}
-                className="text-sub-header-2 font-medium text-black"
-              >
-                Fat
+            <View className="flex flex-col items-center">
+              <Text className="text-sub-header-2 font-medium text-black">
+                {dietaryData.exercise.cal.toLocaleString("en-US", {
+                  maximumFractionDigits: 0,
+                })}
               </Text>
-              <View
-                style={{ width: SCREEN_WIDTH * 0.2 }}
-                className="flex flex-row"
-              >
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    {dietaryData.food.fat.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}
-                  </Text>
-                </View>
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-2 font-medium text-black">
-                    g.
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View className="bg-white rounded-[20px]">
-            <View className=" border-gray p-4 flex flex-row justify-between">
-              <Text
-                style={{ width: SCREEN_WIDTH * 0.6 }}
-                className="text-sub-header-2 font-medium text-black"
-              >
-                Calories
-              </Text>
-              <View
-                style={{ width: SCREEN_WIDTH * 0.2 }}
-                className="flex flex-row"
-              >
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    {dietaryData.food.calories.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}
-                  </Text>
-                </View>
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-end"
-                >
-                  <Text className="text-sub-header-2 font-medium text-black">
-                    kcal
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-        <View className="flex flex-col space-y-2">
-          <View className="flex flex-row justify-between items-center">
-            <Text className="text-header-3 font-bold text-black">Exercise</Text>
-            <TouchableOpacity
-              onPress={() => {
-                router.push({
-                  pathname: "/page/dietary/edit",
-                  params: { type: "exercise" },
-                });
-              }}
-              className="bg-orange rounded-[20px] flex flex-row items-center py-1 px-6"
-            >
-              <Text className="text-sub-header-1 font-medium text-white">
-                Edit
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View className="bg-white rounded-[20px]">
-            <View className=" border-gray p-4 flex flex-row justify-between">
-              <Text
-                style={{ width: SCREEN_WIDTH * 0.6 }}
-                className="text-sub-header-2 font-medium text-black"
-              >
+              <Text className="text-body-3 font-regular text-gray">
                 Exercise
               </Text>
-              <View
-                style={{ width: SCREEN_WIDTH * 0.2 }}
-                className="flex flex-row"
+            </View>
+            <View>
+              <Text className="text-sub-header-2 font-medium text-black">
+                -
+              </Text>
+            </View>
+            <View className="flex flex-col items-center">
+              <Text className="text-sub-header-2 font-medium text-black">
+                {dietaryData.food.calories.toLocaleString("en-US", {
+                  maximumFractionDigits: 0,
+                })}
+              </Text>
+              <Text className="text-body-3 font-regular text-gray">Food</Text>
+            </View>
+            <View>
+              <Text className="text-sub-header-2 font-medium text-black">
+                =
+              </Text>
+            </View>
+            <View className="flex flex-col items-center">
+              <Text className="text-header-4 font-bold text-orange">
+                {/* {userProfile.bmr} */}
+                {userState.remainCalories.toLocaleString("en-US", {
+                  maximumFractionDigits: 0,
+                })}
+              </Text>
+              <Text className="text-body-3 font-regular text-gray">
+                Remaining
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{ width: SCREEN_WIDTH * 0.9 }}
+          className="flex flex-col space-y-6 "
+        >
+          <View className="flex flex-col space-y-3 w-full">
+            <View className="flex flex-row justify-between items-center">
+              <Text className="text-header-3 font-bold text-black">Food</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  router.push({
+                    pathname: "/page/dietary/edit",
+                    params: { type: "food" },
+                  });
+                }}
+                className="bg-orange rounded-[20px] flex flex-row items-center py-1 px-6"
               >
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
+                <Text className="text-sub-header-1 font-medium text-white">
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View className="bg-white rounded-[20px]">
+              <View className="border-b-0.5 border-gray p-4 flex flex-row justify-between">
+                <Text
+                  style={{ width: SCREEN_WIDTH * 0.6 }}
+                  className="text-sub-header-2 font-medium text-black"
                 >
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    {dietaryData.exercise.cal.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}
-                  </Text>
+                  Carb
+                </Text>
+                <View
+                  style={{ width: SCREEN_WIDTH * 0.2 }}
+                  className="flex flex-row"
+                >
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      {dietaryData.food.carb.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-2 font-medium text-black">
+                      g.
+                    </Text>
+                  </View>
                 </View>
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-end"
+              </View>
+              <View className="border-b-0.5 border-gray p-4 flex flex-row justify-between">
+                <Text
+                  style={{ width: SCREEN_WIDTH * 0.6 }}
+                  className="text-sub-header-2 font-medium text-black"
                 >
-                  <Text className="text-sub-header-2 font-medium text-black">
-                    kcal
-                  </Text>
+                  Protein
+                </Text>
+                <View
+                  style={{ width: SCREEN_WIDTH * 0.2 }}
+                  className="flex flex-row"
+                >
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      {dietaryData.food.protien.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-2 font-medium text-black">
+                      g.
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View className="border-gray p-4 flex flex-row justify-between">
+                <Text
+                  style={{ width: SCREEN_WIDTH * 0.6 }}
+                  className="text-sub-header-2 font-medium text-black"
+                >
+                  Fat
+                </Text>
+                <View
+                  style={{ width: SCREEN_WIDTH * 0.2 }}
+                  className="flex flex-row"
+                >
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      {dietaryData.food.fat.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-2 font-medium text-black">
+                      g.
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View className="bg-white rounded-[20px]">
+              <View className=" border-gray p-4 flex flex-row justify-between">
+                <Text
+                  style={{ width: SCREEN_WIDTH * 0.6 }}
+                  className="text-sub-header-2 font-medium text-black"
+                >
+                  Calories
+                </Text>
+                <View
+                  style={{ width: SCREEN_WIDTH * 0.2 }}
+                  className="flex flex-row"
+                >
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      {dietaryData.food.calories.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-end"
+                  >
+                    <Text className="text-sub-header-2 font-medium text-black">
+                      kcal
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View className="flex flex-col space-y-2">
+            <View className="flex flex-row justify-between items-center">
+              <Text className="text-header-3 font-bold text-black">
+                Exercise
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  router.push({
+                    pathname: "/page/dietary/edit",
+                    params: { type: "exercise" },
+                  });
+                }}
+                className="bg-orange rounded-[20px] flex flex-row items-center py-1 px-6"
+              >
+                <Text className="text-sub-header-1 font-medium text-white">
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View className="bg-white rounded-[20px]">
+              <View className=" border-gray p-4 flex flex-row justify-between">
+                <Text
+                  style={{ width: SCREEN_WIDTH * 0.6 }}
+                  className="text-sub-header-2 font-medium text-black"
+                >
+                  Exercise
+                </Text>
+                <View
+                  style={{ width: SCREEN_WIDTH * 0.2 }}
+                  className="flex flex-row"
+                >
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      {dietaryData.exercise.cal.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-end"
+                  >
+                    <Text className="text-sub-header-2 font-medium text-black">
+                      kcal
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View className="flex flex-col space-y-2">
+            <View className="flex flex-row justify-between items-center">
+              <Text className="text-header-3 font-bold text-black">Water</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  router.push({
+                    pathname: "/page/dietary/edit",
+                    params: { type: "water" },
+                  });
+                }}
+                className="bg-orange rounded-[20px] flex flex-row items-center py-1 px-6"
+              >
+                <Text className="text-sub-header-1 font-medium text-white">
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View className="bg-white rounded-[20px]">
+              <View className="border-gray p-4 flex flex-row justify-between">
+                <Text
+                  style={{ width: SCREEN_WIDTH * 0.6 }}
+                  className="text-sub-header-2 font-medium text-black"
+                >
+                  Water
+                </Text>
+                <View
+                  style={{ width: SCREEN_WIDTH * 0.2 }}
+                  className="flex flex-row"
+                >
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      {dietaryData.water.lit.toLocaleString("en-US", {
+                        maximumFractionDigits: 0,
+                      })}
+                    </Text>
+                  </View>
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.1 }}
+                    className="flex flex-row justify-center"
+                  >
+                    <Text className="text-sub-header-2 font-medium text-black">
+                      L
+                    </Text>
+                  </View>
                 </View>
               </View>
             </View>
           </View>
         </View>
-        <View className="flex flex-col space-y-2">
-          <View className="flex flex-row justify-between items-center">
-            <Text className="text-header-3 font-bold text-black">Water</Text>
-            <TouchableOpacity
-              onPress={() => {
-                router.push({
-                  pathname: "/page/dietary/edit",
-                  params: { type: "water" },
-                });
-              }}
-              className="bg-orange rounded-[20px] flex flex-row items-center py-1 px-6"
-            >
-              <Text className="text-sub-header-1 font-medium text-white">
-                Edit
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View className="bg-white rounded-[20px]">
-            <View className="border-gray p-4 flex flex-row justify-between">
-              <Text
-                style={{ width: SCREEN_WIDTH * 0.6 }}
-                className="text-sub-header-2 font-medium text-black"
-              >
-                Water
-              </Text>
-              <View
-                style={{ width: SCREEN_WIDTH * 0.2 }}
-                className="flex flex-row"
-              >
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    {dietaryData.water.lit.toLocaleString("en-US", {
-                      maximumFractionDigits: 0,
-                    })}
-                  </Text>
-                </View>
-                <View
-                  style={{ width: SCREEN_WIDTH * 0.1 }}
-                  className="flex flex-row justify-center"
-                >
-                  <Text className="text-sub-header-2 font-medium text-black">
-                    L
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

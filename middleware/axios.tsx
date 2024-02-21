@@ -27,10 +27,13 @@ useAxios.interceptors.request.use(
       // Add the access token to the headers for POST requests and specific GET requests
       return config;
     } else {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.Authorization = `Bearer ${JSON.parse(`${accessToken}`)}`;
+      // console.log(config.headers);
+
+      return config;
     }
 
-    return config;
+    // return config;
   },
 
   (error) => {

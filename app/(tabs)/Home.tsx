@@ -29,6 +29,7 @@ import { router } from "expo-router";
 import UtilIcon from "../../Util/Icon";
 import { useAppDispatch, useAppSelector } from "../../store/root.store";
 import {
+  setDietary,
   setFoodCalories,
   setRemainCalories,
   setStepsValue,
@@ -246,30 +247,36 @@ export default function Home() {
         userProfile.bmr + dietaryData.exercise.cal - dietaryData.food.calories
       )
     );
-    await AsyncStorage.setItem(
-      "@dietaryData",
-      JSON.stringify({
-        food: {
-          calories: dietaryData.food.calories,
-          carb: dietaryData.food.carb,
-          protien: dietaryData.food.protien,
-          fat: dietaryData.food.fat,
-        },
-        exercise: {
-          cal: dietaryData.exercise.cal,
-        },
-        water: {
-          lit: dietaryData.water.lit,
-        },
-        caloriesRemain: {
-          value: userState.remainCalories,
-        },
-      })
-    );
+    const data = await AsyncStorage.getItem("@dietaryData");
+    console.log("🚀 ~ updateDietaryLocal ~ data:", data);
+
+    if (data) {
+      dispatch(setDietary(JSON.parse(data)));
+      // await AsyncStorage.setItem(
+      //   "@dietaryData",
+      //   JSON.stringify({
+      //     food: {
+      //       calories: dietaryData.food.calories,
+      //       carb: dietaryData.food.carb,
+      //       protien: dietaryData.food.protien,
+      //       fat: dietaryData.food.fat,
+      //     },
+      //     exercise: {
+      //       cal: dietaryData.exercise.cal,
+      //     },
+      //     water: {
+      //       lit: dietaryData.water.lit,
+      //     },
+      //     caloriesRemain: {
+      //       value: userState.remainCalories,
+      //     },
+      //   })
+      // );
+    }
   };
   useEffect(() => {
-    updateDietaryLocal();
     getStepValue();
+    updateDietaryLocal();
     // console.log(dietaryData.food.calories);
   }, [dispatch]);
 

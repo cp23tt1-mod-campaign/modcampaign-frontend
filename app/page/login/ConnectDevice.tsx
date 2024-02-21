@@ -63,31 +63,34 @@ const ConnectDevice = () => {
   return (
     <SafeAreaView
       style={{ width: SCREEN_WIDTH }}
-      className="flex flex-col items-center bg-bg"
+      className="flex flex-col items-center bg-bg h-full"
     >
-      <View className="mt-5 mb-6">
-        <Text className="text-header-3 font-semibold">Connect Device</Text>
-      </View>
+      <View className="flex flex-col h-[600px]">
+        <View className="mt-5 mb-6">
+          <Text className="text-header-3 font-semibold">Connect Device</Text>
+        </View>
 
-      <View style={{ width: SCREEN_WIDTH * 0.8 }}>
-        <View className="flex flex-col space-y-5 pb-5">
-          <Text className="text-sub-header-1 font-regular leading-6 text-gray">
-            ModCampaign can automatically add data from Apple Health to help you
-            track your health and fitness, and personalize your experience.
-          </Text>
-          <Text className="text-sub-header-1 font-regular leading-6 text-gray mr-6">
-            To turn this connection off later, go to Profile {">"} Settings{" "}
-            {">"} Connect Device
-          </Text>
-          <Image
-            source={require("../../../public/images/onboardConnect.png")}
-            style={{ height: SCREEN_HEIGHT * 0.53, width: SCREEN_WIDTH * 0.8 }}
-          />
+        <View style={{ width: SCREEN_WIDTH * 0.8 }} className="h-full">
+          <View className="flex flex-col space-y-5 pb-5">
+            <Text className="text-sub-header-1 font-regular leading-6 text-gray">
+              ModCampaign can automatically add data from Apple Health to help
+              you track your health and fitness, and personalize your
+              experience.
+            </Text>
+            <Text className="text-sub-header-1 font-regular leading-6 text-gray mr-6">
+              To turn this connection off later, go to Profile {">"} Settings{" "}
+              {">"} Connect Device
+            </Text>
+            <Image
+              source={require("../../../public/images/onboardConnect.png")}
+              style={{ width: SCREEN_WIDTH * 0.8, height: 300 }}
+            />
+          </View>
         </View>
       </View>
       <View
         style={{ width: SCREEN_WIDTH * 0.8 }}
-        className=" flex flex-row justify-between space-x-7 my-9 "
+        className=" flex flex-row justify-between space-x-7 my-9"
       >
         <Pressable
           onPress={() =>

@@ -117,21 +117,40 @@ export const signUpWithGoogle = createAsyncThunk(
 );
 export const updateUserProfile = createAsyncThunk(
   "user/updateUserProfile",
-  async (params, { getState, dispatch }) => {
+  async (
+    params: {
+      firstName?: any;
+      lastName?: any;
+      gender?: any;
+      age?: any;
+      height?: any;
+      weight?: any;
+      activityLevel?: any;
+    },
+    { getState, dispatch }
+  ) => {
+    console.log(params);
+
     const state = getState() as RootState;
     const { userProfile } = state.user;
+    const { firstName, lastName, gender, age, height, weight, activityLevel } =
+      params;
     const body = {
-      firstName: userProfile.firstName,
-      lastName: userProfile.lastName,
-      gender: userProfile.gender,
-      age: userProfile.age,
-      height: userProfile.height,
-      weight: userProfile.weight,
-      activityLevel: userProfile.activityLevel,
+      firstName,
+      lastName,
+      gender,
+      age,
+      height,
+      weight,
+      activityLevel,
     };
 
     try {
-      const res = await useAxios.patch(`/user?id=${userProfile.userId}`, body);
+      const res: any = await useAxios.patch(
+        `/user?id=${userProfile.userId}`,
+        body
+      );
+
       return {
         statusCode: res.status,
         message: res.data.message,
@@ -243,17 +262,32 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getUserProfile.fulfilled, (state, action) => {
-      console.log(action.payload.data);
-      state.userProfile = action.payload.data;
+      // state.userProfile = action.payload.data;
+      // console.log(state.userProfile);
+      // console.log(
+      //   "🚀 ~ builder.addCase ~ action.payload.data:",
+      //   action.payload.data
+      // );
+      // state.userProfile.activityLevel = action.payload.data.activityLevel;
+      // state.userProfile.age = action.payload.data.age;
+      // state.userProfile.bmr = action.payload.data.bmr;
+      // state.userProfile.email = action.payload.data.email;
+      // state.userProfile.firstName = action.payload.data.firstName;
+      // state.userProfile.bmr = action.payload.data.bmr;
+      // state.userProfile.lastName = action.payload.data.lastName;
+      // state.userProfile.gender = action.payload.data.gender;
+      // state.userProfile.height = action.payload.data.height;
+      // state.userProfile.profileImage = action.payload.data.profileImage;
+      // state.userProfile.weight = action.payload.data.weight;
+      // state.userProfile.userId = action.payload.data.userId;
+      // state.userProfile = action.payload.data;
       // if (action.payload?.statusCode === 200) {
       // if (action.meta.arg.listType === "latest") {
       //   state.latestCampaignList = action.payload?.data;
       // }
-
       // if (action.meta.arg.listType === "popular") {
       //   state.popularCampaignList = action.payload?.data;
       // }
-
       // if (action.meta.arg.listType === "joined") {
       //   state.joinedCampaignList = action.payload?.data;
       // }
@@ -267,7 +301,6 @@ export const userSlice = createSlice({
       //   if (action.meta.arg.listType === "popular") {
       //     state.popularCampaignList = [];
       //   }
-
       //   if (action.meta.arg.listType === "joined") {
       //     state.joinedCampaignList = [];
       //   }

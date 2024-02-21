@@ -58,6 +58,10 @@ const Login = () => {
       console.log("🚀 ~ file: index.tsx:20 ~ check ~ status:", res);
       if (res.status === "already login") {
         // setTimeout(() => {
+        const dietaryData = await AsyncStorage.getItem("@dietaryData");
+        if (dietaryData) {
+          dispatch(setDietary(JSON.parse(dietaryData)));
+        }
         router.push({
           pathname: "/(tabs)/Home",
         });
@@ -65,7 +69,36 @@ const Login = () => {
         // }, 2000);
       } else if (res.status === "login success") {
         if (res.type === "exist") {
+          // const dietaryData = await AsyncStorage.getItem("@dietaryData");
+          // if (dietaryData) {
+          //   dispatch(setDietary(JSON.parse(dietaryData)));
+          // }
           // setTimeout(() => {
+          await AsyncStorage.setItem(
+            "@dietaryData",
+            JSON.stringify({
+              food: {
+                calories: 0,
+                carb: 0,
+                protien: 0,
+                fat: 0,
+              },
+              exercise: {
+                cal: 0,
+              },
+              water: {
+                lit: 0,
+              },
+              caloriesRemain: {
+                value: 0,
+              },
+            })
+          );
+          const dietaryData = await AsyncStorage.getItem("@dietaryData");
+
+          if (dietaryData) {
+            dispatch(setDietary(JSON.parse(dietaryData)));
+          }
           router.push({
             pathname: "/(tabs)/Home",
           });
@@ -73,12 +106,36 @@ const Login = () => {
 
           // }, 2000);
         } else {
+          await AsyncStorage.setItem(
+            "@dietaryData",
+            JSON.stringify({
+              food: {
+                calories: 0,
+                carb: 0,
+                protien: 0,
+                fat: 0,
+              },
+              exercise: {
+                cal: 0,
+              },
+              water: {
+                lit: 0,
+              },
+              caloriesRemain: {
+                value: 0,
+              },
+            })
+          );
+          const dietaryData = await AsyncStorage.getItem("@dietaryData");
+
+          if (dietaryData) {
+            dispatch(setDietary(JSON.parse(dietaryData)));
+          }
           // setTimeout(() => {
           router.push({
             pathname: "/page/login/Policy",
           });
           setIsLoading(false);
-
           // }, 2000);
         }
 
@@ -96,13 +153,6 @@ const Login = () => {
         });
         // }, 2000);
         setIsLoading(false);
-
-        // setIsLoading(false);
-      }
-      const dietaryData = await AsyncStorage.getItem("@dietaryData");
-      if (dietaryData) {
-        dispatch(setDietary(JSON.parse(dietaryData)));
-      } else {
         await AsyncStorage.setItem(
           "@dietaryData",
           JSON.stringify({
@@ -123,7 +173,36 @@ const Login = () => {
             },
           })
         );
+        // setIsLoading(false);
       }
+
+      // const dietaryData = await AsyncStorage.getItem("@dietaryData");
+      // console.log(dietaryData);
+
+      // if (dietaryData) {
+      //   dispatch(setDietary(JSON.parse(dietaryData)));
+      // } else {
+      //   await AsyncStorage.setItem(
+      //     "@dietaryData",
+      //     JSON.stringify({
+      //       food: {
+      //         calories: 0,
+      //         carb: 0,
+      //         protien: 0,
+      //         fat: 0,
+      //       },
+      //       exercise: {
+      //         cal: 0,
+      //       },
+      //       water: {
+      //         lit: 0,
+      //       },
+      //       caloriesRemain: {
+      //         value: 0,
+      //       },
+      //     })
+      //   );
+      // }
 
       // router.push({
       //   pathname: "/(tabs)/Home",
@@ -382,7 +461,7 @@ const Login = () => {
       return {
         opacity: opacityAnimation,
         transform: [{ translateY: translateYAnimation }],
-        height: SCREEN_HEIGHT * 0.4,
+        height: 330,
       };
     });
     return (
@@ -413,7 +492,7 @@ const Login = () => {
               <View className="flex flex-row space-x-2 items-center">
                 <Image
                   source={require("../../../public/images/googleIcon.png")}
-                  style={{ width: 28, height: 28 }}
+                  style={{ width: 22, height: 22 }}
                   className="rounded-full bg-white"
                 />
                 <Text className=" text-white text-sub-header-1 font-medium text-center">

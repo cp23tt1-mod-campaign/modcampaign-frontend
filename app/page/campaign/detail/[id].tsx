@@ -49,6 +49,9 @@ const CampaignDetail = () => {
   const isConnectedThirdParty = useAppSelector((state) => {
     return state.campaign.isConnectThirdParty;
   });
+  const userProfile = useAppSelector((state) => {
+    return state.user.userProfile;
+  });
   const [showModal, setShowModal] = useState(false);
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -331,7 +334,9 @@ const CampaignDetail = () => {
         declineText="Not now"
         animationIn="zoomIn"
         animationOut="zoomOut"
-        handleAccept={() => joinCampaignState(selectedCampaign.id, 1)}
+        handleAccept={() =>
+          joinCampaignState(selectedCampaign.id, userProfile.userId)
+        }
         handleDecline={() => setShowAcceptModal(false)}
       >
         <Text className="text-header-4 font-semibold text-center">
@@ -361,7 +366,9 @@ const CampaignDetail = () => {
         declineText="Cancel"
         animationIn="shake"
         animationOut="zoomOut"
-        handleAccept={() => deleteCampaign(selectedCampaign.id, 1)}
+        handleAccept={() =>
+          deleteCampaign(selectedCampaign.id, userProfile.userId)
+        }
         handleDecline={() => setShowCancelModal(false)}
       >
         <Text className="text-header-4 font-semibold text-center">

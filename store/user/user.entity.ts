@@ -11,6 +11,7 @@ export interface UserEntity {
   activityLevel: number;
   bmr: number;
   role: string;
+  [key: string]: any;
 }
 export interface DietaryEntity {
   food: {

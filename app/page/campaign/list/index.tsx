@@ -13,7 +13,7 @@ import ListOngoing from "./Ongoing";
 import ListCompleted from "./Completed";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CampaignEntity } from "store/campaign/campaign.entity";
-import { useAppDispatch } from "../../../../store/root.store";
+import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
 import { joinCampaign } from "../../../../store/campaign/campaign.slice";
 import UtilModal from "../../../../Util/Modal";
 
@@ -24,7 +24,7 @@ const CampaignList = () => {
   // const { params } = route;
   const route = useRoute();
   const dispatch = useAppDispatch();
-
+  const userProfile = useAppSelector((state) => state.user.userProfile);
   const { listType } = route.params as any;
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [showJoinSuccessModal, setShowJoinSuccessModal] = useState(false);
@@ -148,7 +148,9 @@ const CampaignList = () => {
         declineText="Not now"
         animationIn="zoomIn"
         animationOut="zoomOut"
-        handleAccept={() => joinCampaignState(selectedCampaign?.id, 1)}
+        handleAccept={() =>
+          joinCampaignState(selectedCampaign?.id, userProfile.userId)
+        }
         handleDecline={() => setShowJoinModal(false)}
       >
         <Text className="text-header-4 font-semibold text-center">
