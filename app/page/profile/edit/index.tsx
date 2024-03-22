@@ -43,6 +43,7 @@ const EditProfile = () => {
   // const [isDataChanged, setIsDataChanged] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -135,6 +136,7 @@ const EditProfile = () => {
       updateUserProfile({
         firstName,
         lastName,
+        displayName,
         age: parseInt(age),
         height: parseInt(height),
         weight: parseInt(weight),
@@ -150,6 +152,7 @@ const EditProfile = () => {
         userId,
         firstName,
         lastName,
+        displayName,
         email,
         gender,
         height,
@@ -169,6 +172,7 @@ const EditProfile = () => {
         userId,
         firstName,
         lastName,
+        displayName,
         email,
         gender,
         height,
@@ -210,11 +214,12 @@ const EditProfile = () => {
   }, [userProfile.activityLevel, userProfile.gender]);
 
   useEffect(() => {
-    const ageString = userProfile.age.toString();
-    const heightString = userProfile.height.toString();
-    const weightString = userProfile.weight.toString();
+    // const ageString = userProfile.age.toString();
+    // const heightString = userProfile.height.toString();
+    // const weightString = userProfile.weight.toString();
     setFirstName(userProfile.firstName);
     setLastName(userProfile.lastName);
+    setDisplayName(userProfile.displayName);
     setAge(String(userProfile.age));
     setHeight(String(userProfile.height));
     setWeight(String(userProfile.weight));
@@ -272,6 +277,7 @@ const EditProfile = () => {
     if (
       (userProfile.firstName !== firstName.trim() ||
         userProfile.lastName !== lastName.trim() ||
+        userProfile.displayName !== displayName.trim() ||
         userProfile.age !== parseInt(age) ||
         userProfile.height !== parseInt(height) ||
         userProfile.weight !== parseInt(weight) ||
@@ -280,6 +286,7 @@ const EditProfile = () => {
       !(
         firstName.trim() === "" ||
         lastName.trim() === "" ||
+        displayName.trim() === "" ||
         age.trim() === "" ||
         height.trim() === "" ||
         weight.trim() === ""
@@ -289,15 +296,27 @@ const EditProfile = () => {
     } else {
       setIsDisabled(true);
     }
-  }, [firstName, lastName, age, weight, height, genderList, actMultiply]);
+  }, [
+    firstName,
+    lastName,
+    displayName,
+    age,
+    weight,
+    height,
+    genderList,
+    actMultiply,
+  ]);
 
   return (
     <SafeAreaView
       style={{ width: SCREEN_WIDTH }}
       className="flex flex-col items-center bg-bg h-full"
     >
-      <ScrollView style={{ width: SCREEN_WIDTH * 0.9 }} className="h-[400px]">
-        <View className="flex flex-col space-y-4 pb-10">
+      <ScrollView>
+        <View
+          className="flex flex-col space-y-4 pb-10 px-4"
+          style={{ width: SCREEN_WIDTH }}
+        >
           {/* <KeyboardAwareScrollView extraHeight={150}> */}
           {/* Gender */}
           <View className="flex flex-col space-y-2">
@@ -305,16 +324,16 @@ const EditProfile = () => {
               First name <Text className="text-red"> *</Text>
             </Text>
             <TextInput
-              aria-aria-labelledby="name"
+              aria-aria-labelledby="firstName"
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-              placeholder="Your name"
+              placeholder="Your first name"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setFirstName(text)}
               // onBlur={() => dispatch(setUserFirstName(firstName))}
               onBlur={() => setFirstName(firstName)}
               value={firstName}
               editable={true}
-              area-label="Weight (Kg.)"
+              area-label="firstName"
               maxLength={50}
               inputMode="text"
             />
@@ -327,21 +346,43 @@ const EditProfile = () => {
               Last name <Text className="text-red"> *</Text>
             </Text>
             <TextInput
-              aria-aria-labelledby="name"
+              aria-aria-labelledby="lastName"
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-              placeholder="Your name"
+              placeholder="Your last name"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setLastName(text)}
               // onBlur={() => dispatch(setUserLastName(lastName))}
               onBlur={() => setLastName(lastName)}
               value={lastName}
               editable={true}
-              area-label="Weight (Kg.)"
+              area-label="lastName"
               maxLength={50}
               inputMode="text"
             />
             <Text className="text-gray text-body-3 font-regular text-right w-full">
               {lastName.length}/50
+            </Text>
+          </View>
+          <View className="flex flex-col space-y-2">
+            <Text className="text-sub-header-2 font-medium" nativeID="name">
+              Display name <Text className="text-red"> *</Text>
+            </Text>
+            <TextInput
+              aria-aria-labelledby="displayName"
+              className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+              placeholder="Your display name"
+              placeholderTextColor={"#929292"}
+              onChangeText={(text) => setDisplayName(text)}
+              // onBlur={() => dispatch(setUserLastName(lastName))}
+              onBlur={() => setDisplayName(lastName)}
+              value={displayName}
+              editable={true}
+              area-label="displayName"
+              maxLength={50}
+              inputMode="text"
+            />
+            <Text className="text-gray text-body-3 font-regular text-right w-full">
+              {displayName.length}/50
             </Text>
           </View>
           <View className="flex flex-col space-y-2">
@@ -388,19 +429,19 @@ const EditProfile = () => {
           {/* Height*/}
           <View className="flex flex-col space-y-2">
             <Text className="text-sub-header-2 font-medium" nativeID="name">
-              Height (Cm.) <Text className="text-red"> *</Text>
+              Height (cm) <Text className="text-red"> *</Text>
             </Text>
             <TextInput
               aria-aria-labelledby="name"
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-              placeholder="Height (Cm.)"
+              placeholder="Height (cm)"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setHeight(text)}
               // onBlur={() => dispatch(setUserHeight(parseInt(height)))}
               onBlur={() => setHeight(height)}
               value={height}
               editable={true}
-              area-label="Height (Cm.)"
+              area-label="Height (cm)"
               // onSubmitEditing={() => console.log(campaignName)}
               // maxLength={50}
               // onFocus={() => setFocused(true)}
@@ -412,19 +453,19 @@ const EditProfile = () => {
           {/* Weight */}
           <View className="flex flex-col space-y-2">
             <Text className="text-sub-header-2 font-medium" nativeID="name">
-              Weight (Kg.) <Text className="text-red"> *</Text>
+              Weight (kg) <Text className="text-red"> *</Text>
             </Text>
             <TextInput
               aria-aria-labelledby="name"
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-              placeholder="Weight (Kg.)"
+              placeholder="Weight (kg)"
               placeholderTextColor={"#929292"}
               onChangeText={(text) => setWeight(text)}
               // onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
               onBlur={() => setWeight(weight)}
               value={weight}
               editable={true}
-              area-label="Weight (Kg.)"
+              area-label="Weight (kg)"
               // onSubmitEditing={() => console.log(campaignName)}
               // maxLength={50}
               // onFocus={() => setFocused(true)}

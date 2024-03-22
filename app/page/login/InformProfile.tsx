@@ -17,6 +17,7 @@ import {
   setUserActivityLevel,
   setUserAge,
   setUserBMR,
+  setUserDisplayName,
   setUserGender,
   setUserHeight,
   setUserProfile,
@@ -25,6 +26,7 @@ import {
 } from "../../../store/user/user.slice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserEntity } from "store/user/user.entity";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 // import {
 //   SCREEN_HEIGHT,
 //   SCREEN_WIDTH,
@@ -34,6 +36,7 @@ const InformProfile = () => {
   const dispatch = useAppDispatch();
   const userProfile = useAppSelector((state) => state.user.userProfile);
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
+  const [displayName, setDisplayName] = useState("");
   const [age, setAge] = useState("");
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -162,6 +165,7 @@ const InformProfile = () => {
         userId,
         firstName,
         lastName,
+        displayName,
         email,
         gender,
         height,
@@ -183,6 +187,7 @@ const InformProfile = () => {
         userId,
         firstName,
         lastName,
+        displayName,
         email,
         gender,
         height,
@@ -260,122 +265,163 @@ const InformProfile = () => {
         </View>
         <ScrollView className="h-full">
           <View className="flex flex-col">
-            <View
-              style={{ width: SCREEN_WIDTH * 0.9 }}
-              className="flex flex-col space-y-4 pb-10"
-            >
-              {/* <KeyboardAwareScrollView extraHeight={150}> */}
-              {/* Gender */}
-              <View className="flex flex-col space-y-2">
-                <Text
-                  className="text-sub-header-2 font-medium flex flex-row"
-                  nativeID="name"
-                >
-                  Gender <Text className="text-red"> *</Text>
-                </Text>
-                <View className="flex flex-row space-x-20">
-                  {genderList.map((item, index) => {
-                    return (
-                      <View key={`gender-${index}`}>
-                        <Radio
-                          data={item}
-                          handleSelected={handleSelectedGender}
-                        />
-                      </View>
-                    );
-                  })}
+            <KeyboardAwareScrollView extraHeight={150}>
+              <View
+                style={{ width: SCREEN_WIDTH * 0.9 }}
+                className="flex flex-col space-y-5 pb-10"
+              >
+                {/* Display Name */}
+                <View className="flex flex-col space-y-2">
+                  <Text
+                    className="text-sub-header-2 font-medium"
+                    nativeID="displayName"
+                  >
+                    Display name <Text className="text-red"> *</Text>
+                  </Text>
+                  <TextInput
+                    aria-aria-labelledby="displayName"
+                    className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+                    placeholder="Your Display name"
+                    placeholderTextColor={"#929292"}
+                    onChangeText={(text) => setDisplayName(text)}
+                    onBlur={() => dispatch(setUserDisplayName(displayName))}
+                    value={displayName}
+                    editable={true}
+                    area-label="displayName"
+                    // onSubmitEditing={() => console.log(campaignName)}
+                    // maxLength={50}
+                    // onFocus={() => setFocused(true)}
+                    // onBlur={() => setFocused(false)}
+                    inputMode="text"
+                    // secureTextEntry={true}
+                  />
+                  <Text
+                    className="text-body-3 font-regular text-gray"
+                    nativeID="name"
+                  >
+                    The name that will be displayed in the leaderboard for each
+                    campaign you join. You can change it anytime you want.
+                  </Text>
+                </View>
+                {/* Gender */}
+                <View className="flex flex-col space-y-2">
+                  <Text
+                    className="text-sub-header-2 font-medium flex flex-row"
+                    nativeID="name"
+                  >
+                    Gender <Text className="text-red"> *</Text>
+                  </Text>
+                  <View className="flex flex-row space-x-20">
+                    {genderList.map((item, index) => {
+                      return (
+                        <View key={`gender-${index}`}>
+                          <Radio
+                            data={item}
+                            handleSelected={handleSelectedGender}
+                          />
+                        </View>
+                      );
+                    })}
+                  </View>
+                </View>
+                {/* Age */}
+                <View className="flex flex-col space-y-2">
+                  <Text
+                    className="text-sub-header-2 font-medium"
+                    nativeID="name"
+                  >
+                    Age (Years) <Text className="text-red"> *</Text>
+                  </Text>
+                  <TextInput
+                    aria-aria-labelledby="name"
+                    className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+                    placeholder="Age (Years)"
+                    placeholderTextColor={"#929292"}
+                    onChangeText={(text) => setAge(text)}
+                    onBlur={() => dispatch(setUserAge(parseInt(age)))}
+                    value={age}
+                    editable={true}
+                    area-label="Age (Years)"
+                    // onSubmitEditing={() => console.log(campaignName)}
+                    // maxLength={50}
+                    // onFocus={() => setFocused(true)}
+                    // onBlur={() => setFocused(false)}
+                    inputMode="numeric"
+                    // secureTextEntry={true}
+                  />
+                </View>
+                {/* Height*/}
+                <View className="flex flex-col space-y-2">
+                  <Text
+                    className="text-sub-header-2 font-medium"
+                    nativeID="name"
+                  >
+                    Height (cm) <Text className="text-red"> *</Text>
+                  </Text>
+                  <TextInput
+                    aria-aria-labelledby="name"
+                    className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+                    placeholder="Height (cm)"
+                    placeholderTextColor={"#929292"}
+                    onChangeText={(text) => setHeight(text)}
+                    onBlur={() => dispatch(setUserHeight(parseInt(height)))}
+                    value={height}
+                    editable={true}
+                    area-label="Height (cm)"
+                    // onSubmitEditing={() => console.log(campaignName)}
+                    // maxLength={50}
+                    // onFocus={() => setFocused(true)}
+                    // onBlur={() => setFocused(false)}
+                    inputMode="numeric"
+                    // secureTextEntry={true}
+                  />
+                </View>
+                {/* Weight */}
+                <View className="flex flex-col space-y-2">
+                  <Text
+                    className="text-sub-header-2 font-medium"
+                    nativeID="name"
+                  >
+                    Weight (kg) <Text className="text-red"> *</Text>
+                  </Text>
+                  <TextInput
+                    aria-aria-labelledby="name"
+                    className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
+                    placeholder="Weight (kg)"
+                    placeholderTextColor={"#929292"}
+                    onChangeText={(text) => setWeight(text)}
+                    onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
+                    value={weight}
+                    editable={true}
+                    area-label="Weight (kg)"
+                    // onSubmitEditing={() => console.log(campaignName)}
+                    // maxLength={50}
+                    // onFocus={() => setFocused(true)}
+                    // onBlur={() => setFocused(false)}
+                    inputMode="numeric"
+                    // secureTextEntry={true}
+                  />
+                </View>
+                {/* Activity Multiplier */}
+                <View className="flex flex-col space-y-2">
+                  <Text className="text-sub-header-2 font-medium">
+                    Activity Multiplier <Text className="text-red"> *</Text>
+                  </Text>
+                  <View className="flex flex-col space-y-3">
+                    {actMultiply.map((item, index) => {
+                      return (
+                        <View key={`actMultiply-${index}`}>
+                          <Radio
+                            data={item}
+                            handleSelected={handleSelectedActMultiply}
+                          />
+                        </View>
+                      );
+                    })}
+                  </View>
                 </View>
               </View>
-              {/* Age */}
-              <View className="flex flex-col space-y-2">
-                <Text className="text-sub-header-2 font-medium" nativeID="name">
-                  Age (Years) <Text className="text-red"> *</Text>
-                </Text>
-                <TextInput
-                  aria-aria-labelledby="name"
-                  className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-                  placeholder="Age (Years)"
-                  placeholderTextColor={"#929292"}
-                  onChangeText={(text) => setAge(text)}
-                  onBlur={() => dispatch(setUserAge(parseInt(age)))}
-                  value={age}
-                  editable={true}
-                  area-label="Age (Years)"
-                  // onSubmitEditing={() => console.log(campaignName)}
-                  // maxLength={50}
-                  // onFocus={() => setFocused(true)}
-                  // onBlur={() => setFocused(false)}
-                  inputMode="numeric"
-                  // secureTextEntry={true}
-                />
-              </View>
-              {/* Height*/}
-              <View className="flex flex-col space-y-2">
-                <Text className="text-sub-header-2 font-medium" nativeID="name">
-                  Height (Cm.) <Text className="text-red"> *</Text>
-                </Text>
-                <TextInput
-                  aria-aria-labelledby="name"
-                  className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-                  placeholder="Height (Cm.)"
-                  placeholderTextColor={"#929292"}
-                  onChangeText={(text) => setHeight(text)}
-                  onBlur={() => dispatch(setUserHeight(parseInt(height)))}
-                  value={height}
-                  editable={true}
-                  area-label="Height (Cm.)"
-                  // onSubmitEditing={() => console.log(campaignName)}
-                  // maxLength={50}
-                  // onFocus={() => setFocused(true)}
-                  // onBlur={() => setFocused(false)}
-                  inputMode="numeric"
-                  // secureTextEntry={true}
-                />
-              </View>
-              {/* Weight */}
-              <View className="flex flex-col space-y-2">
-                <Text className="text-sub-header-2 font-medium" nativeID="name">
-                  Weight (Kg.) <Text className="text-red"> *</Text>
-                </Text>
-                <TextInput
-                  aria-aria-labelledby="name"
-                  className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
-                  placeholder="Weight (Kg.)"
-                  placeholderTextColor={"#929292"}
-                  onChangeText={(text) => setWeight(text)}
-                  onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
-                  value={weight}
-                  editable={true}
-                  area-label="Weight (Kg.)"
-                  // onSubmitEditing={() => console.log(campaignName)}
-                  // maxLength={50}
-                  // onFocus={() => setFocused(true)}
-                  // onBlur={() => setFocused(false)}
-                  inputMode="numeric"
-                  // secureTextEntry={true}
-                />
-              </View>
-              {/* Activity Multiplier */}
-              <View className="flex flex-col space-y-2">
-                <Text className="text-sub-header-2 font-medium">
-                  Activity Multiplier <Text className="text-red"> *</Text>
-                </Text>
-                <View className="flex flex-col space-y-3">
-                  {actMultiply.map((item, index) => {
-                    return (
-                      <View key={`actMultiply-${index}`}>
-                        <Radio
-                          data={item}
-                          handleSelected={handleSelectedActMultiply}
-                        />
-                      </View>
-                    );
-                  })}
-                </View>
-              </View>
-
-              {/* </KeyboardAwareScrollView> */}
-            </View>
+            </KeyboardAwareScrollView>
           </View>
         </ScrollView>
         <View className="mx-3 mb-10">

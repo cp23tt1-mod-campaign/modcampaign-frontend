@@ -92,7 +92,7 @@ const Diary = () => {
                   maximumFractionDigits: 0,
                 })}
               </Text>
-              <Text className="text-body-3 font-regular text-gray">Goal</Text>
+              <Text className="text-body-3 font-regular text-gray">BMR</Text>
             </View>
             <View>
               <Text className="text-sub-header-2 font-medium text-black">
@@ -188,7 +188,7 @@ const Diary = () => {
                     className="flex flex-row justify-center"
                   >
                     <Text className="text-sub-header-2 font-medium text-black">
-                      g.
+                      g
                     </Text>
                   </View>
                 </View>
@@ -219,7 +219,7 @@ const Diary = () => {
                     className="flex flex-row justify-center"
                   >
                     <Text className="text-sub-header-2 font-medium text-black">
-                      g.
+                      g
                     </Text>
                   </View>
                 </View>
@@ -250,7 +250,7 @@ const Diary = () => {
                     className="flex flex-row justify-center"
                   >
                     <Text className="text-sub-header-2 font-medium text-black">
-                      g.
+                      g
                     </Text>
                   </View>
                 </View>

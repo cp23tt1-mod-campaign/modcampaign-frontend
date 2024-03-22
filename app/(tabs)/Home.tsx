@@ -329,7 +329,7 @@ export default function Home() {
                   duration={500}
                   progressValueColor={color}
                   maxValue={userProfile.bmr}
-                  title={"kcal"}
+                  title={"Kcal"}
                   progressValueStyle={{ fontSize: 42, fontWeight: "bold" }}
                   titleColor={"#929292"}
                   titleStyle={{ fontWeight: "500", fontSize: 12 }}
@@ -355,7 +355,7 @@ export default function Home() {
                       {dietaryData.food.carb.toLocaleString("en-US", {
                         maximumFractionDigits: 0,
                       })}{" "}
-                      g.
+                      g
                     </Text>
                   </View>
                 </View>
@@ -369,7 +369,7 @@ export default function Home() {
                       {dietaryData.food.protien.toLocaleString("en-US", {
                         maximumFractionDigits: 0,
                       })}{" "}
-                      g.
+                      g
                     </Text>
                   </View>
                 </View>
@@ -383,7 +383,7 @@ export default function Home() {
                       {dietaryData.food.fat.toLocaleString("en-US", {
                         maximumFractionDigits: 0,
                       })}{" "}
-                      g.
+                      g
                     </Text>
                   </View>
                 </View>
@@ -505,7 +505,7 @@ export default function Home() {
                   <View className="bg-[#FFDBC1] flex flex-row items-center justify-center w-7 h-7 rounded-full">
                     <UtilIcon
                       category="MaterialCommunityIcons"
-                      name={"water"}
+                      name={"cup"}
                       size={16}
                       color="#FF7410"
                     />
@@ -519,7 +519,7 @@ export default function Home() {
                     })}
                   </Text>
                   <Text className="text-body-3 font-regular text-gray">
-                    liters
+                    liter
                   </Text>
                 </View>
               </View>

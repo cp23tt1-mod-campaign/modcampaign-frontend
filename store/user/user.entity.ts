@@ -2,6 +2,7 @@ export interface UserEntity {
   userId: any;
   firstName: string;
   lastName: string;
+  displayName: string;
   email: string;
   profileImage: string;
   gender: string;

@@ -25,6 +25,7 @@ export const initialState: UserState = {
     userId: null,
     firstName: "",
     lastName: "",
+    displayName: "",
     email: "",
     profileImage: "",
     gender: "",
@@ -89,6 +90,7 @@ export const signUpWithGoogle = createAsyncThunk(
     const body = {
       firstName: userProfile.firstName,
       lastName: userProfile.lastName,
+      displayName: userProfile.displayName,
       email: userProfile.email,
       profileImage: userProfile.profileImage,
       gender: userProfile.gender,
@@ -121,6 +123,7 @@ export const updateUserProfile = createAsyncThunk(
     params: {
       firstName?: any;
       lastName?: any;
+      displayName?: any;
       gender?: any;
       age?: any;
       height?: any;
@@ -133,11 +136,20 @@ export const updateUserProfile = createAsyncThunk(
 
     const state = getState() as RootState;
     const { userProfile } = state.user;
-    const { firstName, lastName, gender, age, height, weight, activityLevel } =
-      params;
+    const {
+      firstName,
+      lastName,
+      displayName,
+      gender,
+      age,
+      height,
+      weight,
+      activityLevel,
+    } = params;
     const body = {
       firstName,
       lastName,
+      displayName,
       gender,
       age,
       height,
@@ -207,6 +219,9 @@ export const userSlice = createSlice({
     },
     setUserEmail: (state, action: PayloadAction<string>) => {
       state.userProfile.email = action.payload;
+    },
+    setUserDisplayName: (state, action: PayloadAction<string>) => {
+      state.userProfile.displayName = action.payload;
     },
     setUserProfileImage: (state, action: PayloadAction<string>) => {
       state.userProfile.profileImage = action.payload;
@@ -319,6 +334,7 @@ export const {
   setUserEmail,
   setUserProfileImage,
   setDefaultState,
+  setUserDisplayName,
   setUserProfile,
   setUserGender,
   setUserAge,

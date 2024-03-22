@@ -39,7 +39,6 @@ import {
 import { UserEntity } from "../../../store/user/user.entity";
 
 WebBrowser.maybeCompleteAuthSession();
-
 const Login = () => {
   const dispatch = useAppDispatch();
   const userProfile = useAppSelector((state) => state.user.userProfile);
@@ -134,6 +133,7 @@ const Login = () => {
           // setTimeout(() => {
           router.push({
             pathname: "/page/login/Policy",
+            params: { form: "loginPage" },
           });
           setIsLoading(false);
           // }, 2000);
@@ -251,6 +251,7 @@ const Login = () => {
             userId,
             firstName,
             lastName,
+            displayName,
             email,
             gender,
             height,
@@ -277,6 +278,7 @@ const Login = () => {
             userId,
             firstName,
             lastName,
+            displayName,
             email,
             gender,
             height,
@@ -305,6 +307,7 @@ const Login = () => {
         userId,
         firstName,
         lastName,
+        displayName,
         email,
         gender,
         height,
@@ -321,6 +324,7 @@ const Login = () => {
         userId,
         firstName,
         lastName,
+        displayName,
         email,
         gender,
         height,

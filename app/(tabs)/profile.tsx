@@ -40,6 +40,10 @@ const Profile = () => {
   ];
   const [profileData, setProfileData] = useState([
     {
+      title: "Display name",
+      value: userProfile.displayName,
+    },
+    {
       title: "Gender",
       value: userProfile.gender,
     },
@@ -81,19 +85,19 @@ const Profile = () => {
     console.log(userState.clonedUserProfile);
   }, [dispatch]);
   useEffect(() => {
-    // const genderFirstLetterUpper =
-    //   userProfile.gender.charAt(0).toUpperCase() + userProfile.gender.slice(1);
-    // setProfileData((prevList) => {
-    //   return prevList.map((item) => {
-    //     if (item.title === "Gender") {
-    //       return {
-    //         ...item,
-    //         value: genderFirstLetterUpper,
-    //       };
-    //     }
-    //     return item;
-    //   });
-    // });
+    const genderFirstLetterUpper =
+      userProfile.gender.charAt(0).toUpperCase() + userProfile.gender.slice(1);
+    setProfileData((prevList) => {
+      return prevList.map((item) => {
+        if (item.title === "Gender") {
+          return {
+            ...item,
+            value: genderFirstLetterUpper,
+          };
+        }
+        return item;
+      });
+    });
   }, [userProfile, dispatch]);
   return (
     <SafeAreaView className="bg-bg h-full" style={{ width: SCREEN_WIDTH }}>
@@ -190,11 +194,12 @@ const Profile = () => {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                // onPress={() =>
-                //   router.push({
-                //     pathname: "/page/login/Policy",
-                //   })
-                // }
+                onPress={() =>
+                  router.push({
+                    pathname: "/page/login/Policy",
+                    params: { form: "profilePage" },
+                  })
+                }
                 className="p-4 flex flex-row justify-between"
               >
                 <Text

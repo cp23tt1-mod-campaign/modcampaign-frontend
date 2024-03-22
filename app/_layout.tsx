@@ -136,7 +136,17 @@ function RootLayoutNav() {
           name="page/login/Policy"
           component={PolicyPage}
           options={{
-            headerShown: false,
+            title: "Privacy Policy",
+            headerStyle: {
+              backgroundColor: "#F5F5F5",
+            },
+            headerTintColor: "#000000",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerShadowVisible: false,
+            // headerRight: () => <HeaderRight />,
           }}
         />
         <Stacks.Screen
