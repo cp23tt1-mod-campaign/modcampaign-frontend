@@ -283,8 +283,16 @@ const InformProfile = () => {
                     className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
                     placeholder="Your Display name"
                     placeholderTextColor={"#929292"}
-                    onChangeText={(text) => setDisplayName(text)}
-                    onBlur={() => dispatch(setUserDisplayName(displayName))}
+                    onChangeText={(text) =>
+                      setDisplayName(text.replace(/[^a-zA-Z]/g, ""))
+                    }
+                    onBlur={() =>
+                      dispatch(
+                        setUserDisplayName(
+                          displayName.replace(/[^a-zA-Z]/g, "")
+                        )
+                      )
+                    }
                     value={displayName}
                     editable={true}
                     area-label="displayName"
@@ -337,8 +345,10 @@ const InformProfile = () => {
                     className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
                     placeholder="Age (Years)"
                     placeholderTextColor={"#929292"}
-                    onChangeText={(text) => setAge(text)}
-                    onBlur={() => dispatch(setUserAge(parseInt(age)))}
+                    onChangeText={(text) => setAge(text.replace(/[^0-9]/g, ""))}
+                    onBlur={() =>
+                      dispatch(setUserAge(parseInt(age.replace(/[^0-9]/g, ""))))
+                    }
                     value={age}
                     editable={true}
                     area-label="Age (Years)"
@@ -363,8 +373,14 @@ const InformProfile = () => {
                     className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
                     placeholder="Height (cm)"
                     placeholderTextColor={"#929292"}
-                    onChangeText={(text) => setHeight(text)}
-                    onBlur={() => dispatch(setUserHeight(parseInt(height)))}
+                    onChangeText={(text) =>
+                      setHeight(text.replace(/[^0-9]/g, ""))
+                    }
+                    onBlur={() =>
+                      dispatch(
+                        setUserHeight(parseInt(height.replace(/[^0-9]/g, "")))
+                      )
+                    }
                     value={height}
                     editable={true}
                     area-label="Height (cm)"
@@ -389,8 +405,14 @@ const InformProfile = () => {
                     className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
                     placeholder="Weight (kg)"
                     placeholderTextColor={"#929292"}
-                    onChangeText={(text) => setWeight(text)}
-                    onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
+                    onChangeText={(text) =>
+                      setWeight(text.replace(/[^0-9]/g, ""))
+                    }
+                    onBlur={() =>
+                      dispatch(
+                        setUserWeight(parseInt(weight.replace(/[^0-9]/g, "")))
+                      )
+                    }
                     value={weight}
                     editable={true}
                     area-label="Weight (kg)"

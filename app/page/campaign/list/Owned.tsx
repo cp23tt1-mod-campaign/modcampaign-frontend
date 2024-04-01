@@ -13,7 +13,10 @@ import { useRoute } from "@react-navigation/native";
 import { CampaignEntity } from "../../../../store/campaign/campaign.entity";
 import UtilModal from "../../../../Util/Modal";
 import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
-import { cancelCampaign } from "../../../../store/campaign/campaign.slice";
+import {
+  cancelCampaign,
+  getCampaignDetail,
+} from "../../../../store/campaign/campaign.slice";
 
 const TopTabs = createMaterialTopTabNavigator();
 
@@ -31,7 +34,7 @@ const OwnedCampaignList = () => {
 
   const handleCancel = (item: any) => {
     Vibration.vibrate(50);
-    setSelectedCampaign(item);
+    // setSelectedCampaign(item);
     setShowCancelModal(true);
   };
   const deleteCampaignState = async (campaignId: any, userId: any) => {
@@ -52,8 +55,10 @@ const OwnedCampaignList = () => {
       }, 3000);
     }
   };
-  const handleSelectCampaign = (item: any, routeName: any) => {
+  const handleSelectCampaign = async (item: any, routeName: any) => {
     setSelectedCampaign(item);
+    await dispatch(getCampaignDetail({ id: Number(item.id) }));
+
     router.push({
       pathname: "/page/campaign/detail/[id]",
       params: { id: item.id, type: routeName },

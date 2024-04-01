@@ -175,8 +175,6 @@ const Login = () => {
         );
         // setIsLoading(false);
       }
-
-      // const dietaryData = await AsyncStorage.getItem("@dietaryData");
       // console.log(dietaryData);
 
       // if (dietaryData) {
@@ -210,7 +208,8 @@ const Login = () => {
     };
     check();
     console.log("login with google");
-  }, [response, promptAsync]);
+    // }, [response, promptAsync]);
+  }, [response]);
 
   const handleSignInWithGoogle = async () => {
     setIsLoading(true);

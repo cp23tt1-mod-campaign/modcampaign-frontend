@@ -14,8 +14,13 @@ import ListCompleted from "./Completed";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { CampaignEntity } from "store/campaign/campaign.entity";
 import { useAppDispatch, useAppSelector } from "../../../../store/root.store";
-import { joinCampaign } from "../../../../store/campaign/campaign.slice";
+import {
+  getCampaignDetail,
+  getCampaignLeaderBoard,
+  joinCampaign,
+} from "../../../../store/campaign/campaign.slice";
 import UtilModal from "../../../../Util/Modal";
+import dayjs from "dayjs";
 
 const TopTabs = createMaterialTopTabNavigator();
 
@@ -40,9 +45,12 @@ const CampaignList = () => {
   };
   const joinCampaignState = async (campaignId: any, userId: any) => {
     setShowJoinModal(false);
+    const joinedDate = dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss.SSS");
+    const targetValue = 0;
 
-    const res: any = await dispatch(joinCampaign({ campaignId, userId }));
-
+    const res: any = await dispatch(
+      joinCampaign({ campaignId, userId, targetValue, joinedDate })
+    );
     if (res.payload?.statusCode === 200) {
       setTimeout(() => {
         setShowJoinSuccessModal(true);
@@ -70,7 +78,17 @@ const CampaignList = () => {
       }, 3000);
     }
   };
-  const handleSelectCampaign = (item: any, routeName: any) => {
+  const handleSelectCampaign = async (item: any, routeName: any) => {
+    await dispatch(getCampaignDetail({ id: Number(item.id) }));
+    if (routeName === "Joined Campaign") {
+      await dispatch(
+        getCampaignLeaderBoard({
+          campaignId: Number(item.id),
+          userId: userProfile.userId,
+          limit: 3,
+        })
+      );
+    }
     setSelectedCampaign(item);
     router.push({
       pathname: "/page/campaign/detail/[id]",

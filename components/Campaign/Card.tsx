@@ -4,10 +4,18 @@ import React from "react";
 import dayjs from "dayjs";
 
 const CampaignCard = (props: { data: any; className?: any; type?: any }) => {
-  const timestamp = new Date().getTime();
+  // const timestamp = new Date().getTime();
+  const today = new Date();
   if (props.type === "campaign") {
     return (
-      <View className="flex flex-col bg-white rounded-lg shadow-sm">
+      <View className="flex flex-col bg-white rounded-lg shadow-sm relative">
+        {dayjs(props.data.end).isBefore(today) ? (
+          <View className="absolute z-50 right-2 top-2 bg-orange-2 rounded-xl flex flex-row justify-center px-3 py-1">
+            <Text className="text-orange text-small font-medium">
+              Completed
+            </Text>
+          </View>
+        ) : null}
         <Image
           source={{
             uri: `https://storage.googleapis.com/modcampaign-images/${props.data.image}`,

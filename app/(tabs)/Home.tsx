@@ -30,15 +30,21 @@ import UtilIcon from "../../Util/Icon";
 import { useAppDispatch, useAppSelector } from "../../store/root.store";
 import {
   setDietary,
+  setExerciseCal,
   setFoodCalories,
+  setFoodCarb,
+  setFoodFat,
+  setFoodProtien,
   setRemainCalories,
   setStepsValue,
+  setWaterLit,
 } from "../../store/user/user.slice";
 import { initialize, readRecords } from "react-native-health-connect";
 import dayjs from "dayjs";
 import { setConnectThirdParty } from "../../store/campaign/campaign.slice";
 import { TimeRangeFilter } from "react-native-health-connect/lib/typescript/types/base.types";
 import { ScrollView } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const permission: HealthKitPermissions = {
   permissions: {
@@ -62,6 +68,16 @@ export default function Home() {
     // dispatch(setLoading(true));
     setRefreshing(true);
   }, []);
+
+  useEffect(() => {
+    if (refreshing) {
+      setTimeout(() => {
+        setRefreshing(false);
+        updateDietaryLocal();
+        getStepValue();
+      }, 2000);
+    }
+  }, [refreshing]);
   // const [calValue, setCalValue] = useState(350);
   // const [maxCalValue, setMaxCalValue] = useState(0);
   const dispatch = useAppDispatch();
@@ -166,7 +182,7 @@ export default function Home() {
   const getStepValue = async () => {
     // if (isConnectedThirdParty) {
     // console.log(selectedCampaign.categoryTarget);
-    console.log(isConnectedThirdParty);
+    console.log("🚀 ~ isConnectedThirdParty:", isConnectedThirdParty);
 
     const isInitialized = await initialize();
     console.log("isInitialized", isInitialized);
@@ -176,31 +192,30 @@ export default function Home() {
       return;
     } else {
       dispatch(setConnectThirdParty(true));
+      const today = new Date();
+      const yesterday = new Date(today.getTime() - 86400000);
+      // console.log(yesterday.toISOString());
+      // console.log(today.toISOString());
+
+      const timeRangeFilter: TimeRangeFilter = {
+        operator: "between",
+        startTime: yesterday.toISOString(),
+        endTime: today.toISOString(),
+      };
+
+      // // Steps
+      const steps = await readRecords("Steps", { timeRangeFilter });
+      const totalSteps = steps.reduce((sum, cur) => sum + cur.count, 0);
+      // console.log(
+      //   "🚀 ~ getStepValue ~ totalSteps:",
+      //   `${totalSteps.toLocaleString("en-US", {          maximumFractionDigits: 0,})("en-US")}`
+      // );
+      dispatch(
+        setStepsValue(
+          `${totalSteps.toLocaleString("en-US", { maximumFractionDigits: 0 })}`
+        )
+      );
     }
-
-    const today = new Date();
-    const yesterday = new Date(today.getTime() - 86400000);
-    // console.log(yesterday.toISOString);
-    // console.log(today.toISOString());
-
-    const timeRangeFilter: TimeRangeFilter = {
-      operator: "between",
-      startTime: yesterday.toISOString(),
-      endTime: today.toISOString(),
-    };
-
-    // // Steps
-    const steps = await readRecords("Steps", { timeRangeFilter });
-    const totalSteps = steps.reduce((sum, cur) => sum + cur.count, 0);
-    // console.log(
-    //   "🚀 ~ getStepValue ~ totalSteps:",
-    //   `${totalSteps.toLocaleString("en-US", {          maximumFractionDigits: 0,})("en-US")}`
-    // );
-    dispatch(
-      setStepsValue(
-        `${totalSteps.toLocaleString("en-US", { maximumFractionDigits: 0 })}`
-      )
-    );
 
     // const date = new Date();
     // console.log(date);
@@ -248,7 +263,7 @@ export default function Home() {
       )
     );
     const data = await AsyncStorage.getItem("@dietaryData");
-    console.log("🚀 ~ updateDietaryLocal ~ data:", data);
+    // console.log("🚀 ~ updateDietaryLocal ~ data:", data);
 
     if (data) {
       dispatch(setDietary(JSON.parse(data)));
@@ -275,7 +290,72 @@ export default function Home() {
     }
   };
   useEffect(() => {
-    getStepValue();
+    const init = async () => {
+      const data: any = await AsyncStorage.getItem("@tomorrow");
+      const isInitialized = await initialize();
+      console.log("isInitialized", isInitialized);
+
+      if (!isInitialized) {
+        dispatch(setConnectThirdParty(false));
+        // return;
+      } else {
+        dispatch(setConnectThirdParty(true));
+      }
+
+      if (data) {
+        const today = new Date();
+        console.log(today.toLocaleDateString());
+        console.log(JSON.parse(data));
+
+        if (today.toLocaleDateString() === JSON.parse(data)) {
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          await AsyncStorage.setItem(
+            "@tomorrow",
+            JSON.stringify(tomorrow.toLocaleDateString())
+          );
+
+          await AsyncStorage.setItem(
+            "@dietaryData",
+            JSON.stringify({
+              food: {
+                calories: 0,
+                carb: 0,
+                protien: 0,
+                fat: 0,
+              },
+              exercise: {
+                cal: 0,
+              },
+              water: {
+                lit: 0,
+              },
+              caloriesRemain: {
+                value: 0,
+              },
+            })
+          );
+          dispatch(setFoodCarb(0));
+          dispatch(setFoodFat(0));
+          dispatch(setFoodProtien(0));
+          dispatch(setFoodCalories(0));
+          dispatch(setExerciseCal(0));
+          dispatch(setWaterLit(0));
+          dispatch(setRemainCalories(userProfile.bmr));
+        }
+      } else {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        await AsyncStorage.setItem(
+          "@tomorrow",
+          JSON.stringify(tomorrow.toLocaleDateString())
+        );
+      }
+    };
+    init();
+
+    // getStepValue();
     updateDietaryLocal();
     // console.log(dietaryData.food.calories);
   }, [dispatch]);
@@ -293,12 +373,10 @@ export default function Home() {
   }, [userState.remainCalories, dispatch]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setRefreshing(false);
-      updateDietaryLocal();
+    if (isConnectedThirdParty) {
       getStepValue();
-    }, 2000);
-  }, [refreshing]);
+    }
+  }, [isConnectedThirdParty]);
   return (
     <SafeAreaView
       style={{ width: SCREEN_WIDTH }}
@@ -405,7 +483,7 @@ export default function Home() {
                 style={{
                   width: SCREEN_WIDTH * 0.4,
                 }}
-                className="bg-white rounded-[20px] h-[130px] mr-3 mb-3 py-4 px-5 flex flex-col justify-between"
+                className="bg-white rounded-[20px] h-[130px] mr-3 mb-3 py-4 px-5 flex flex-col justify-between space-y-2"
               >
                 <View className="flex flex-row justify-between">
                   <Text className="text-sub-header-1 font-medium text-black">
@@ -421,14 +499,29 @@ export default function Home() {
                     {/* <Ionicons name="footsteps-sharp" size={16} color="#FF7410" /> */}
                   </View>
                 </View>
-                <View className="flex flex-col">
-                  <Text className="text-header-2 font-bold text-black">
-                    {userState.stepsValue}
-                  </Text>
-                  <Text className="text-body-3 font-regular text-gray">
-                    Steps
-                  </Text>
-                </View>
+                {isConnectedThirdParty ? (
+                  <View className="flex flex-col">
+                    <Text className="text-header-2 font-bold text-black">
+                      {userState.stepsValue}
+                    </Text>
+                    <Text className="text-body-3 font-regular text-gray">
+                      Steps
+                    </Text>
+                  </View>
+                ) : (
+                  <View className="flex flex-col space-y-2">
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      "Health Connect" haven't connected.
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        router.push("/page/campaign/ConnectDevice/");
+                      }}
+                    >
+                      <Text className="text-orange">Connect now</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
               <View
                 style={{

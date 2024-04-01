@@ -2,6 +2,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { campaignSlice } from "./campaign/campaign.slice";
 import { userSlice } from "./user/user.slice";
+import { discoverSlice } from "./discover/discover.slice";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 // import { TypedUseSelectorHook, useSelector } from "react-redux";
 
@@ -18,6 +19,7 @@ export const store = configureStore({
   reducer: {
     campaign: campaignSlice.reducer,
     user: userSlice.reducer,
+    discover: discoverSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

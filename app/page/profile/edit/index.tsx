@@ -132,11 +132,12 @@ const EditProfile = () => {
     setShowAcceptModal(false);
     const gender = genderList.find((item) => item.isSelected);
     const actMult = actMultiply.find((item) => item.isSelected);
+
     const res: any = await dispatch(
       updateUserProfile({
-        firstName,
-        lastName,
-        displayName,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        displayName: displayName.trim(),
         age: parseInt(age),
         height: parseInt(height),
         weight: parseInt(weight),
@@ -290,7 +291,10 @@ const EditProfile = () => {
         age.trim() === "" ||
         height.trim() === "" ||
         weight.trim() === ""
-      )
+      ) &&
+      parseInt(age) > 0 &&
+      parseInt(height) > 0 &&
+      parseInt(weight) > 0
     ) {
       setIsDisabled(false);
     } else {
@@ -328,9 +332,11 @@ const EditProfile = () => {
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
               placeholder="Your first name"
               placeholderTextColor={"#929292"}
-              onChangeText={(text) => setFirstName(text)}
+              onChangeText={(text) =>
+                setFirstName(text.replace(/[^a-zA-Z]/g, ""))
+              }
               // onBlur={() => dispatch(setUserFirstName(firstName))}
-              onBlur={() => setFirstName(firstName)}
+              onBlur={() => setFirstName(firstName.replace(/[^a-zA-Z]/g, ""))}
               value={firstName}
               editable={true}
               area-label="firstName"
@@ -350,9 +356,11 @@ const EditProfile = () => {
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
               placeholder="Your last name"
               placeholderTextColor={"#929292"}
-              onChangeText={(text) => setLastName(text)}
+              onChangeText={(text) =>
+                setLastName(text.replace(/[^a-zA-Z]/g, ""))
+              }
               // onBlur={() => dispatch(setUserLastName(lastName))}
-              onBlur={() => setLastName(lastName)}
+              onBlur={() => setLastName(lastName.replace(/[^a-zA-Z]/g, ""))}
               value={lastName}
               editable={true}
               area-label="lastName"
@@ -372,9 +380,13 @@ const EditProfile = () => {
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
               placeholder="Your display name"
               placeholderTextColor={"#929292"}
-              onChangeText={(text) => setDisplayName(text)}
+              onChangeText={(text) =>
+                setDisplayName(text.replace(/[^a-zA-Z]/g, ""))
+              }
               // onBlur={() => dispatch(setUserLastName(lastName))}
-              onBlur={() => setDisplayName(lastName)}
+              onBlur={() =>
+                setDisplayName(displayName.replace(/[^a-zA-Z]/g, ""))
+              }
               value={displayName}
               editable={true}
               area-label="displayName"
@@ -412,9 +424,9 @@ const EditProfile = () => {
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
               placeholder="Age (Years)"
               placeholderTextColor={"#929292"}
-              onChangeText={(text) => setAge(text)}
+              onChangeText={(text) => setAge(text.replace(/[^0-9]/g, ""))}
               // onBlur={() => dispatch(setUserAge(parseInt(age)))}
-              onBlur={() => setAge(age)}
+              onBlur={() => setAge(age.replace(/[^0-9]/g, ""))}
               value={age}
               editable={true}
               area-label="Age (Years)"
@@ -436,9 +448,9 @@ const EditProfile = () => {
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
               placeholder="Height (cm)"
               placeholderTextColor={"#929292"}
-              onChangeText={(text) => setHeight(text)}
+              onChangeText={(text) => setHeight(text.replace(/[^0-9]/g, ""))}
               // onBlur={() => dispatch(setUserHeight(parseInt(height)))}
-              onBlur={() => setHeight(height)}
+              onBlur={() => setHeight(height.replace(/[^0-9]/g, ""))}
               value={height}
               editable={true}
               area-label="Height (cm)"
@@ -460,9 +472,9 @@ const EditProfile = () => {
               className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
               placeholder="Weight (kg)"
               placeholderTextColor={"#929292"}
-              onChangeText={(text) => setWeight(text)}
+              onChangeText={(text) => setWeight(text.replace(/[^0-9]/g, ""))}
               // onBlur={() => dispatch(setUserWeight(parseInt(weight)))}
-              onBlur={() => setWeight(weight)}
+              onBlur={() => setWeight(weight.replace(/[^0-9]/g, ""))}
               value={weight}
               editable={true}
               area-label="Weight (kg)"

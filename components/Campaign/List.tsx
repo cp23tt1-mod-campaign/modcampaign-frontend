@@ -11,6 +11,10 @@ import CampaignCard from "./Card";
 import { ScrollView } from "react-native-gesture-handler";
 import { Link, router } from "expo-router";
 import { useAppSelector, useAppDispatch } from "../../store/root.store";
+import {
+  getCampaignDetail,
+  getCampaignLeaderBoard,
+} from "../../store/campaign/campaign.slice";
 
 const CampaignList = (props: {
   header: string;
@@ -21,7 +25,19 @@ const CampaignList = (props: {
   const userProfile = useAppSelector((state) => state.user.userProfile);
   const skeletonAmount = [1, 2, 3];
   const opacity = useRef(new Animated.Value(0));
-  const selectCampaign = (id: number) => () => {
+  const dispatch = useAppDispatch();
+  const selectCampaign = async (id: number) => {
+    await dispatch(getCampaignDetail({ id: Number(id) }));
+    if (props.header === "Joined Campaign") {
+      await dispatch(
+        getCampaignLeaderBoard({
+          campaignId: id,
+          userId: userProfile.userId,
+          limit: 3,
+        })
+      );
+    }
+
     router.push({
       pathname: "/page/campaign/detail/[id]",
       params: { id: id, type: props.header },
@@ -60,7 +76,7 @@ const CampaignList = (props: {
   }, [isLoadingState]);
   const renderViewByType = () => {
     if (props.header === "My Campaign") {
-      if (userProfile.role === "Creator") {
+      if (userProfile.role === "Creator" || userProfile.role === "Admin") {
         return (
           <View className="w-full flex flex-cols mb-7">
             <View className="w-full flex flex-col space-y-2">
@@ -115,7 +131,7 @@ const CampaignList = (props: {
                           <Pressable
                             className="flex flex-col"
                             key={campaign.id}
-                            onPress={selectCampaign(campaign.id)}
+                            onPress={() => selectCampaign(campaign.id)}
                           >
                             {/* <View className="flex flex-col" key={campaign.id}> */}
                             <CampaignCard
@@ -199,7 +215,7 @@ const CampaignList = (props: {
                         <Pressable
                           className="flex flex-col"
                           key={campaign.id}
-                          onPress={selectCampaign(campaign.id)}
+                          onPress={() => selectCampaign(campaign.id)}
                         >
                           {/* <View className="flex flex-col" key={campaign.id}> */}
                           <CampaignCard

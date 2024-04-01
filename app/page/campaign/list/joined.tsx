@@ -28,6 +28,7 @@ const ListJoined = (props: { handleSelectedCampaign: any }) => {
   const joinedCampaignList = useAppSelector(
     (state) => state.campaign.joinedCampaignList
   );
+  const today = new Date();
   const route = useRoute();
   const dispatch = useAppDispatch();
   const [refreshing, setRefreshing] = useState(false);
@@ -152,6 +153,13 @@ const ListJoined = (props: { handleSelectedCampaign: any }) => {
                           )} - ${dayjs(item?.end).format("DD/MM/YYYY")}`}
                         </Text>
                       </View>
+                      {dayjs(item?.end).isBefore(today) ? (
+                        <View className="bg-orange-2 rounded-xl flex flex-row justify-center w-[80px] px-3 py-1">
+                          <Text className="text-orange text-small font-medium">
+                            Completed
+                          </Text>
+                        </View>
+                      ) : null}
                     </View>
                   </View>
                 </TouchableOpacity>

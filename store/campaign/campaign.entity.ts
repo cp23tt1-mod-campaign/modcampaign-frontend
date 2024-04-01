@@ -31,6 +31,23 @@ export interface CampaignCategoriesEntity {
   categoryTarget: string;
 }
 
+export interface LeaderBoardEntity {
+  userId: number;
+  profileImage: string;
+  campaignId: number;
+  targetValue: number;
+  displayName: string;
+  joinedDate: Date;
+  rank: number;
+}
+export interface CurrentRankEntity {
+  profileImage: string;
+  displayName: string;
+  targetValue: number;
+  rank: number;
+  joinedDate: string;
+}
+
 export interface CampaignState {
   ownedCampaignList: Partial<CampaignEntity[]>;
   popularCampaignList: Partial<CampaignEntity[]>;
@@ -40,6 +57,14 @@ export interface CampaignState {
   onGoingCampaignList: Partial<CampaignEntity[]>;
   completedCampaignList: Partial<CampaignEntity[]>;
   campaignCategories: Partial<CampaignCategoriesEntity[]>;
+  leaderBoard: {
+    list: Partial<LeaderBoardEntity[]>;
+    current: CurrentRankEntity;
+  };
+  leaderBoardLimit: {
+    list: Partial<LeaderBoardEntity[]>;
+    current: Partial<CurrentRankEntity>;
+  };
   campaignName: string;
   campaignDetail: string;
   campaignStart: string;

@@ -77,29 +77,6 @@ export default function TabLayout() {
           headerStyle: {
             height: 90,
           },
-          // headerLeft: () => (
-          //   <Image
-          //     source={require("../../assets/images/headerIcon.png")}
-          //     style={{ width: 45, height: 45 }}
-          //     className="ml-4"
-          //   />
-          // ),
-          // headerRight: () => (
-          //   <Pressable
-          //     style={({ pressed }) => [
-          //       pressed ? { opacity: 0.5 } : { opacity: 1 },
-          //     ]}
-          //     onPress={() => console.log("notification")}
-          //     className="mr-4"
-          //   >
-          //     <UtilIcon
-          //       category="MaterialIcons"
-          //       name={"notifications-none"}
-          //       size={28}
-          //       color="#000000"
-          //     />
-          //   </Pressable>
-          // ),
           header(props) {
             return (
               <View className="h-[90px] bg-bg flex flex-row items-end justify-between pb-3 px-1">
@@ -136,7 +113,6 @@ export default function TabLayout() {
               </View>
             );
           },
-          // headerBackground: () => <View className="bg-bg"></View>,
         }}
       />
       <Tab.Screen
@@ -218,7 +194,40 @@ export default function TabLayout() {
       <Tab.Screen
         name="Discover"
         component={DiscoverPage}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "left",
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerStyle: {
+            height: 90,
+          },
+          headerLeft: () => (
+            <Image
+              source={require("../../assets/images/headerIcon.png")}
+              style={{ width: 45, height: 45 }}
+              className="ml-4"
+            />
+          ),
+          headerRight: () => (
+            <Pressable
+              style={({ pressed }) => [
+                pressed ? { opacity: 0.5 } : { opacity: 1 },
+              ]}
+              onPress={() => console.log("notification")}
+              className="mr-4"
+            >
+              <UtilIcon
+                category="MaterialIcons"
+                name={"notifications-none"}
+                size={28}
+                color="#000000"
+              />
+            </Pressable>
+          ),
+          headerBackground: () => <View className="bg-bg"></View>,
+        }}
       />
       <Tab.Screen
         name="Profile"

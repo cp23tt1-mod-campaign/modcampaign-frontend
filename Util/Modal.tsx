@@ -6,7 +6,7 @@ import Modal from "react-native-modal";
 
 const UtilModal = (props: {
   isShowModal?: boolean;
-  iconName?: string;
+  iconName?: any;
   iconCategory?: string;
   iconText?: string;
   alertText?: string;

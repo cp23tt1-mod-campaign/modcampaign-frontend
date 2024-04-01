@@ -31,6 +31,8 @@ import EditProfile from "./page/profile/edit";
 import { createCampaign } from "../store/campaign/campaign.slice";
 import HeaderRight from "../components/Campaign/HeaderRight";
 import CampaignConnect from "./page/campaign/ConnectDevice/index";
+import LeaderBoardPage from "./page/campaign/detail/LeaderBoard";
+import UserManagementPage from "./page/userManage/index";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export {
@@ -208,6 +210,40 @@ function RootLayoutNav() {
             },
             headerShadowVisible: false,
             // headerRight: () => <HeaderRight />,
+          }}
+        />
+        <Stacks.Screen
+          name="page/campaign/detail/LeaderBoard"
+          component={LeaderBoardPage}
+          options={{
+            // headerShown: false,
+            title: "Leaderboard",
+            headerStyle: {
+              backgroundColor: "#F5F5F5",
+            },
+            headerTintColor: "#000000",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerShadowVisible: false,
+          }}
+        />
+        <Stacks.Screen
+          name="page/userManage/index"
+          component={UserManagementPage}
+          options={{
+            // headerShown: false,
+            title: "User Management",
+            headerStyle: {
+              backgroundColor: "#F5F5F5",
+            },
+            headerTintColor: "#000000",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerShadowVisible: false,
           }}
         />
         <Stacks.Screen

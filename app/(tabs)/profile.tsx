@@ -8,13 +8,14 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppDispatch, useAppSelector } from "../../store/root.store";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import UtilIcon from "../../Util/Icon";
 import { setCloneUserProfile } from "../../store/user/user.slice";
+import UtilModal from "../../Util/Modal";
 const API_URL =
   Platform.OS === "ios" ? process.env.API_IOS_URL : process.env.API_ANDROID_URL;
 const Profile = () => {
@@ -31,6 +32,7 @@ const Profile = () => {
   const dispatch = useAppDispatch();
   const userProfile = useAppSelector((state) => state.user.userProfile);
   const userState = useAppSelector((state) => state.user);
+  const [signOutModal, setSignOutModal] = useState(false);
   const activityLevel = [
     "Sedentary",
     "Lightly Active",
@@ -41,23 +43,23 @@ const Profile = () => {
   const [profileData, setProfileData] = useState([
     {
       title: "Display name",
-      value: userProfile.displayName,
+      value: userProfile?.displayName,
     },
     {
       title: "Gender",
-      value: userProfile.gender,
+      value: userProfile?.gender,
     },
     {
       title: "Age",
-      value: userProfile.age,
+      value: userProfile?.age,
     },
     {
       title: "Height",
-      value: userProfile.height,
+      value: userProfile?.height,
     },
     {
       title: "Weight",
-      value: userProfile.weight,
+      value: userProfile?.weight,
     },
     {
       title: "Activity Multiplier",
@@ -65,25 +67,29 @@ const Profile = () => {
     },
   ]);
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
-  useEffect(() => {
-    const clone = {
-      firstName: userProfile.firstName,
-      lastName: userProfile.lastName,
-      gender: userProfile.gender,
-      age: userProfile.age,
-      height: userProfile.height,
-      weight: userProfile.weight,
-      activityLevel: userProfile.activityLevel,
-      bmr: userProfile.bmr,
-      email: userProfile.email,
-      profileImage: userProfile.profileImage,
-      role: userProfile.role,
-      userId: userProfile.userId,
-    };
+  // useEffect(() => {
+  //   const clone = {
+  //     firstName: userProfile.firstName,
+  //     lastName: userProfile.lastName,
+  //     displayName: userProfile.displayName,
+  //     gender: userProfile.gender,
+  //     age: userProfile.age,
+  //     height: userProfile.height,
+  //     weight: userProfile.weight,
+  //     activityLevel: userProfile.activityLevel,
+  //     bmr: userProfile.bmr,
+  //     email: userProfile.email,
+  //     profileImage: userProfile.profileImage,
+  //     role: userProfile.role,
+  //     userId: userProfile.userId,
+  //   };
 
-    dispatch(setCloneUserProfile(clone));
-    console.log(userState.clonedUserProfile);
-  }, [dispatch]);
+  //   dispatch(setCloneUserProfile(clone));
+  //   console.log(
+  //     "🚀 ~ useEffect ~ userState.clonedUserProfile:",
+  //     userState.clonedUserProfile
+  //   );
+  // }, [dispatch]);
   useEffect(() => {
     const genderFirstLetterUpper =
       userProfile.gender.charAt(0).toUpperCase() + userProfile.gender.slice(1);
@@ -93,6 +99,12 @@ const Profile = () => {
           return {
             ...item,
             value: genderFirstLetterUpper,
+          };
+        }
+        if (item.title === "Display name") {
+          return {
+            ...item,
+            value: userProfile.displayName,
           };
         }
         return item;
@@ -167,6 +179,34 @@ const Profile = () => {
               })}
             </View>
             <View className="bg-white rounded-[20px]">
+              {userProfile.role === "Admin" ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    router.push({
+                      pathname: "/page/userManage/",
+                    })
+                  }
+                  className="border-b-0.5 border-gray p-4 flex flex-row justify-between"
+                >
+                  <Text
+                    style={{ width: SCREEN_WIDTH * 0.6 }}
+                    className="text-sub-header-2 font-medium text-black"
+                  >
+                    Manage Users
+                  </Text>
+                  <View
+                    style={{ width: SCREEN_WIDTH * 0.2 }}
+                    className="flex flex-row justify-end pr-4"
+                  >
+                    <UtilIcon
+                      category="MaterialCommunityIcons"
+                      name={"chevron-right"}
+                      size={18}
+                      color="#929292"
+                    />
+                  </View>
+                </TouchableOpacity>
+              ) : null}
               <TouchableOpacity
                 onPress={() =>
                   router.push({
@@ -206,7 +246,7 @@ const Profile = () => {
                   style={{ width: SCREEN_WIDTH * 0.6 }}
                   className="text-sub-header-2 font-medium text-black"
                 >
-                  Privacy Center
+                  Privacy Center {userProfile.role}
                 </Text>
                 <View
                   style={{ width: SCREEN_WIDTH * 0.2 }}
@@ -223,7 +263,7 @@ const Profile = () => {
             </View>
 
             <TouchableOpacity
-              onPress={() => signOut()}
+              onPress={() => setSignOutModal(true)}
               className="bg-white rounded-[20px]"
             >
               <View className="p-4 flex flex-row justify-between">
@@ -261,6 +301,23 @@ const Profile = () => {
         </View>
       </View> */}
       </ScrollView>
+      <UtilModal
+        primaryColor="bg-red"
+        iconCategory="MaterialCommunityIcons"
+        iconText="i"
+        isShowModal={signOutModal}
+        isMustInteract={true}
+        acceptText="Confirm"
+        declineText="Cancel"
+        animationIn="shake"
+        animationOut="zoomOut"
+        handleAccept={() => signOut()}
+        handleDecline={() => setSignOutModal(false)}
+      >
+        <Text className="text-header-4 font-semibold text-center">
+          Are you sure to log out ?
+        </Text>
+      </UtilModal>
     </SafeAreaView>
   );
 };

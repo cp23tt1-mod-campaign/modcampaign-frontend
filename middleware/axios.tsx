@@ -14,8 +14,8 @@ const useAxios = axios.create({
 // Add a request interceptor
 useAxios.interceptors.request.use(
   async (config: any) => {
-    console.log("🚀 ~ config.url:", config.url);
-    console.log("🚀 ~ config.method:", config.method);
+    // console.log("🚀 ~ config.url:", config.url);
+    // console.log("🚀 ~ config.method:", config.method);
     const accessToken = await AsyncStorage.getItem("@accessToken");
 
     // Check if it's a POST request or a specific GET request

@@ -53,6 +53,7 @@ export const initialState: UserState = {
   remainCalories: 0,
   clonedUserProfile: {},
   stepsValue: "",
+  userList: [],
 };
 const defaultState = initialState;
 
@@ -159,7 +160,7 @@ export const updateUserProfile = createAsyncThunk(
 
     try {
       const res: any = await useAxios.patch(
-        `/user?id=${userProfile.userId}`,
+        `/user/${userProfile.userId}`,
         body
       );
 
@@ -184,11 +185,59 @@ export const getUserProfile = createAsyncThunk(
     const state = getState() as RootState;
     const { userProfile } = state.user;
     try {
-      const res = await useAxios.get(`/user?id=${userProfile.userId}`);
+      const res = await useAxios.get(`/user/${userProfile.userId}`);
       return {
         statusCode: res.status,
         message: res.data.message,
         status: res.data.status,
+        data: res.data.data,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: error.response.status,
+        success: false,
+        data: error,
+      };
+    }
+  }
+);
+export const updateUserRole = createAsyncThunk(
+  "user/updateUserRole",
+  async (
+    params: { userId?: Number; roleUpdate?: String },
+    { getState, dispatch }
+  ) => {
+    const { userId, roleUpdate } = params;
+    const body = {
+      role: roleUpdate,
+    };
+    try {
+      const res = await useAxios.patch(`/user-role/${userId}`, body);
+      return {
+        statusCode: res.status,
+        message: res.data.message,
+        status: res.data.status,
+        data: res.data.data,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: error.response.status,
+        success: false,
+        data: error,
+      };
+    }
+  }
+);
+export const getUserList = createAsyncThunk(
+  "user/getUserList",
+  async (params, { getState, dispatch }) => {
+    // const state = getState() as RootState;
+    // const { userProfile } = state.user;
+    try {
+      const res = await useAxios.get(`/users`);
+      return {
+        statusCode: res.status,
+        message: res.data.message,
         data: res.data.data,
       };
     } catch (error: any) {
@@ -323,6 +372,9 @@ export const userSlice = createSlice({
       //     state.ownedCampaignList = [];
       //   }
       // }
+    });
+    builder.addCase(getUserList.fulfilled, (state, action) => {
+      state.userList = action.payload.data;
     });
   },
 });

@@ -52,6 +52,7 @@ export interface UserState {
   remainCalories: number;
   clonedUserProfile: Object;
   stepsValue: string;
+  userList: Partial<UserEntity[]>;
   // ownedCampaignList: Partial<CampaignEntity[]>;
   // popularCampaignList: Partial<CampaignEntity[]>;
   // latestCampaignList: Partial<CampaignEntity[]>;

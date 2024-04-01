@@ -28,7 +28,6 @@ const ConnectDevice = () => {
     if (Platform.OS === "ios") {
       return;
     }
-    dispatch(setConnectThirdParty(!isConnectedThirdParty));
     // setIsEnabled((previousState) => !previousState);
 
     const isInitialized = await initialize();
@@ -56,6 +55,8 @@ const ConnectDevice = () => {
       router.push({
         pathname: "/page/login/InformProfile",
       });
+      dispatch(setConnectThirdParty(!isConnectedThirdParty));
+
       // dispatch(setConnectThirdParty(false));
       // console.log(isConnectedThirdParty);
     }

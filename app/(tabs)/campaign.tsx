@@ -144,7 +144,7 @@ const Campaign = () => {
       setTimeout(() => {
         setRefreshing(false);
         dispatch(setLoading(false));
-        if (userProfile.role === "Creator") {
+        if (userProfile.role === "Creator" || userProfile.role === "Admin") {
           dispatch(
             getCampaignList({ listType: "owned", userId: userProfile.userId })
           );
@@ -190,7 +190,7 @@ const Campaign = () => {
     } else {
       dispatch(setLoading(true));
 
-      if (userProfile.role === "Creator") {
+      if (userProfile.role === "Creator" || userProfile.role === "Admin") {
         dispatch(
           getCampaignList({ listType: "owned", userId: userProfile.userId })
         );
@@ -266,7 +266,7 @@ const Campaign = () => {
         </Pressable>
       </View> */}
       {/* <Text>{API_URL}</Text> */}
-      {userProfile.role === "Creator" ? (
+      {userProfile.role === "Creator" || userProfile.role === "Admin" ? (
         <Pressable
           className="absolute 
         flex items-center 

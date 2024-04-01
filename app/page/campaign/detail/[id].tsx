@@ -15,6 +15,10 @@ import {
   setDefaultState,
   joinCampaign,
   cancelCampaign,
+  getCampaignLeaderBoard,
+  setDefaultLeaderBoard,
+  updateCampaignLeaderBoard,
+  setDefaultSelectedCampaign,
 } from "../../../../store/campaign/campaign.slice";
 import { ScrollView } from "react-native-gesture-handler";
 import UtilIcon from "../../../../Util/Icon";
@@ -52,6 +56,12 @@ const CampaignDetail = () => {
   const userProfile = useAppSelector((state) => {
     return state.user.userProfile;
   });
+  const leaderBoard = useAppSelector((state) => {
+    return state.campaign.leaderBoard;
+  });
+  const leaderBoardLimit = useAppSelector((state) => {
+    return state.campaign.leaderBoardLimit;
+  });
   const [showModal, setShowModal] = useState(false);
   const [showAcceptModal, setShowAcceptModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -60,23 +70,90 @@ const CampaignDetail = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showErrorLimitModal, setShowErrorLimitModal] = useState(false);
   const [campaignTargetValue, setCampaignTargetValue] = useState("");
+  const today = new Date();
+  const [isCompleted, setIsCompleted] = useState(false);
+  // useEffect(() => {
+
+  // }, [dispatch, id]);
 
   useEffect(() => {
-    dispatch(getCampaignDetail({ id: Number(id) }));
-  }, [dispatch, id]);
+    const checkLeaderBoard = async () => {
+      const res: any = await getCampaignTargetValue();
+      console.log(res);
+      // console.log(typeof res);
 
-  useEffect(() => {
-    if (type === "Joined Campaign") {
-      getCampaignTargetValue();
+      // console.log(campaignTargetValue);
+
+      // const intValue = parseInt(campaignTargetValue);
+      const intValue = parseFloat(res);
+      const leaderBoardCurrentValue: any = leaderBoardLimit.current.targetValue;
+      console.log("🚀 ~ checkLeaderBoard ~ intValue:", intValue);
+      console.log(
+        "🚀 ~ checkLeaderBoard ~ leaderBoardCurrentValue:",
+        leaderBoardCurrentValue
+      );
+
+      if (leaderBoardCurrentValue < intValue) {
+        await dispatch(
+          updateCampaignLeaderBoard({
+            campaignId: id,
+            userId: userProfile.userId,
+            targetValue: intValue,
+          })
+        );
+        await dispatch(
+          getCampaignLeaderBoard({
+            campaignId: id,
+            userId: userProfile.userId,
+            limit: 3,
+          })
+        );
+      }
+    };
+
+    if (focus && type === "Joined Campaign") {
+      // console.log(dayjs(selectedCampaign.end).isBefore(today));
+
+      // setIsCompleted(dayjs(selectedCampaign.end).isBefore(today));
+      // console.log("🚀 ~ useEffect ~ isCompleted:", isCompleted);
+
+      if (!dayjs(selectedCampaign.end).isBefore(today)) {
+        checkLeaderBoard();
+        dispatch(
+          getCampaignLeaderBoard({
+            campaignId: id,
+            userId: userProfile.userId,
+            limit: 3,
+          })
+        );
+      }
     }
+
+    return () => {
+      // dispatch(setDefaultLeaderBoard());
+      // dispatch(setDefaultSelectedCampaign());
+    };
   }, [focus]);
+
   const getCampaignTargetValue = async () => {
-    if (isConnectedThirdParty) {
+    if (isConnectedThirdParty && dayjs(selectedCampaign.end).isBefore(today)) {
       const target: RecordType = selectedCampaign.categoryTarget as RecordType;
       // console.log(selectedCampaign.categoryTarget);
 
       // const target = "Distance";
-      const startTime = selectedCampaign.start;
+
+      console.log(
+        "🚀 ~ getCampaignTargetValue ~ leaderBoard.current.joinedDate:",
+        leaderBoardLimit?.current?.joinedDate
+      );
+      console.log(
+        "🚀 ~ getCampaignTargetValue ~ selectedCampaign.end:",
+        selectedCampaign.end
+      );
+
+      // const startTime = selectedCampaign.start;
+      // const endTime = selectedCampaign.end;
+      const startTime = leaderBoardLimit?.current?.joinedDate;
       const endTime = selectedCampaign.end;
 
       const result = await readRecords(target, {
@@ -88,21 +165,24 @@ const CampaignDetail = () => {
           // endTime: "2023-12-12T23:53:15.405Z",
         },
       });
+
       if (target === "Distance") {
         const totalDistance = result.reduce(
           (sum, cur: any) => sum + cur.distance.inKilometers,
           0
         );
-        setCampaignTargetValue(totalDistance.toFixed(2));
+        return totalDistance.toFixed(2);
+        // setCampaignTargetValue(totalDistance.toFixed(2));
       } else {
         const totalSteps = result.reduce((sum, cur: any) => sum + cur.count, 0);
-        setCampaignTargetValue(`${totalSteps.toLocaleString("en-US")}`);
+        return totalSteps.toLocaleString("en-US");
+        // setCampaignTargetValue(totalSteps.toLocaleString("en-US"));
       }
     }
   };
   // getCampaignTargetValue();
 
-  const modalData = {
+  const [modalData, setModalData] = useState({
     isShowModal: showModal,
     primaryColor: "bg-blue",
     iconText: "i",
@@ -120,7 +200,13 @@ const CampaignDetail = () => {
         Do you want to join{"\n"}"{selectedCampaign.name}"
       </Text>
     ),
-  };
+  });
+  // const setShowAccept = (status:boolean)=>{
+  //   if(status){
+
+  //     setModalData({...modalData,isShowModal:true})
+  //   }
+  // }
   const joinCampaignState = async (campaignId: any, userId: any) => {
     // console.log(typeof campaignId, typeof userId);
     // dispatch(joinCampaign({ listType: "owned", userId: 1 }));
@@ -145,8 +231,12 @@ const CampaignDetail = () => {
     //   setShowModal(true);
     // }, 1000);
     setShowAcceptModal(false);
+    const joinedDate = dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss.SSS");
+    const targetValue = 0;
 
-    const res: any = await dispatch(joinCampaign({ campaignId, userId }));
+    const res: any = await dispatch(
+      joinCampaign({ campaignId, userId, targetValue, joinedDate })
+    );
 
     if (res.payload?.statusCode === 200) {
       setTimeout(() => {
@@ -208,20 +298,29 @@ const CampaignDetail = () => {
         />
         {/* <Text>{`https://drive.google.com/uc?id=${selectedCampaign.image}&t=${timestamp}`}</Text> */}
         {/* <View className="flex flex-col justify-between"> */}
-        <View className="flex flex-col space-y-4">
+        <View className="flex flex-col space-y-4 bg-[]">
           <View className="flex flex-col space-y-2">
-            <View className="flex flex-row space-x-1 items-center">
-              <UtilIcon
-                category="MaterialCommunityIcons"
-                name={"calendar-month"}
-                size={16}
-                color={"#929292"}
-              />
-              <Text className="text-gray text-small font-medium">
-                {`${dayjs(selectedCampaign.start).format(
-                  "DD/MM/YYYY"
-                )} - ${dayjs(selectedCampaign.end).format("DD/MM/YYYY")}`}
-              </Text>
+            <View className="flex flex-row space-x-5 items-center">
+              <View className="flex flex-row space-x-1 items-center">
+                <UtilIcon
+                  category="MaterialCommunityIcons"
+                  name={"calendar-month"}
+                  size={16}
+                  color={"#929292"}
+                />
+                <Text className="text-gray text-small font-medium">
+                  {`${dayjs(selectedCampaign.start).format(
+                    "DD/MM/YYYY"
+                  )} - ${dayjs(selectedCampaign.end).format("DD/MM/YYYY")}`}
+                </Text>
+              </View>
+              {dayjs(selectedCampaign.end).isBefore(today) ? (
+                <View className="bg-orange-2 rounded-xl flex flex-row justify-center px-3 py-1">
+                  <Text className="text-orange text-small font-medium">
+                    Completed
+                  </Text>
+                </View>
+              ) : null}
             </View>
             <Text className="text-header-3 font-semibold">
               {selectedCampaign.name}
@@ -235,34 +334,144 @@ const CampaignDetail = () => {
             </Text>
           </View>
           {type === "Joined Campaign" ? (
-            <View className="flex flex-col space-y-2 bg-white w-full shadow-lg rounded-2xl py-3 px-4">
-              <Text className="text-sub-header-2 font-medium">
-                My accumulated distance
-              </Text>
-              {/* {isConnectedThirdParty ? ( */}
-              {isConnectedThirdParty ? (
-                <Text className="text-header-1 font-semibold text-orange">
-                  {campaignTargetValue}{" "}
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    {selectedCampaign.categoryTarget === "Steps"
-                      ? "steps"
-                      : "km."}
-                  </Text>
+            <View className="flex flex-col space-y-6">
+              <View className="flex flex-col space-y-2 bg-white w-full shadow-lg rounded-2xl py-3 px-4">
+                <Text className="text-sub-header-2 font-medium">
+                  My accumulated distance
                 </Text>
-              ) : (
-                <View>
-                  <Text className="text-sub-header-3 font-regular text-gray">
-                    You haven't connected your device yet.
+                {/* {isConnectedThirdParty ? ( */}
+                {isConnectedThirdParty ? (
+                  <Text className="text-header-1 font-semibold text-orange">
+                    {/* {campaignTargetValue}{" "} */}
+                    {leaderBoardLimit.current?.targetValue?.toLocaleString(
+                      "en-US"
+                    )}{" "}
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      {selectedCampaign.categoryTarget === "Steps"
+                        ? "steps"
+                        : "km."}
+                    </Text>
+                  </Text>
+                ) : (
+                  <View>
+                    <Text className="text-sub-header-3 font-regular text-gray">
+                      You haven't connected your device yet.
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        connectDevice();
+                      }}
+                    >
+                      <Text className="text-orange">Connect now</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+              <View className="flex flex-col space-y-4 px-3">
+                <View className="flex flex-row justify-between">
+                  <Text className="text-sub-header-2 font-medium text-black">
+                    Leaderboard
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      connectDevice();
+                      router.push({
+                        pathname: "/page/campaign/detail/LeaderBoard",
+                      });
                     }}
                   >
-                    <Text className="text-orange">Connect now</Text>
+                    <Text className="text-sub-header-2 font-medium text-gray">
+                      See all
+                    </Text>
                   </TouchableOpacity>
                 </View>
-              )}
+                <View className="flex flex-col space-y-4">
+                  {leaderBoardLimit.list.map((item: any, index: number) => {
+                    return (
+                      <View
+                        key={`leaderboard-${index}`}
+                        className="flex flex-row items-center w-full px-4 space-x-3"
+                      >
+                        {item.rank === 1 ? (
+                          <Image
+                            source={require(`../../../../public/images/rank1.png`)}
+                            style={{ width: 30, height: 30 }}
+                          />
+                        ) : item.rank === 2 ? (
+                          <Image
+                            source={require(`../../../../public/images/rank2.png`)}
+                            style={{ width: 30, height: 30 }}
+                          />
+                        ) : item.rank === 3 ? (
+                          <Image
+                            source={require(`../../../../public/images/rank3.png`)}
+                            style={{ width: 30, height: 30 }}
+                          />
+                        ) : null}
+                        {/* <View
+                          className={`w-[25px] h-[25px] flex items-center justify-center rounded-full`}
+                        >
+                          <Text
+                            className={`text-sub-header-1 font-medium ${
+                              leaderBoardLimit.current.displayName ===
+                              item.displayName
+                                ? "text-orange"
+                                : "text-gray"
+                            }`}
+                          >
+                            {item.rank}
+                          </Text>
+                        </View> */}
+                        <View className="w-11/12 flex flex-row items-center justify-between">
+                          <View className="flex flex-row space-x-6 ml-3 items-center truncate">
+                            <Image
+                              source={{
+                                uri: `https://lh3.googleusercontent.com/a/${item?.profileImage}`,
+                                width: 40,
+                                height: 40,
+                              }}
+                              className="rounded-full bg-gray"
+                            />
+                            <Text
+                              className={`w-[80px] text-body-2 font-medium ${
+                                leaderBoardLimit.current.displayName ===
+                                item.displayName
+                                  ? "text-orange"
+                                  : "text-gray"
+                              }`}
+                            >
+                              {item.displayName}
+                            </Text>
+                          </View>
+                          <View className="flex flex-row space-x-3 items-center">
+                            <Text
+                              className={`text-body-3 font-regular ${
+                                leaderBoardLimit.current.displayName ===
+                                item.displayName
+                                  ? "text-orange"
+                                  : "text-gray"
+                              }`}
+                            >
+                              {item.targetValue.toLocaleString("en-US")}
+                            </Text>
+                            <Text
+                              className={`text-body-3 font-regular ${
+                                leaderBoardLimit.current.displayName ===
+                                item.displayName
+                                  ? "text-orange"
+                                  : "text-gray"
+                              }`}
+                            >
+                              {selectedCampaign.categoryTarget === "Steps"
+                                ? "Steps"
+                                : "km."}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
             </View>
           ) : null}
           <View className="flex flex-col space-y-2">
@@ -289,6 +498,22 @@ const CampaignDetail = () => {
           </View>
         </View>
       </ScrollView>
+      {dayjs(selectedCampaign.end).isBefore(today) ? (
+        <Pressable
+          onPress={() => setShowAcceptModal(true)}
+          className="flex flex-row justify-center"
+        >
+          {/* <Pressable
+                 onPress={() => setShowModal(true)}
+                 className="flex flex-row justify-center"
+               > */}
+          <View className="bg-orange mb-3 py-3 px-24 rounded-3xl">
+            <Text className="w-full text-white text-sub-header-1 font-medium text-center">
+              Claim Reward
+            </Text>
+          </View>
+        </Pressable>
+      ) : null}
       {type === "Joined Campaign" ||
       type === "Completed Campaign" ? null : type === "My Campaign" ||
         type === "Ongoing Campaign" ? (

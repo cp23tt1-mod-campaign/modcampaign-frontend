@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CampaignState } from "./campaign.entity";
+import { CampaignEntity, CampaignState } from "./campaign.entity";
 import { API_IOS_URL, API_ANDROID_URL } from "@env";
 import { Platform } from "react-native";
 // const API_URL = Platform.OS === "ios" ? API_IOS_URL : API_ANDROID_URL;
@@ -18,6 +18,20 @@ export const initialState: CampaignState = {
   onGoingCampaignList: [],
   completedCampaignList: [],
   campaignCategories: [],
+  leaderBoard: {
+    list: [],
+    current: {
+      rank: 0,
+      targetValue: 0,
+      displayName: "",
+      profileImage: "",
+      joinedDate: "",
+    },
+  },
+  leaderBoardLimit: {
+    list: [],
+    current: {},
+  },
   campaignName: "",
   campaignDetail: "",
   campaignStart: "",
@@ -132,12 +146,17 @@ export const getCampaignDetail = createAsyncThunk(
 export const joinCampaign = createAsyncThunk(
   "campaign/joinCampaign",
   async (
-    query: { campaignId?: number; userId?: number },
+    query: {
+      campaignId?: number;
+      userId?: number;
+      targetValue?: number;
+      joinedDate?: string;
+    },
     { rejectWithValue, dispatch }
   ) => {
     try {
-      const { campaignId, userId } = query;
-      const body = { campaignId, userId };
+      const { campaignId, userId, targetValue, joinedDate } = query;
+      const body = { campaignId, userId, targetValue, joinedDate };
       const res = await useAxios.post(`${API_URL}/campaign/join`, body);
       return {
         statusCode: res.status,
@@ -279,6 +298,69 @@ export const getCampaignCategories = createAsyncThunk(
     }
   }
 );
+export const getCampaignLeaderBoard = createAsyncThunk(
+  "campaign/getCampaignLeaderBoard",
+  async (
+    params: { campaignId?: any; userId?: any; limit?: any },
+    { getState, dispatch }
+  ) => {
+    const { campaignId, userId, limit } = params;
+    const paramsQuery = {
+      campaignId: campaignId,
+      userId: userId,
+      limit: limit || 0,
+    };
+
+    try {
+      const res = await useAxios.get(`${API_URL}/campaign-leader-board`, {
+        params: paramsQuery,
+      });
+      return {
+        statusCode: res.status,
+        success: true,
+        data: res.data.data,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: error.response.status,
+        success: false,
+        data: error,
+      };
+    }
+  }
+);
+export const updateCampaignLeaderBoard = createAsyncThunk(
+  "campaign/updateCampaignLeaderBoard",
+  async (
+    params: { campaignId?: any; userId?: any; targetValue?: any },
+    { getState, dispatch }
+  ) => {
+    const { campaignId, userId, targetValue } = params;
+    const body = {
+      campaignId: campaignId,
+      userId: userId,
+      targetValue: targetValue,
+    };
+
+    try {
+      const res = await useAxios.patch(
+        `${API_URL}/campaign-leader-board`,
+        body
+      );
+      return {
+        statusCode: res.status,
+        success: true,
+        data: res.data.data,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: error.response.status,
+        success: false,
+        data: error,
+      };
+    }
+  }
+);
 
 export const campaignSlice = createSlice({
   name: "campaign",
@@ -300,6 +382,9 @@ export const campaignSlice = createSlice({
       state.userId = null;
       state.campaignImageObject = null;
       state.userLimitType = "1";
+    },
+    setSelectedCampaign: (state, action: PayloadAction<CampaignEntity>) => {
+      state.selectedCampaign = action.payload;
     },
     setStateCampaignName: (state, action: PayloadAction<string>) => {
       state.campaignName = action.payload;
@@ -342,6 +427,12 @@ export const campaignSlice = createSlice({
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
+    },
+    setDefaultLeaderBoard: (state) => {
+      state.leaderBoard.list = [];
+    },
+    setDefaultSelectedCampaign: (state) => {
+      state.selectedCampaign = {};
     },
   },
   extraReducers: (builder) => {
@@ -417,7 +508,16 @@ export const campaignSlice = createSlice({
     builder.addCase(getCampaignCategories.rejected, (state, action) => {
       state.campaignCategories = [];
     });
-
+    builder.addCase(getCampaignLeaderBoard.fulfilled, (state, action) => {
+      if (action.meta.arg.limit) {
+        state.leaderBoardLimit.list = action.payload?.data.leaderBoard;
+        state.leaderBoardLimit.current = action.payload?.data.currentUserData;
+      } else {
+        state.leaderBoard.list = action.payload?.data.leaderBoard;
+        state.leaderBoard.current = action.payload?.data.currentUserData;
+      }
+      // state.leaderBoard = action.payload?.data;
+    });
     // builder.addCase(joinCampaign.fulfilled, (state, action) => {
     //   return {
     //     ...state,
@@ -438,6 +538,7 @@ export const campaignSlice = createSlice({
 export default campaignSlice.reducer;
 export const {
   setDefaultState,
+  setSelectedCampaign,
   setCreateCampaignDefaultState,
   setStateCampaignCategory,
   setStateCampaignDescription,
@@ -453,6 +554,8 @@ export const {
   setStateCampaignUserLimitType,
   setConnectThirdParty,
   setLoading,
+  setDefaultLeaderBoard,
+  setDefaultSelectedCampaign,
 } = campaignSlice.actions;
 
 // export const { actions, reducer } = campaignSlice;

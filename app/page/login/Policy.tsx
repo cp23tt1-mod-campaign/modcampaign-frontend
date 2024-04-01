@@ -77,7 +77,6 @@ b. Improve and Analyze: We may use your information to analyze user trends, trac
       {/* <View className="mt-5 mb-6">
         <Text className="text-header-3 font-semibold">Privacy Policy</Text>
       </View> */}
-
       <ScrollView style={{ width: SCREEN_WIDTH * 0.8 }} className="mb-5">
         <Text className="text-sub-header-3 font-regular mb-4">
           Last Updated: 13 February 2024

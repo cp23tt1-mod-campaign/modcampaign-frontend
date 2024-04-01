@@ -43,14 +43,18 @@ const ConnectDevice = () => {
     ]);
     setAndroidPermissions(grantedPermissions);
 
-    if (androidPermissions.length > 0) {
-      dispatch(setConnectThirdParty(!isConnectedThirdParty));
-      // dispatch(setConnectThirdParty(true));
-    }
+    // if (androidPermissions.length > 0) {
+    //   dispatch(setConnectThirdParty(!isConnectedThirdParty));
+    //   // dispatch(setConnectThirdParty(true));
+    // }
 
     // console.log(totalDistance);
   };
-
+  useEffect(() => {
+    if (androidPermissions.length > 0) {
+      dispatch(setConnectThirdParty(!isConnectedThirdParty));
+    }
+  }, [androidPermissions]);
   // const [androidOptions, setAndroidOptions] = useState<PermissionOptions[]>([]);
   const readSampleData = async () => {
     // const init = async () => {
