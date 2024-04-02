@@ -159,10 +159,12 @@ const CampaignDetail = () => {
         selectedCampaign.end
       );
 
-      const startTime = selectedCampaign.start;
-      const endTime = selectedCampaign.end;
-      // const startTime = leaderBoardLimit?.current?.joinedDate;
+      // const startTime = selectedCampaign.start;
       // const endTime = selectedCampaign.end;
+      const startTime = leaderBoardLimit?.current?.joinedDate;
+      console.log(startTime);
+
+      const endTime = selectedCampaign.end;
       console.log(new Date());
 
       const result = await readRecords(target, {
