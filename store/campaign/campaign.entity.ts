@@ -12,6 +12,7 @@ export interface CampaignEntity {
   categoryTarget: string;
   userOwner: number;
   isConnectThirdParty: boolean;
+  userCount: number;
 }
 // export interface CreateCampaignEntity {
 //   campaignName: string;

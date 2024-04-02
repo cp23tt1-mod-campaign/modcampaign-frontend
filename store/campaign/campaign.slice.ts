@@ -361,7 +361,34 @@ export const updateCampaignLeaderBoard = createAsyncThunk(
     }
   }
 );
+export const sendEmailClaimReward = createAsyncThunk(
+  "campaign/sendEmailClaimReward",
+  async (
+    params: { campaignId?: any; userId?: any },
+    { getState, dispatch }
+  ) => {
+    const { campaignId, userId } = params;
+    const body = {
+      campaignId: campaignId,
+      userId: userId,
+    };
 
+    try {
+      const res = await useAxios.post(`${API_URL}/campaign-reward`, body);
+      return {
+        statusCode: res.status,
+        success: true,
+        data: res.data.data,
+      };
+    } catch (error: any) {
+      return {
+        statusCode: error.response.status,
+        success: false,
+        data: error,
+      };
+    }
+  }
+);
 export const campaignSlice = createSlice({
   name: "campaign",
   initialState,

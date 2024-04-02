@@ -19,6 +19,7 @@ import {
   setDefaultLeaderBoard,
   updateCampaignLeaderBoard,
   setDefaultSelectedCampaign,
+  sendEmailClaimReward,
 } from "../../../../store/campaign/campaign.slice";
 import { ScrollView } from "react-native-gesture-handler";
 import UtilIcon from "../../../../Util/Icon";
@@ -69,6 +70,8 @@ const CampaignDetail = () => {
   const [showCancelSuccessModal, setShowCancelSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showErrorLimitModal, setShowErrorLimitModal] = useState(false);
+  const [showClaimModal, setShowClaimModal] = useState(false);
+  const [showClaimSuccessModal, setShowClaimSuccessModal] = useState(false);
   const [campaignTargetValue, setCampaignTargetValue] = useState("");
   const today = new Date();
   const [isCompleted, setIsCompleted] = useState(false);
@@ -117,7 +120,7 @@ const CampaignDetail = () => {
       // setIsCompleted(dayjs(selectedCampaign.end).isBefore(today));
       // console.log("🚀 ~ useEffect ~ isCompleted:", isCompleted);
 
-      if (!dayjs(selectedCampaign.end).isBefore(today)) {
+      if (dayjs(selectedCampaign.end).isAfter(today)) {
         checkLeaderBoard();
         dispatch(
           getCampaignLeaderBoard({
@@ -136,7 +139,7 @@ const CampaignDetail = () => {
   }, [focus]);
 
   const getCampaignTargetValue = async () => {
-    if (isConnectedThirdParty && dayjs(selectedCampaign.end).isBefore(today)) {
+    if (isConnectedThirdParty && dayjs(selectedCampaign.end).isAfter(today)) {
       const target: RecordType = selectedCampaign.categoryTarget as RecordType;
       // console.log(selectedCampaign.categoryTarget);
 
@@ -281,6 +284,31 @@ const CampaignDetail = () => {
       }, 3000);
     }
   };
+  const claimReward = async (campaignId: any, userId: any) => {
+    setShowClaimModal(false);
+    const res: any = await dispatch(
+      sendEmailClaimReward({ campaignId, userId })
+    );
+
+    if (res.payload?.statusCode === 200) {
+      setTimeout(() => {
+        setShowClaimSuccessModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowClaimSuccessModal(false);
+        router.push({
+          pathname: "/(tabs)/Campaign",
+        });
+      }, 3000);
+    } else if (res.payload?.statusCode === 400) {
+      setTimeout(() => {
+        setShowErrorModal(true);
+      }, 1000);
+      setTimeout(() => {
+        setShowErrorModal(false);
+      }, 3000);
+    }
+  };
   const connectDevice = () => {
     router.push({
       pathname: "/page/campaign/ConnectDevice/",
@@ -327,7 +355,7 @@ const CampaignDetail = () => {
             </Text>
             <Text className="text-gray text-small font-medium">
               {selectedCampaign.type} | {selectedCampaign.category} | Number of
-              Participants:{" "}
+              Participants: {selectedCampaign.userCount} /
               {selectedCampaign.userLimit
                 ? selectedCampaign.userLimit
                 : "Unlimited"}
@@ -498,9 +526,10 @@ const CampaignDetail = () => {
           </View>
         </View>
       </ScrollView>
-      {dayjs(selectedCampaign.end).isBefore(today) ? (
+      {dayjs(selectedCampaign.end).isBefore(today) &&
+      type === "Joined Campaign" ? (
         <Pressable
-          onPress={() => setShowAcceptModal(true)}
+          onPress={() => setShowClaimModal(true)}
           className="flex flex-row justify-center"
         >
           {/* <Pressable
@@ -636,6 +665,51 @@ const CampaignDetail = () => {
       >
         <Text className="text-header-4 font-semibold text-center mb-4">
           This campaign is full.
+        </Text>
+      </UtilModal>
+      <UtilModal
+        primaryColor="bg-blue"
+        iconText="i"
+        isShowModal={showClaimModal}
+        isMustInteract={false}
+        isAcknowledge={true}
+        acknowledgeText="Acknowledge"
+        animationIn="zoomIn"
+        animationOut="zoomOut"
+        handleAcknowledge={() =>
+          claimReward(selectedCampaign.id, userProfile.userId)
+        }
+      >
+        <View className="flex flex-col space-y-4">
+          <Text className="text-header-4 font-semibold text-center">
+            Congratulations!
+          </Text>
+          <Text className="text-small font-medium text-black">
+            <Text className="text-blue text-body-1 font-bold">Prizes</Text> -
+            The prizes awarded will be provided by the event organizer. They
+            will contact you via the email address you used to register for this
+            application to arrange prize distribution.
+          </Text>
+          <Text className="text-small font-medium text-black">
+            <Text className="text-blue text-body-1 font-bold">Contact Us</Text>{" "}
+            - For any further questions, please don't hesitate to contact us at{" "}
+            <Text className="text-blue text-small font-medium">
+              jirasin.qc@gmail.com
+            </Text>
+          </Text>
+        </View>
+      </UtilModal>
+      <UtilModal
+        primaryColor="bg-green"
+        iconCategory="MaterialCommunityIcons"
+        iconName="check"
+        animationIn="pulse"
+        animationOut="zoomOut"
+        isShowModal={showClaimSuccessModal}
+        isMustInteract={false}
+      >
+        <Text className="text-header-4 font-semibold text-center mb-4">
+          Email Successfully{"\n"} send to your email !
         </Text>
       </UtilModal>
     </View>

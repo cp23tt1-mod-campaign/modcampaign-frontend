@@ -12,10 +12,13 @@ const UtilModal = (props: {
   alertText?: string;
   primaryColor?: string | "bg-blue";
   isMustInteract?: boolean | true;
+  isAcknowledge?: boolean;
   acceptText?: string;
   declineText?: string;
+  acknowledgeText?: string;
   handleAccept?: any;
   handleDecline?: any;
+  handleAcknowledge?: any;
   animationIn?: any | "zoomIn";
   animationOut?: any | "zoomOut";
   isAcceptPolicy?: boolean;
@@ -116,6 +119,15 @@ const UtilModal = (props: {
                 </Pressable>
               )}
             </View>
+          ) : props.isAcknowledge ? (
+            <Pressable
+              onPress={props.handleAcknowledge}
+              className={`w-full flex-row justify-center py-2 px-2 rounded-xl ${props.primaryColor}`}
+            >
+              <Text className="w-auto text-white text-sub-header-1 font-medium text-center">
+                {props.acknowledgeText}
+              </Text>
+            </Pressable>
           ) : null}
         </View>
       </View>
