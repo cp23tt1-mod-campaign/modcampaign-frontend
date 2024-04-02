@@ -247,7 +247,7 @@ const EditDietary = () => {
     updateDietaryLocal();
 
     // console.log(dietaryData.food.calories);
-  }, [dietaryData.food, dietaryData.exercise]);
+  }, [dietaryData.food, dietaryData.exercise, dietaryData.water]);
   // const handleSelectedGender = (selected: any) => {
   //   setGenderList((prevList) =>
   //     prevList.map((item) => ({

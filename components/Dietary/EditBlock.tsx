@@ -75,8 +75,8 @@ const EditBlock = (props: {
             className={`bg-white rounded-lg px-4 py-2 shadow-sm`}
             placeholder={`${props.data.propertiedName} (${props.data.unit})`}
             placeholderTextColor={"#929292"}
-            onChangeText={(text) => setValue(text)}
-            onBlur={() => setValue(value)}
+            onChangeText={(text) => setValue(text.replace(/[^0-9]/g, ""))}
+            onBlur={() => setValue(value.replace(/[^0-9]/g, ""))}
             value={value}
             editable={true}
             area-label="Age (Years)"
