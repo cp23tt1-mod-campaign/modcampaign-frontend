@@ -83,7 +83,7 @@ const CampaignDetail = () => {
     const checkLeaderBoard = async () => {
       const res: any = await getCampaignTargetValue();
       console.log(res);
-      // console.log(typeof res);
+      console.log(typeof res);
 
       // console.log(campaignTargetValue);
 
@@ -145,6 +145,11 @@ const CampaignDetail = () => {
 
       // const target = "Distance";
 
+      // console.log(
+      //   "🚀 ~ getCampaignTargetValue ~ selectedCampaign.start:",
+      //   selectedCampaign.start
+      // );
+
       console.log(
         "🚀 ~ getCampaignTargetValue ~ leaderBoard.current.joinedDate:",
         leaderBoardLimit?.current?.joinedDate
@@ -154,10 +159,11 @@ const CampaignDetail = () => {
         selectedCampaign.end
       );
 
-      // const startTime = selectedCampaign.start;
-      // const endTime = selectedCampaign.end;
-      const startTime = leaderBoardLimit?.current?.joinedDate;
+      const startTime = selectedCampaign.start;
       const endTime = selectedCampaign.end;
+      // const startTime = leaderBoardLimit?.current?.joinedDate;
+      // const endTime = selectedCampaign.end;
+      console.log(new Date());
 
       const result = await readRecords(target, {
         timeRangeFilter: {
@@ -168,17 +174,21 @@ const CampaignDetail = () => {
           // endTime: "2023-12-12T23:53:15.405Z",
         },
       });
+      // console.log(result);
 
       if (target === "Distance") {
         const totalDistance = result.reduce(
           (sum, cur: any) => sum + cur.distance.inKilometers,
           0
         );
+        console.log(totalDistance);
+
         return totalDistance.toFixed(2);
         // setCampaignTargetValue(totalDistance.toFixed(2));
       } else {
         const totalSteps = result.reduce((sum, cur: any) => sum + cur.count, 0);
-        return totalSteps.toLocaleString("en-US");
+
+        return totalSteps;
         // setCampaignTargetValue(totalSteps.toLocaleString("en-US"));
       }
     }
@@ -694,7 +704,7 @@ const CampaignDetail = () => {
             <Text className="text-blue text-body-1 font-bold">Contact Us</Text>{" "}
             - For any further questions, please don't hesitate to contact us at{" "}
             <Text className="text-blue text-small font-medium">
-              jirasin.qc@gmail.com
+              modcampaign.noreply@gmail.com
             </Text>
           </Text>
         </View>

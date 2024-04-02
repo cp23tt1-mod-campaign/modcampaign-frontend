@@ -46,7 +46,7 @@ export interface CurrentRankEntity {
   displayName: string;
   targetValue: number;
   rank: number;
-  joinedDate: string;
+  joinedDate: Date;
 }
 
 export interface CampaignState {

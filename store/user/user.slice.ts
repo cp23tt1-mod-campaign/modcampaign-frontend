@@ -101,6 +101,8 @@ export const signUpWithGoogle = createAsyncThunk(
       activityLevel: userProfile.activityLevel,
       bmr: userProfile.bmr,
     };
+    console.log(body);
+
     try {
       const res = await useAxios.post("/create-user", body);
       return {
@@ -113,6 +115,7 @@ export const signUpWithGoogle = createAsyncThunk(
       return {
         statusCode: error.response.status,
         success: false,
+        message: error.response.data.message,
         data: error,
       };
     }

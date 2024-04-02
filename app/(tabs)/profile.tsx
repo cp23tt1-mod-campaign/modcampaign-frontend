@@ -246,7 +246,7 @@ const Profile = () => {
                   style={{ width: SCREEN_WIDTH * 0.6 }}
                   className="text-sub-header-2 font-medium text-black"
                 >
-                  Privacy Center {userProfile.role}
+                  Privacy Center
                 </Text>
                 <View
                   style={{ width: SCREEN_WIDTH * 0.2 }}

@@ -159,6 +159,7 @@ const InformProfile = () => {
     //   "🚀 ~ confirmInformation ~ res.payload:",
     //   res.payload.statusCode
     // );
+    console.log(res.payload.data.message);
 
     if (res.payload.statusCode === 200) {
       const {

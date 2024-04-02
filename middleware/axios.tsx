@@ -22,7 +22,7 @@ useAxios.interceptors.request.use(
     // if (config.method === 'post' || (config.method === 'get' && config.url.includes('/your-special-endpoint'))) {
     if (
       (config.method === "post" && config.url.includes("/sign-in")) ||
-      (config.method === "patch" && config.url.includes("/create-user"))
+      (config.method === "post" && config.url.includes("/create-user"))
     ) {
       // Add the access token to the headers for POST requests and specific GET requests
       return config;

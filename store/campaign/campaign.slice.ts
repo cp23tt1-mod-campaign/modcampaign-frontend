@@ -25,7 +25,7 @@ export const initialState: CampaignState = {
       targetValue: 0,
       displayName: "",
       profileImage: "",
-      joinedDate: "",
+      joinedDate: new Date(),
     },
   },
   leaderBoardLimit: {
